@@ -37,6 +37,9 @@ jobs:
           destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
+        with:
+          name: built-site
+          path: _site/
 
   # Deployment job
   deploy:
@@ -46,6 +49,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: built-site
+          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          deploy-token: ${{ secrets.GITHUB_TOKEN }}
+          site-directory: ./_site  # Specify the directory to deploy
