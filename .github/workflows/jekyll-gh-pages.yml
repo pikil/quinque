@@ -34,8 +34,6 @@ jobs:
         with:
           source: ./build/
           destination: ./_site/
-      - name: Copy files to _site directory
-        run: cp -r ./build/. ./_site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
