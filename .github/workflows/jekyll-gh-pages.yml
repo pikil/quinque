@@ -33,7 +33,7 @@ jobs:
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./build/
-          destination: ./_site/build/
+          destination: ./_site/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
@@ -49,4 +49,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          source: ./_site/build/
+          source: ./_site/
