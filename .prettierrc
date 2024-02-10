@@ -1,0 +1,10 @@
+{
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": false,
+  "plugins": [
+    "svelte"
+  ],
+  "svelteSortOrder": "markup-scripts-styles"
+}
