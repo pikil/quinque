@@ -1,6 +1,13 @@
 <div class="h-full flex flex-col justify-center gap-8">
-  <header>
-    <h1 class="text-white font-bold text-center text-3xl mt-10 mb-10">Welcome to {mainNameShort}</h1>
+  <header class="pt-12 pb-6">
+    <h1 class="text-white font-bold text-center text-3xl">Welcome to {mainNameShort}</h1>
+    <Button
+      href={repoPath}
+      icon={biGithub}
+      class="mx-auto text-faded mt-2"
+      iconClass="h-5 h-5"
+      target="_blank"
+    />
   </header>
   <p class="text-faded text-center text-xl">Play</p>
   {#each buttons as { label, onclick }}
@@ -39,8 +46,9 @@
 <script>
 import { afterNavigate, goto } from '$app/navigation'
 import { allowedGridSizes } from '$data/arrays'
-import { discordServerUrl, mainNameShort } from '$data/strings'
+import { discordServerUrl, mainNameShort, repoPath } from '$data/strings'
 import Button from '$ui/buttons/Button.svelte'
+import { biGithub } from '$vendor/icons/bootstrap-icons'
 
 const aboutLink = 'page/about'
 const rulesLink = 'page/rules'
