@@ -3,7 +3,7 @@
   "short_name": "Quinque",
   "description": "A simple game resembling Checkers, Tetris and Battleship",
   "display": "standalone",
-  "start_url": "/",
+  "start_url": "/quinque/",
   "icons": [
     {
       "src": "icons/icon-128x128.png",

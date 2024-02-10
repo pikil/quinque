@@ -2,13 +2,15 @@
   <Button
     icon={fasArrowLeft}
     class="text-gray-4000"
-    href="/"
+    {href}
   />
   <h2 class="flex-1 text-xl">{title}</h2>
 </header>
 <script>
 import Button from '$ui/buttons/Button.svelte'
 import { fasArrowLeft } from '$vendor/icons/fontawesome6-icons'
+
+const href = import.meta.env.BASE_URL
 
 /**
  * @type {String}

@@ -29,8 +29,8 @@
   <div class="flex-1 flex flex-col justify-end">
     <footer class="py-4">
       <div class="flex flex-row justify-center text-faded items-center gap-6">
-        <a href="/page/about" class={footerLinkClasses}>About</a>
-        <a href="/page/rules" class={footerLinkClasses}>Rules</a>
+        <a href={aboutLink} class={footerLinkClasses}>About</a>
+        <a href={rulesLink} class={footerLinkClasses}>Rules</a>
         <a href={discordServerUrl} class={footerLinkClasses} target="_blank">Contacts</a>
       </div>
     </footer>
@@ -42,6 +42,8 @@ import { allowedGridSizes } from '$data/arrays'
 import { discordServerUrl, mainNameShort } from '$data/strings'
 import Button from '$ui/buttons/Button.svelte'
 
+const aboutLink = 'page/about'
+const rulesLink = 'page/rules'
 const btnClasses = 'bg-pink-400 hover:bg-pink-500 w-72 mx-auto text-2xl px-20 py-4 text-black rounded-xl transition-colors'
 const activeBtnClass = 'text-black bg-pink-300'
 const inactiveBtnClass = 'text-gray-400 bg-gray-600'
@@ -59,7 +61,7 @@ const buttons = allowedGridSizes.map((s) => {
   return {
     label: s + ' blocks',
     onclick: () => {
-      let link = '/play?s=' + s
+      let link = 'play?s=' + s
 
       if (!playMode)
         link += '&m=0'

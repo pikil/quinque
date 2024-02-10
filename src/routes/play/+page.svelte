@@ -513,7 +513,7 @@ const onBack = () => {
   if (gameStarted && !gameFinished && !confirm('Do you want to leave this page now?'))
     return
 
-  goto('/')
+  goto(import.meta.env.BASE_URL)
 }
 
 const showResetDialog = () => {
