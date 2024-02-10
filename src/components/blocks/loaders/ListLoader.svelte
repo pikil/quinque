@@ -1,5 +1,5 @@
 <span class={classes}>
-  <div class="grid place-items-center">
+  <div class="flex flex-col justify-center items-center">
     <div class="lds-ellipsis relative h-10 w-[76px] flex flex-row items-center">
       {#each { length: 4 } as num}
         <div data-attr={num} />

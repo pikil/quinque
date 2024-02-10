@@ -9,6 +9,6 @@ import ListLoader from '$blocks/loaders/ListLoader.svelte'
  */
 export let label = ''
 
-$: classes = 'w-full h-full grid place-items-center'
+$: classes = 'w-full h-full flex flex-col justify-center items-center'
   + ($$props.class ? ' ' + $$props.class : '')
 </script>

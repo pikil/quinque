@@ -11,7 +11,7 @@
   </div>
 </div>
 <script>
-const digitDefClass = 'grid place-items-center text-xl'
+const digitDefClass = 'flex flex-col justify-center items-center text-xl'
 
 /**
  * @type {Number}

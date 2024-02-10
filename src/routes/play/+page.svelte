@@ -63,7 +63,7 @@
   on:dismiss={hideWinnerDialog}
 >
   <p>NICE!</p>
-  <div class="w-96 h-96 max-w-full max-h-full grid place-items-center">
+  <div class="w-96 h-96 max-w-full max-h-full flex flex-col justify-center items-center">
     <div>
       <div class="text-4xl text-center">
         {#if counts[0] > counts[1]}

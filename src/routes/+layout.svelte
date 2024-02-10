@@ -8,7 +8,7 @@
     </Main>
   </div>
 {:else}
-  <div class="text-faded h-full grid place-items-center">
+  <div class="text-faded h-full flex flex-col justify-center items-center">
     Loading...
   </div>
 {/if}

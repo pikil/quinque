@@ -102,7 +102,7 @@ $: hoverClasses = selected
   )
 $: classes = 'flex-1 aspect-square text-sm transition-colors duration-300 rounded-md border border-gray-600 bubbly relative'
   + ' cursor-pointer outline-none'
-  + ' grid place-items-center'
+  + ' flex flex-col justify-center items-center'
   + ' bg-opacity-80 hover:bg-opacity-100'
   + hoverClasses
   + bgClasses

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "vite build && cp build/index.html build/404.html",
     "not-dev": "cp src/manifest.json static/manifest.json && vite dev",
     "not-build": "cp src/manifest.json static/manifest.json && vite build",
     "preview": "vite preview",
