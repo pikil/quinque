@@ -427,6 +427,7 @@ const resetSelectCandidates = () => {
 
   selectCandidates = arr
   hoverCoords = null
+  previewCoords = null
 }
 
 const resetSelections = () => {
