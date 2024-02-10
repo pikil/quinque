@@ -1,4 +1,3 @@
-# Sample workflow for building and deploying a Jekyll site to GitHub Pages
 name: Deploy Jekyll with GitHub Pages dependencies preinstalled
 
 on:
@@ -34,12 +33,9 @@ jobs:
         uses: actions/jekyll-build-pages@v1
         with:
           source: ./build/
-          destination: ./_site
+          destination: ./_site/build/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
-        with:
-          name: built-site
-          path: _site/
 
   # Deployment job
   deploy:
@@ -49,14 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: built-site
-          path: _site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
         with:
-          deploy-token: ${{ secrets.GITHUB_TOKEN }}
-          site-directory: ./_site  # Specify the directory to deploy
+          source: ./_site/build/
