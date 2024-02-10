@@ -3,8 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "cp src/manifest.json static/manifest.json && vite dev",
-    "build": "cp src/manifest.json static/manifest.json && vite build",
+    "dev": "vite dev",
+    "build": "vite build",
+    "not-dev": "cp src/manifest.json static/manifest.json && vite dev",
+    "not-build": "cp src/manifest.json static/manifest.json && vite build",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
