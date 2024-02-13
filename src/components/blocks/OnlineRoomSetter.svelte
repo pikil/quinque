@@ -306,7 +306,7 @@ const createRoom = async () => {
 
 const copyRoomLink = () => {
   valuesCopied = (copyToClipboard(roomLink))
-    ? { class: 'text-green-500', label: 'Values copied!' }
+    ? { class: 'text-green-500', label: 'Link copied!' }
     : { class: 'text-red-500', label: 'Could not copy...' }
 }
 

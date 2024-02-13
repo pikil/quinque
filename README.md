@@ -1,7 +1,15 @@
 Quinque (/ˈkwɪŋkweɪ/) is a simple game where you can challenge someone (or a computer) in a short colorful battle.
-You can play it freely [here](https://pikil.github.io/quinque).
 
+- Play it [here](https://pikil.github.io/quinque);
+
+- [Rules](https://pikil.github.io/quinque/page/rules);
+
+- [More about the game](https://pikil.github.io/quinque/page/about);
+
+
+##
 Visit our [discord server](https://discord.com/channels/1205689011583066143) if you have an idea/suggestion/question/etc.
+
 
 ## Dev version
 

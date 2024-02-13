@@ -19,7 +19,6 @@
             score2Class={'font-bold ' + color2}
           />
         </div>
-        <p class={turnLabelClasses}>{turnLabel}</p>
       </div>
       <Button
         class="text-purple-400"
@@ -28,6 +27,7 @@
       />
     </div>
     <div class="flex-1 flex flex-col justify-center w-full max-w-[600px] mx-auto gap-1 px-3">
+      <p class={turnLabelClasses}>{turnLabel}</p>
       <!-- eslint-disable-next-line no-unused-vars -->
       {#each { length: gridSize } as _, rowIndex}
         <div class="flex flex-row gap-1">
@@ -104,7 +104,7 @@
 </Modal>
 <Modal showing={awaitingForPeer || peerDisconnected} title="Play with friend online" hideOk on:dismiss={onBack}>
   {#if peerDisconnected}
-    <p>Player is disconnected... Please start another session.</p>
+    <p>Player disconnected... Please start another session.</p>
   {:else}
     <OnlineRoomSetter on:connected={onPeerConnect} />
   {/if}
@@ -689,9 +689,20 @@ $: playingWithComputer = playMode === playModes.AI
 $: playingOnline = !playingWithComputer && playMode === playModes.FRIEND_ONLINE
 $: colClasses = 'h-full flex flex-col relative'
   + (thinking ? ' cursor-wait' : '')
-$: turnLabelClasses = 'absolute -bottom-4 w-full text-center'
-  + (playingWithComputer ? ' text-faded' : ' ' + turnColor)
-$: turnLabel = player1Turn ? 'Player 1' : (playingWithComputer ? 'Computer...' : 'Player 2' )
+$: turnLabelClasses = 'font-bold text-center pb-2' // 'absolute -bottom-4 w-full text-center'
+  + (
+    playingWithComputer && !player1Turn
+    || (playingOnline && player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1)
+    || (playingOnline && !player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2)
+      ? ' text-faded'
+      : ' ' + turnColor
+  )
+$: turnLabel = player1Turn
+  ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player 1...')
+  : (playingWithComputer
+    ? 'Computer...'
+    : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player 2...')
+  )
 $: awaitingForPeer = peerStatus === peerStatuses.CONNECTING
 $: peerDisconnected = playingOnline && peerStatus === peerStatuses.DISCONNECTED
 
