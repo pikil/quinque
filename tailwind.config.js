@@ -5,11 +5,7 @@ export default {
     extend: {
       colors: {
         primary: 'rgb(var(--primary) / <alpha-value>)',
-        faded: 'rgb(var(--faded) / <alpha-value>)',
-        mainBg: '#161b22',
-        twitter: '#2ba9e0',
-        linkedin: '#1678b5',
-        facebook: '#4368b2'
+        faded: 'rgb(var(--faded) / <alpha-value>)'
       },
       screens: {
         'sm': '394px',

@@ -1,56 +1,64 @@
-<div class={containerClasses}>
-  <div class="flex flex-row gap-2 pb-2 pt-3 px-2 items-start">
-    <Button
-      icon={fasArrowLeft}
-      class="text-purple-400"
-      on:click={onBack}
-    />
-    <div class="flex-1 flex flex-row justify-center relative">
-      <div>
-        <ModesForecaster class={forecasterClasses} color={turnColor} />
-        <GameScore
-          score1={counts[0]}
-          score2={counts[1]}
-          score1Class={'font-bold ' + color1}
-          score2Class={'font-bold ' + color2}
-        />
-      </div>
-      <p class={turnLabelClasses}>{turnLabel}</p>
-    </div>
-    <Button
-      class="text-purple-400"
-      icon={fasRotateRight}
-      on:click={showResetDialog}
-    />
-  </div>
-  <div class="flex-1 flex flex-col justify-center w-full max-w-[600px] mx-auto gap-1 px-3">
-    <!-- eslint-disable-next-line no-unused-vars -->
-    {#each { length: gridSize } as _, rowIndex}
-      <div class="flex flex-row gap-1">
-        <!-- eslint-disable-next-line no-unused-vars -->
-        {#each { length: gridSize } as _, colIndex}
-          <ClickBlock
-            {rowIndex}
-            {colIndex}
-            selected={selections[rowIndex][colIndex]}
-            selectCandidate={selectCandidates[rowIndex][colIndex]}
-            hoverColor={currentTurnColor}
-            disabled={computerThinking}
-            {hoverCoords}
-            on:click={onBlockSelect}
-            on:enter={onBlockEnter}
-            on:leave={resetSelectCandidates}
+<div class="h-device relative">
+  <div class={colClasses}>
+    <div class="flex flex-row gap-2 pb-2 pt-3 px-2 items-start">
+      <Button
+        icon={fasArrowLeft}
+        class="text-purple-400"
+        on:click={onBack}
+      />
+      <div class="flex-1 flex flex-row justify-center relative">
+        <div>
+          <ModesForecaster
+            class={forecasterClasses}
+            color={turnColor}
           />
-        {/each}
+          <GameScore
+            score1={counts[0]}
+            score2={counts[1]}
+            score1Class={'font-bold ' + color1}
+            score2Class={'font-bold ' + color2}
+          />
+        </div>
+        <p class={turnLabelClasses}>{turnLabel}</p>
       </div>
-    {/each}
+      <Button
+        class="text-purple-400"
+        icon={fasRotateRight}
+        on:click={showResetDialog}
+      />
+    </div>
+    <div class="flex-1 flex flex-col justify-center w-full max-w-[600px] mx-auto gap-1 px-3">
+      <!-- eslint-disable-next-line no-unused-vars -->
+      {#each { length: gridSize } as _, rowIndex}
+        <div class="flex flex-row gap-1">
+          <!-- eslint-disable-next-line no-unused-vars -->
+          {#each { length: gridSize } as _, colIndex}
+            <ClickBlock
+              {rowIndex}
+              {colIndex}
+              selected={selections[rowIndex][colIndex]}
+              selectCandidate={selectCandidates[rowIndex][colIndex]}
+              hoverColor={currentTurnColor}
+              disabled={thinking}
+              {hoverCoords}
+              on:click={onBlockSelect}
+              on:enter={onBlockEnter}
+              on:leave={resetSelectCandidates}
+            />
+          {/each}
+        </div>
+      {/each}
+    </div>
+    <div class="text-center pb-2">
+      <a href={rulesPageLink} target="_blank" class="text-faded">Rules</a>
+    </div>
   </div>
 </div>
 <Modal
   showing={resetDialogShowing}
   title="Reset the game?"
   okLabel="Reset"
-  on:ok={resetGame}
+  on:ok={() => { resetGame() }}
   on:dismiss={hideResetDialog}
 >
   <p>This will reset the current board and it's progress. Continue?</p>
@@ -63,7 +71,7 @@
   on:dismiss={hideWinnerDialog}
 >
   <p>NICE!</p>
-  <div class="w-96 h-96 max-w-full max-h-full flex flex-col justify-center items-center">
+  <div class="h-96 max-w-full max-h-full flex flex-col justify-center items-center">
     <div>
       <div class="text-4xl text-center">
         {#if counts[0] > counts[1]}
@@ -94,16 +102,23 @@
     </div>
   </div>
 </Modal>
+<Modal showing={awaitingForPeer || peerDisconnected} title="Play with friend online" hideOk on:dismiss={onBack}>
+  {#if peerDisconnected}
+    <p>Player is disconnected... Please start another session.</p>
+  {:else}
+    <OnlineRoomSetter on:connected={onPeerConnect} />
+  {/if}
+</Modal>
 <script>
 import ClickBlock from '$blocks/ClickBlock.svelte'
-import { getBlockValue, isEven } from '$lib'
+import { generateTurnsSequence, getBlockValue, isEven } from '$lib'
 import { enteringMode, enteringMode1, enteringMode2 } from '$stores/user-store'
 import { getRandomEnteringMode } from '$lib'
 import { onMount, tick } from 'svelte'
-import { enterModes } from '$data/objects'
+import { enterModes, peerStatuses, playModes } from '$data/objects'
 import Button from '$ui/buttons/Button.svelte'
 import { fasArrowLeft, fasRotateRight } from '$vendor/icons/fontawesome6-icons'
-import { goto } from '$app/navigation'
+import { beforeNavigate, goto } from '$app/navigation'
 import GameScore from '$blocks/GameScore.svelte'
 import Modal from '$ui/Modal.svelte'
 import ModesForecaster from '$blocks/ModesForecaster.svelte'
@@ -112,7 +127,10 @@ import { page } from '$app/stores'
 import { defaultGridSize } from '$data/numbers'
 import { allowedGridSizes } from '$data/arrays'
 import Rooney from '../../ai/Rooney'
+import OnlineRoomSetter from '$blocks/OnlineRoomSetter.svelte'
+import peerConnection from '$utils/rtc/connection'
 
+const rulesPageLink = import.meta.env.BASE_URL + '/page/rules'
 const color1 = 'text-blue-300'
 const color2 = 'text-pink-300'
 
@@ -130,6 +148,11 @@ let selectCandidates = []
  * @type {Number}
  */
 let turnCount = 0
+
+/**
+ * @type {Number[]}
+ */
+let predefinedTurns = []
 
 /**
  * @type {Boolean}
@@ -164,15 +187,30 @@ let computer = null
 /**
  * @type {Boolean}
  */
-let computerThinking = false
+let thinking = false
 
 /**
  * @type {Number[]?}
  */
 let hoverCoords = null
 
+/**
+ * @type {Number}
+ */
+let playMode = playModes.AI
+
+/**
+ * @type {Number?}
+ */
+let peerStatus = null
+
+/**
+ * @param {Object.<String, any>} data
+ */
+const sendPeerMessage = data => peerConnection.sendChannelMessage(JSON.stringify(data))
+
 const urlSize = parseInt($page.url.searchParams.get('s') || String(defaultGridSize))
-const gridSize = allowedGridSizes.indexOf(urlSize) >= 0 ? urlSize : defaultGridSize
+let gridSize = allowedGridSizes.indexOf(urlSize) >= 0 ? urlSize : defaultGridSize
 
 /**
  * @param {Number} rowIndex
@@ -350,11 +388,29 @@ const convertAdjacentBlocks = (lastSelectedArr, selectionColor) => {
     selections[coords[i][0]][coords[i][1]] = selectionColor
 }
 
+const selectAsAMachine = async () => {
+  thinking = true
+
+  if (!computer)
+    computer = new Rooney(selections)
+
+  const coords = await computer.selectBlock($enteringMode)
+
+  thinking = false
+
+  if (coords)
+    selectInCoordinates(coords[0], coords[1], true)
+}
+
 /**
  * @param {Number} rowIndex
  * @param {Number} colIndex
+ * @param {Boolean} [isEmulator] - Whether this is a turn emulator (when it's either a computer or a remote player)
  */
-const selectInCoordinates = async (rowIndex, colIndex) => {
+const selectInCoordinates = async (rowIndex, colIndex, isEmulator) => {
+  if (gameFinished)
+    return
+
   const selectionColor = player1Turn ? 'color1' : 'color2'
 
   convertAdjacentBlocks(
@@ -364,6 +420,9 @@ const selectInCoordinates = async (rowIndex, colIndex) => {
 
   // All blocks are filled
   if (!Object.values(selections).some(row => row.some(c => !c))) {
+    if (playingOnline)
+      sendPeerMessage({ type: 'placedBlock', rowIndex, colIndex })
+
     gameFinished = true
     setTimeout(showWinnerDialog, 500)
     return
@@ -376,25 +435,18 @@ const selectInCoordinates = async (rowIndex, colIndex) => {
   if (player1Turn) {
     $enteringMode = $enteringMode1
     $enteringMode1 = $enteringMode2
-    $enteringMode2 = getRandomEnteringMode()
+    $enteringMode2 = (playingOnline) ? predefinedTurns[turnCount + 1] : getRandomEnteringMode()
   }
 
-  if (playingWithComputer && !player1Turn)
+  if (isEmulator === true)
+    return
+
+  if (playingWithComputer) {
     selectAsAMachine()
-}
-
-const selectAsAMachine = async () => {
-  computerThinking = true
-
-  if (!computer)
-    computer = new Rooney(selections)
-
-  const coords = await computer.selectBlock($enteringMode)
-
-  computerThinking = false
-
-  if (coords)
-    selectInCoordinates(coords[0], coords[1])
+  } else if (playingOnline) {
+    sendPeerMessage({ type: 'placedBlock', rowIndex, colIndex })
+    thinking = true
+  }
 }
 
 /**
@@ -467,7 +519,10 @@ const getSelectionCounts = (selArr) => {
   return [color1Count, color2Count]
 }
 
-const resetGame = () => {
+/**
+ * @param {Boolean} [isReaction] Whether this reset is triggered by a remote reset
+ */
+const resetGame = (isReaction) => {
   resetSelections()
   turnCount = 0
   $enteringMode = enterModes.SINGLE
@@ -476,11 +531,21 @@ const resetGame = () => {
   hideResetDialog()
   gameStarted = false
   gameFinished = false
-  computerThinking = false
+  thinking = false
 
   if (computer) {
     computer.cancelActiveActions()
     computer = null
+  } else if (playingOnline) {
+    if (peerStatus === peerStatuses.CONNECTED_AS_PLAYER1)
+      thinking = true
+
+    if (!isReaction) {
+      predefinedTurns = generateTurnsSequence(gridSize * gridSize)
+      $enteringMode1 = predefinedTurns[1]
+      $enteringMode2 = predefinedTurns[2]
+      sendPeerMessage({ type: 'resetGame', turns: predefinedTurns })
+    }
   }
 }
 
@@ -544,20 +609,117 @@ const hideWinnerDialog = () => {
   winnerShowing = false
 }
 
+/**
+ * @param {CustomEvent} evt
+ */
+const onPeerConnect = ({ detail: { size, status, turns } }) => {
+  gridSize = size
+  peerStatus = status
+  predefinedTurns = turns
+
+  resetSelections()
+
+  $enteringMode1 = turns[1]
+  $enteringMode2 = turns[2]
+
+  peerConnection.onstatechange = (/** @type {Event} */ evt) => {
+    /**
+     * @type {RTCPeerConnection}
+     */
+    // @ts-ignore
+    const pc = evt.target
+    const badStatuses = ['disconnected', 'failed']
+
+    if (!pc || badStatuses.includes(pc.connectionState))
+      peerStatus = peerStatuses.DISCONNECTED
+  }
+
+  peerConnection.onmessage = (/** @type {MessageEvent} */ { data }) => {
+    try {
+      const { type, rowIndex, colIndex, turns } = JSON.parse(data)
+
+      switch (type) {
+        case 'placedBlock':
+          selectInCoordinates(rowIndex, colIndex, true)
+          thinking = false
+          break
+        case 'resetGame': {
+          const reset = () => {
+            resetGame(true)
+
+            if (turns) {
+              predefinedTurns = turns
+              $enteringMode1 = turns[1]
+              $enteringMode2 = turns[2]
+            }
+          }
+
+          if (winnerShowing) {
+            hideWinnerDialog()
+            setTimeout(reset, 250)
+          } else {
+            reset()
+          }
+          break
+        }
+        case 'left':
+          peerConnection?.close()
+          peerStatus = peerStatuses.DISCONNECTED
+          break
+        default:
+          break
+      }
+    } catch (error) {
+      peerConnection?.close()
+      peerStatus = peerStatuses.DISCONNECTED
+    }
+  }
+
+  if (peerStatus === peerStatuses.CONNECTED_AS_PLAYER1)
+    thinking = true
+}
+
 $: player1Turn = isEven(turnCount)
 $: currentTurnColor = player1Turn ? 'color1' : 'color2'
 $: turnColor = player1Turn ? color1 : color2
 $: counts = getSelectionCounts(selections)
 $: forecasterClasses = 'pb-2'
   + (gameFinished ? ' invisible' : '')
-$: playMode = $page.url.searchParams.get('m')
-$: playingWithComputer = typeof playMode === 'string' && playMode === '0'
-$: containerClasses = 'h-device flex flex-col'
-  + (computerThinking ? ' cursor-wait' : '')
+$: playingWithComputer = playMode === playModes.AI
+$: playingOnline = !playingWithComputer && playMode === playModes.FRIEND_ONLINE
+$: colClasses = 'h-full flex flex-col relative'
+  + (thinking ? ' cursor-wait' : '')
 $: turnLabelClasses = 'absolute -bottom-4 w-full text-center'
   + (playingWithComputer ? ' text-faded' : ' ' + turnColor)
 $: turnLabel = player1Turn ? 'Player 1' : (playingWithComputer ? 'Computer...' : 'Player 2' )
+$: awaitingForPeer = peerStatus === peerStatuses.CONNECTING
+$: peerDisconnected = playingOnline && peerStatus === peerStatuses.DISCONNECTED
 
 resetSelections()
-onMount(resetGame)
+
+onMount(() => {
+  const room = $page.url.searchParams.get('room')
+
+  if (room) {
+    playMode = playModes.FRIEND_ONLINE
+    peerStatus = peerStatuses.CONNECTING
+  } else {
+    const m = parseInt($page.url.searchParams.get('m') || String(playModes.AI))
+
+    if (Object.values(playModes).includes(m))
+      playMode = m
+
+    if (playMode === playModes.FRIEND_ONLINE)
+      peerStatus = peerStatuses.CONNECTING
+  }
+
+  resetGame()
+})
+
+beforeNavigate(() => {
+  sendPeerMessage({ type: 'left' })
+
+  if (playingOnline)
+    peerConnection?.close()
+})
 </script>

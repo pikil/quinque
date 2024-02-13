@@ -63,3 +63,16 @@ export const getBlockValue = (selArr, row, col, color) => {
 
   return value
 }
+
+/**
+ * @param {Number} length
+ */
+export const generateTurnsSequence = (length) => {
+  const turns = []
+  turns.push(enterModes.SINGLE)
+
+  for (let t = 1; t < length; t++)
+    turns.push(getRandomEnteringMode())
+
+  return turns
+}

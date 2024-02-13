@@ -9,17 +9,7 @@
       target="_blank"
     />
   </header>
-  <p class="text-faded text-center text-xl">Play</p>
-  {#each buttons as { label, onclick }}
-    <Button
-      {label}
-      dense
-      rounded={false}
-      class={btnClasses}
-      on:click={onclick}
-    />
-  {/each}
-  <div class="flex flex-row items-center justify-center mt-8">
+  <div class="flex flex-row items-center justify-center">
     <Button
       rounded={false}
       label="1 player"
@@ -32,7 +22,39 @@
       class={playerCountBtnClasses[1]}
       on:click={set2Players}
     />
+    <Button
+      rounded={false}
+      label="Online"
+      class={playerCountBtnClasses[2]}
+      on:click={setOnline}
+    />
   </div>
+  <p class="text-faded text-center text-xl">Play</p>
+  {#each buttons as { label, onclick }}
+    <Button
+      {label}
+      dense
+      rounded={false}
+      class={btnClasses}
+      on:click={onclick}
+    />
+  {/each}
+  {#if isOnlineMode}
+    <div class="flex flex-row items-center justify-center">
+      <input
+        bind:value={joinId}
+        class="w-24 p-2 bg-gray-600 rounded-md text-gray-300 uppercase"
+        placeholder="Room ID"
+        maxlength="6"
+      />
+      <Button
+        label="Join"
+        class="font-bold text-primary"
+        disabled={joinBtnDisabled}
+        on:click={goToRoom}
+      />
+    </div>
+  {/if}
   <div class="flex-1 flex flex-col justify-end">
     <footer class="py-4">
       <div class="flex flex-row justify-center text-faded items-center gap-6">
@@ -46,6 +68,7 @@
 <script>
 import { afterNavigate, goto } from '$app/navigation'
 import { allowedGridSizes } from '$data/arrays'
+import { playModes } from '$data/objects'
 import { discordServerUrl, mainNameShort, repoPath } from '$data/strings'
 import Button from '$ui/buttons/Button.svelte'
 import { biGithub } from '$vendor/icons/bootstrap-icons'
@@ -53,17 +76,22 @@ import { biGithub } from '$vendor/icons/bootstrap-icons'
 const aboutLink = 'page/about'
 const rulesLink = 'page/rules'
 const btnClasses = 'bg-pink-400 hover:bg-pink-500 w-72 mx-auto text-2xl px-20 py-4 text-black rounded-xl transition-colors'
-const activeBtnClass = 'text-black bg-pink-300'
-const inactiveBtnClass = 'text-gray-400 bg-gray-600'
-const leftBtnClasses = 'rounded-l-md'
-const rightBtnClasses = 'rounded-r-md'
+const activeBtnClass = ' border-b-2 border-primary text-white'
+const inactiveBtnClass = ' text-gray-500'
+const modeBtnClasses = 'py-1.5'
+const leftBtnClasses = modeBtnClasses
+const rightBtnClasses = modeBtnClasses
 const footerLinkClasses = 'hover:underline'
 
 /**
- * 0 - Single player, 1 - Against computer, 2 - Multiplayer
  * @type {Number}
  */
-let playMode = 0
+let playMode = playModes.AI
+
+/**
+ * @type {String}
+ */
+let joinId = ''
 
 const buttons = allowedGridSizes.map((s) => {
   return {
@@ -71,8 +99,10 @@ const buttons = allowedGridSizes.map((s) => {
     onclick: () => {
       let link = 'play?s=' + s
 
-      if (!playMode)
-        link += '&m=0'
+      if (playMode === playModes.FRIEND_ONLINE)
+        link += '&m=' + playModes.FRIEND_ONLINE
+      else if (playMode === playModes.FRIEND_LOCAL)
+        link += '&m=' + playModes.FRIEND_LOCAL
 
       goto(link)
     }
@@ -80,24 +110,35 @@ const buttons = allowedGridSizes.map((s) => {
 })
 
 const set1Player = () => {
-  playMode = 0
+  playMode = playModes.AI
 }
 
 const set2Players = () => {
-  playMode = 1
+  playMode = playModes.FRIEND_LOCAL
 }
 
-$: playerCountBtnClasses = playMode
-  ? [leftBtnClasses + ' ' + inactiveBtnClass, rightBtnClasses + ' ' + activeBtnClass]
-  : [leftBtnClasses + ' ' + activeBtnClass, rightBtnClasses + ' ' + inactiveBtnClass]
+const setOnline = () => {
+  playMode = playModes.FRIEND_ONLINE
+}
+
+const goToRoom = () => {
+  goto(import.meta.env.BASE_URL + '/play?room=' + encodeURIComponent(joinId))
+}
+
+$: playerCountBtnClasses = !playMode
+  ? [leftBtnClasses + ' ' + activeBtnClass, modeBtnClasses + inactiveBtnClass, rightBtnClasses + ' ' + inactiveBtnClass]
+  : (playMode === 1
+    ? [leftBtnClasses + ' ' + inactiveBtnClass, modeBtnClasses + activeBtnClass, rightBtnClasses + ' ' + inactiveBtnClass]
+    : [leftBtnClasses + ' ' + inactiveBtnClass, modeBtnClasses + inactiveBtnClass, rightBtnClasses + ' ' + activeBtnClass]
+  )
+$: isOnlineMode = playMode === playModes.FRIEND_ONLINE
+$: joinBtnDisabled = joinId.length !== 6
 
 /**
  * @param {Object.<String, any>} evt
  */
 afterNavigate(({ from }) => {
-  const m = parseInt(from?.url.searchParams.get('m') || '1')
-
-  if (Number.isNaN(m) || m !== 0)
-    playMode = 1
+  const m = parseInt(from?.url.searchParams.get('m') || String(playModes.AI))
+  playMode = (Object.values(playModes).includes(m)) ? m : playModes.AI
 })
 </script>

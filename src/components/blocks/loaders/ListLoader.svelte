@@ -16,7 +16,7 @@
  */
 export let label = ''
 
-$: classes = '-translate-x-1/4'
+$: classes = ''
   + ($$props.class ? ' ' + $$props.class : '')
 </script>
 <style>

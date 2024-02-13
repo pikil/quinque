@@ -15,3 +15,20 @@ export const transitionParamsStandard = {
   easing: quintInOut
 }
 
+export const playModes = {
+  AI: 0,
+  FRIEND_LOCAL: 1,
+  FRIEND_ONLINE: 2
+}
+
+export const rtcTypes = {
+  ANSWER: 'answer',
+  OFFER: 'offer'
+}
+
+export const peerStatuses = {
+  CONNECTING: 0,
+  CONNECTED_AS_PLAYER1: 1,
+  CONNECTED_AS_PLAYER2: 2,
+  DISCONNECTED: 3
+}

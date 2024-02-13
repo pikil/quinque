@@ -15,11 +15,11 @@
       <div
         role="button"
         tabindex="0"
-        class="flex min-h-full justify-center p-4 text-center items-center md:p-0"
+        class="flex min-h-full justify-center p-4 text-center items-center sm:p-0 "
         on:click|self={onDismiss}
         on:keypress|self={onDismiss}
       >
-        <div class="relative transform overflow-hidden rounded-lg shadow-lg shadow-gray-800 text-white text-left sm:my-8 w-content sm:max-w-lg">
+        <div class="relative transform overflow-hidden rounded-lg shadow-lg shadow-gray-800 text-white text-left sm:my-8 w-full max-w-[600px]">
           <div class="bg-gray-600 py-4">
             {#if title}
               <div id="modal-title" class="flex flex-row gap-3 items-center pl-4 pr-2 pb-3">
