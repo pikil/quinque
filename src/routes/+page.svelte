@@ -122,7 +122,7 @@ const setOnline = () => {
 }
 
 const goToRoom = () => {
-  goto(import.meta.env.BASE_URL + '/play?room=' + encodeURIComponent(joinId))
+  goto('/quinque/play?room=' + encodeURIComponent(joinId))
 }
 
 $: playerCountBtnClasses = !playMode
