@@ -10,14 +10,9 @@
       <li class={liClasses}>
         The patterns are:
         <ul>
-          <li class={liClasses}><Icon name={customIconSingleDot} class={iconClasses} />&nbsp;&nbsp;1 single block selection;</li>
-          <li class={liClasses}><Icon name={customIconAxesDirection} class={iconClasses} />&nbsp;&nbsp;5 blocks selection in axes;</li>
-          <li class={liClasses}><Icon name={customIconDiagonalsDirection} class={iconClasses} />&nbsp;&nbsp;5 blocks selection in diagonals;</li>
-          <li class={liClasses}><Icon name={customIconFallingDiagonal} class={iconClasses} />&nbsp;&nbsp;5 blocks selection in a rising diagonal;</li>
-          <!-- eslint-disable-next-line max-len -->
-          <li class={liClasses}><Icon name={customIconBackingDiagonal} class={iconClasses} />&nbsp;&nbsp;5 blocks selection in a falling diagonal;</li>
-          <li class={liClasses}><Icon name={customIconHorizontal} class={iconClasses} />&nbsp;&nbsp;5 blocks selection in horizontal axis;</li>
-          <li class={liClasses}><Icon name={customIconVertical} class={iconClasses} />&nbsp;&nbsp;5 blocks selection in vertical axis;</li>
+          {#each patterns as { icon, pattern }}
+            <li class={liClasses}><Icon name={icon} class={iconClasses} />&nbsp;&nbsp;{pattern};</li>
+          {/each}
         </ul>
       </li>
       <li class={liClasses}>Single block selection always starts the game;</li>
@@ -50,4 +45,42 @@ import {
 const title = 'Game rules'
 const liClasses = 'py-2'
 const iconClasses = 'h-4 w-4 text-pink-400'
+
+const patterns = [
+  {
+    icon: customIconSingleDot,
+    score: '5 points (One block, no adjacent ones)',
+    pattern: '1 single block selection'
+  },
+  {
+    icon: customIconAxesDirection,
+    score: '15 points (4 have got adjacents in a single axis and 1 has got adjacents in both)',
+    pattern: '5 blocks selection in axes'
+  },
+  {
+    icon: customIconDiagonalsDirection,
+    score: 25,
+    pattern: '5 blocks selection in diagonals'
+  },
+  {
+    icon: customIconFallingDiagonal,
+    score: 25,
+    pattern: '5 blocks selection in a rising diagonal'
+  },
+  {
+    icon: customIconBackingDiagonal,
+    score: 25,
+    pattern: '5 blocks selection in a falling diagonal'
+  },
+  {
+    icon: customIconHorizontal,
+    score: 20,
+    pattern: '5 blocks selection in horizontal axis'
+  },
+  {
+    icon: customIconVertical,
+    score: 20,
+    pattern: '5 blocks selection in vertical axis'
+  }
+]
 </script>
