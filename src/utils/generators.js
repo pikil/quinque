@@ -8,3 +8,16 @@ export const randomStr = (len = 20) => {
 
   return result
 }
+
+/**
+ * @param {String} url
+ * @returns {String}
+ */
+export const getPath = (url) => {
+  let path = import.meta.env.BASE_URL
+
+  if (path.endsWith('/'))
+    path = url.slice(0, -1)
+
+  return path + url
+}

@@ -27,7 +27,9 @@
       />
     </div>
     <div class="flex-1 flex flex-col justify-center w-full max-w-[600px] mx-auto gap-1 px-3">
-      <p class={turnLabelClasses}>{turnLabel}</p>
+      <div class="relative">
+        <p class={turnLabelClasses}>{turnLabel}</p>
+      </div>
       <!-- eslint-disable-next-line no-unused-vars -->
       {#each { length: gridSize } as _, rowIndex}
         <div class="flex flex-row gap-1">
@@ -129,8 +131,9 @@ import { allowedGridSizes } from '$data/arrays'
 import Rooney from '../../ai/Rooney'
 import OnlineRoomSetter from '$blocks/OnlineRoomSetter.svelte'
 import peerConnection from '$utils/rtc/connection'
+import { getPath } from '$utils/generators'
 
-const rulesPageLink = import.meta.env.BASE_URL + '/page/rules'
+const rulesPageLink = getPath('/page/rules')
 const color1 = 'text-blue-300'
 const color2 = 'text-pink-300'
 
@@ -579,7 +582,7 @@ const onBack = () => {
   if (gameStarted && !gameFinished && !confirm('Do you want to leave this page now?'))
     return
 
-  goto(import.meta.env.BASE_URL)
+  goto(getPath('/'))
 }
 
 const showResetDialog = () => {
@@ -689,19 +692,18 @@ $: playingWithComputer = playMode === playModes.AI
 $: playingOnline = !playingWithComputer && playMode === playModes.FRIEND_ONLINE
 $: colClasses = 'h-full flex flex-col relative'
   + (thinking ? ' cursor-wait' : '')
+$: turnLabelColorClasses = playingWithComputer && !player1Turn
+  || (playingOnline && player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1)
+  || (playingOnline && !player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2)
+  ? ' text-faded'
+  : ' ' + turnColor
 $: turnLabelClasses = 'font-bold text-center pb-2' // 'absolute -bottom-4 w-full text-center'
-  + (
-    playingWithComputer && !player1Turn
-    || (playingOnline && player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1)
-    || (playingOnline && !player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2)
-      ? ' text-faded'
-      : ' ' + turnColor
-  )
+  + turnLabelColorClasses
 $: turnLabel = player1Turn
-  ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player 1...')
+  ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player\'s 1 turn...')
   : (playingWithComputer
     ? 'Computer...'
-    : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player 2...')
+    : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player\'s 2 turn...')
   )
 $: awaitingForPeer = peerStatus === peerStatuses.CONNECTING
 $: peerDisconnected = playingOnline && peerStatus === peerStatuses.DISCONNECTED

@@ -71,10 +71,11 @@ import { allowedGridSizes } from '$data/arrays'
 import { playModes } from '$data/objects'
 import { discordServerUrl, mainNameShort, repoPath } from '$data/strings'
 import Button from '$ui/buttons/Button.svelte'
+import { getPath } from '$utils/generators'
 import { biGithub } from '$vendor/icons/bootstrap-icons'
 
-const aboutLink = 'page/about'
-const rulesLink = 'page/rules'
+const aboutLink = getPath('/page/about')
+const rulesLink = getPath('/page/rules')
 const btnClasses = 'bg-pink-400 hover:bg-pink-500 w-72 mx-auto text-2xl px-20 py-4 text-black rounded-xl transition-colors'
 const activeBtnClass = ' border-b-2 border-primary text-white'
 const inactiveBtnClass = ' text-gray-500'
@@ -97,14 +98,14 @@ const buttons = allowedGridSizes.map((s) => {
   return {
     label: s + ' blocks',
     onclick: () => {
-      let link = 'play?s=' + s
+      let link = '/play?s=' + s
 
       if (playMode === playModes.FRIEND_ONLINE)
         link += '&m=' + playModes.FRIEND_ONLINE
       else if (playMode === playModes.FRIEND_LOCAL)
         link += '&m=' + playModes.FRIEND_LOCAL
 
-      goto(link)
+      goto(getPath(link))
     }
   }
 })
@@ -122,7 +123,9 @@ const setOnline = () => {
 }
 
 const goToRoom = () => {
-  goto('/quinque/play?room=' + encodeURIComponent(joinId.toUpperCase()))
+  goto(
+    getPath('/play?room=' + encodeURIComponent(joinId.toUpperCase()))
+  )
 }
 
 $: playerCountBtnClasses = !playMode

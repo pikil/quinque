@@ -17,10 +17,19 @@
       </li>
       <li class={liClasses}>Single block selection always starts the game;</li>
       <!-- eslint-disable-next-line max-len -->
-      <li class={liClasses}>Each turn (except the very first one) receives the pattern randomly, but players always know the current and the next two patterns;</li>
+      <li class={liClasses}>Each turn (except the very first one) receives the pattern randomly, but players always know the current and the next two patterns (look above the score);</li>
       <!-- eslint-disable-next-line max-len -->
-      <li class={liClasses}>Each colored block on the grid gives the player 5 points. However, if the block is adjacent to a block with the same colour, one point is deducted from that score (once per axis). So, two adjacent blocks will give 8 instead of 10 (4 + 4), and three adjacent blocks horizontally and vertically will give 9 instead of 15. So be mindful of where you place your blocks.</li>
-      <li class={liClasses}>Once the block is in place, it becomes inactive and it stores the score value for the given colour;</li>
+      <li class={liClasses}>Every coloured block is worth 5 points. However, 1 point is deducted if it has horizontally adjacent block(s) (left or right or both) and 1 is deducted if it has vertically adjacent block(s) (top or bottom or both). So, the actual score of a single block could be 3, 4 or 5 points.</li>
+      <li>
+        <p>Score examples:</p>
+        <ul class="pl-6 list-[circle]">
+          <li>Three blocks in a line: 4 + 4 + 4 = 12 points,</li>
+          <li>Three blocks forming a corner: 4 + 3 + 4 = 11 points,</li>
+          <li>Four blocks in a 2x2 square: 3 + 3 + 3 + 3 = 12 points</li>
+        </ul>
+      </li>
+      <!-- eslint-disable-next-line max-len -->
+      <li class={liClasses}>Once a block is placed, it becomes inactive and it will add up 3, 4 or 5 points (depending on it's neighbours) to the total colour's score at the end of the game;</li>
       <!-- eslint-disable-next-line max-len -->
       <li class={liClasses}>When a colored block is placed, it can change the color of adjacent blocks if it's positioned next to a block of the same color on both sides, effectively 'flipping' them.</li>
       <li class={liClasses}>The game ends when there are no free blocks left on the grid;</li>
