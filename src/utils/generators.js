@@ -17,7 +17,7 @@ export const getPath = (url) => {
   let path = import.meta.env.BASE_URL
 
   if (path.endsWith('/'))
-    path = url.slice(0, -1)
+    path = path.slice(0, -1)
 
   return path + url
 }
