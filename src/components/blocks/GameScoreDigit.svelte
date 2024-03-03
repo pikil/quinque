@@ -1,17 +1,16 @@
 <div class={classes} {style}>
   <div class="transition-transform duration-500" style={transformClasses}>
     <!-- eslint-disable-next-line no-unused-vars -->
-    {#each { length: 10 } as _, i}
-      <div class={digitDefClass} {style}>{i}</div>
-    {/each}
-    <!-- eslint-disable-next-line no-unused-vars -->
-    {#each { length: 10 } as _, i}
-      <div class={digitDefClass} {style}>{i}</div>
+    {#each { length: 2 } as _}
+      <!-- eslint-disable-next-line no-unused-vars -->
+      {#each { length: 10 } as __, i}
+        <div class={digitClass} {style}>{i}</div>
+      {/each}
     {/each}
   </div>
 </div>
 <script>
-const digitDefClass = 'flex flex-col justify-center items-center text-xl'
+const digitClass = 'flex flex-col justify-center items-center text-xl'
 
 /**
  * @type {Number}
