@@ -27,9 +27,11 @@ You can build a production version by creating .env.prod and running the followi
 npm run build
 ```
 
-Note that this version is built for Github pages, so it is a bit limited in functionality and has `/quinque` prefix for all the links (You can change that in `.env.local`).
+Note that this version is built to keep forever on GH pages, so it has `/quinque` prefix for all the links (You can change that in `.env.local`).
 
-After you built the app, you can host it by just inserting the files to any web server. To utilize the offline mode, rename two files `not-service-worker.js` and `not-manifest.js` to `service-worker.js` and `manifest.js` respectively.
+After you've built the app, you can host it by just inserting the files to any web server. To utilize the offline mode, rename two files `not-service-worker.js` and `not-manifest.js` to `service-worker.js` and `manifest.js` respectively.
+
+Note, that if you host the game yourself, you'll need a firebase account to store the online room data.
 
 Thanks to [Nour Saud](https://codepen.io/nourabusoud/pen/ypZzMMs) for the Bubble effect!
 

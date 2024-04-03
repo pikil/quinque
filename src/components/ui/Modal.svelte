@@ -47,9 +47,9 @@
                 />
               {/if}
               {#if !hideOk}
-                <PrimaryButton
+                <Button
                   label={okLabel}
-                  class="w-full"
+                  class="w-full text-primary border-2 border-primary"
                   disabled={disabled}
                   loading={loading}
                   on:click={onOK}
@@ -66,7 +66,6 @@
 import { scale } from 'svelte/transition'
 import { quintInOut } from 'svelte/easing'
 import { createEventDispatcher } from 'svelte'
-import PrimaryButton from '$ui/buttons/PrimaryButton.svelte'
 import Button from '$ui/buttons/Button.svelte'
 import { biX } from '$vendor/icons/bootstrap-icons'
 import ModalWrapper from '$components/wrappers/ModalWrapper.svelte'

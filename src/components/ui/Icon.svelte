@@ -1,4 +1,4 @@
-<svg viewBox={viewBox || defViewbox} class={iconClasses}>
+<svg {viewBox} class={iconClasses}>
   {#each paths as [d, style, transform]}
     <path d={d} style={style} transform={transform} />
   {/each}
@@ -12,7 +12,8 @@ const defViewbox = '0 0 24 24'
  */
 export let name
 
-$: [def, viewBox] = name.split('|')
+$: [def, box] = name.split('|')
+$: viewBox = box || defViewbox
 $: paths = def.split('&&').map(path => path.split('@@'))
 $: iconClasses = 'fill-current inline'
   + ($$props.class ? ' ' + $$props.class : '')

@@ -2,9 +2,10 @@
   role="button"
   tabindex="0"
   class={classes}
-  on:pointerdown={onClick}
+  on:click={onClick}
   on:mouseenter={onEnter}
   on:mouseleave={onLeave}
+  on:keypress={noop}
 >
   {#if !selected}
     {#if isHovering}
@@ -20,6 +21,7 @@ import { enteringMode } from '$stores/user-store'
 import Icon from '$ui/Icon.svelte'
 import { fasCircle } from '$vendor/icons/fontawesome6-icons'
 import { createEventDispatcher, tick } from 'svelte'
+import { noop } from 'svelte/internal'
 
 const dispatch = createEventDispatcher()
 
@@ -100,7 +102,7 @@ $: hoverClasses = selected
       : ' hover:bg-gray-400'
     )
   )
-$: classes = 'flex-1 aspect-square text-sm transition-colors duration-300 rounded-md border border-gray-600 bubbly relative'
+$: classes = 'flex-1 aspect-square text-sm transition-colors duration-300 rounded-sm sm:rounded-md border border-gray-600 bubbly relative'
   + ' cursor-pointer outline-none'
   + ' flex flex-col justify-center items-center'
   + ' bg-opacity-80 hover:bg-opacity-100'

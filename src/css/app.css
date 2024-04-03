@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;700&display=swap');
+@font-face {
+  font-family: Maven Pro;
+  src: url('../fonts/MavenPro-VariableFont_wght.ttf') format('truetype-variations');
+}
 
 @tailwind base;
 @tailwind components;
@@ -9,7 +12,7 @@
   --faded: 157 157 157;
 }
 
-* {
+body {
   font-family: Maven Pro, sans-serif;
 }
 

@@ -2,7 +2,7 @@
   <Button
     href={homePath}
     icon={fasArrowLeft}
-    class="text-gray-4000"
+    class="text-primary"
   />
   <h2 class="flex-1 text-xl">{title}</h2>
 </header>

@@ -3,7 +3,7 @@
     <div class="flex flex-row gap-2 pb-2 pt-3 px-2 items-start">
       <Button
         icon={fasArrowLeft}
-        class="text-purple-400"
+        class="text-primary"
         on:click={onBack}
       />
       <div class="flex-1 flex flex-row justify-center relative">
@@ -21,7 +21,7 @@
         </div>
       </div>
       <Button
-        class="text-purple-400"
+        class="text-primary"
         icon={fasRotateRight}
         on:click={showResetDialog}
       />
@@ -51,8 +51,12 @@
         </div>
       {/each}
     </div>
-    <div class="text-center pb-2">
-      <a href={rulesPageLink} target="_blank" class="text-faded">Rules</a>
+    <div class="flex flex-row justify-center pb-2">
+      <Button
+        label="Rules"
+        class="text-faded text-sm"
+        on:click={showRules}
+      />
     </div>
   </div>
 </div>
@@ -104,12 +108,15 @@
     </div>
   </div>
 </Modal>
-<Modal showing={awaitingForPeer || peerDisconnected} title="Play with friend online" hideOk on:dismiss={onBack}>
+<Modal showing={awaitingForPeer || peerDisconnected} title="Waiting for peer to accept" hideOk on:dismiss={onBack}>
   {#if peerDisconnected}
     <p>Player disconnected... Please start another session.</p>
   {:else}
     <OnlineRoomSetter on:connected={onPeerConnect} />
   {/if}
+</Modal>
+<Modal showing={showingRules} hideOk title="Game rules" on:dismiss={hideRules}>
+  <RulesBlock />
 </Modal>
 <script>
 import ClickBlock from '$blocks/ClickBlock.svelte'
@@ -132,8 +139,8 @@ import Rooney from '../../ai/Rooney'
 import OnlineRoomSetter from '$blocks/OnlineRoomSetter.svelte'
 import peerConnection from '$utils/rtc/connection'
 import { getPath } from '$utils/generators'
+import RulesBlock from '$blocks/RulesBlock.svelte'
 
-const rulesPageLink = getPath('/page/rules')
 const color1 = 'text-blue-300'
 const color2 = 'text-pink-300'
 
@@ -206,6 +213,11 @@ let playMode = playModes.AI
  * @type {Number?}
  */
 let peerStatus = null
+
+/**
+ * @type {Boolean}
+ */
+let showingRules = false
 
 /**
  * @param {Object.<String, any>} data
@@ -415,6 +427,7 @@ const selectInCoordinates = async (rowIndex, colIndex, isEmulator) => {
     return
 
   const selectionColor = player1Turn ? 'color1' : 'color2'
+  previewCoords = null
 
   convertAdjacentBlocks(
     selectSiblings(rowIndex, colIndex, selectionColor),
@@ -535,6 +548,7 @@ const resetGame = (isReaction) => {
   gameStarted = false
   gameFinished = false
   thinking = false
+  previewCoords = null
 
   if (computer) {
     computer.cancelActiveActions()
@@ -682,6 +696,14 @@ const onPeerConnect = ({ detail: { size, status, turns } }) => {
     thinking = true
 }
 
+const showRules = () => {
+  showingRules = true
+}
+
+const hideRules = () => {
+  showingRules = false
+}
+
 $: player1Turn = isEven(turnCount)
 $: currentTurnColor = player1Turn ? 'color1' : 'color2'
 $: turnColor = player1Turn ? color1 : color2
@@ -697,13 +719,16 @@ $: turnLabelColorClasses = playingWithComputer && !player1Turn
   || (playingOnline && !player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2)
   ? ' text-faded'
   : ' ' + turnColor
-$: turnLabelClasses = 'font-bold text-center pb-2' // 'absolute -bottom-4 w-full text-center'
+$: turnLabelClasses = 'font-bold text-center text-sm pb-1' // 'absolute -bottom-4 w-full text-center'
   + turnLabelColorClasses
-$: turnLabel = player1Turn
-  ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player\'s 1 turn...')
-  : (playingWithComputer
-    ? 'Computer...'
-    : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player\'s 2 turn...')
+$: turnLabel = previewCoords
+  ? 'Confirm selection'
+  : (player1Turn
+    ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player\'s 1 turn...')
+    : (playingWithComputer
+      ? 'Computer...'
+      : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player\'s 2 turn...')
+    )
   )
 $: awaitingForPeer = peerStatus === peerStatuses.CONNECTING
 $: peerDisconnected = playingOnline && peerStatus === peerStatuses.DISCONNECTED

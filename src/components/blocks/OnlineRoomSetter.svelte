@@ -6,13 +6,14 @@
 {:else if connectionError}
   <p class="text-faded">{connectionError}</p>
 {:else if roomLink}
+  <p class="pb-2">Room id: <span class="font-bold">{room?.id}</span></p>
   <input value={roomLink} class={inputClasses} readonly />
   {#if copyAvailable}
     <div class="flex flex-row items-center gap-4 pt-6">
       <Button
         label="Copy link"
         icon={fasCopy}
-        class="bg-primary text-white px-4"
+        class="text-primary border-2 border-primary px-4"
         on:click={copyRoomLink}
       />
       {#if valuesCopied}
