@@ -1,0 +1,1 @@
+const o=(r=20)=>{let t="";const a="ABCDEFGHIJKLMNPQRSTUVWXYZ123456789",n=a.length;for(var e=0;e<r;e++)t+=a.charAt(Math.floor(Math.random()*n));return t},s=r=>{let t="/quinque";return t.endsWith("/")&&(t=t.slice(0,-1)),t+r};export{s as g,o as r};
