@@ -1,0 +1,6 @@
+{
+  "https": {
+    "key": "path/to/localhost-key.pem",
+    "cert": "path/to/localhost.pem"
+  }
+}
