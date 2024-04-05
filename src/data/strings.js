@@ -11,3 +11,9 @@ export const repoPath = 'https://github.com/pikil/quinque'
 export const aboutPath = getPath('/page/about')
 
 export const rulesPath = getPath('/page/rules')
+
+export const termsPath = getPath('/page/terms-of-service')
+
+export const privacyPath = getPath('/page/privacy-policy')
+
+export const homePath = getPath('/')

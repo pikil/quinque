@@ -138,8 +138,8 @@ import { allowedGridSizes } from '$data/arrays'
 import Rooney from '../../ai/Rooney'
 import OnlineRoomSetter from '$blocks/OnlineRoomSetter.svelte'
 import peerConnection from '$utils/rtc/connection'
-import { getPath } from '$utils/generators'
 import RulesBlock from '$blocks/RulesBlock.svelte'
+import { homePath } from '$data/strings'
 
 const color1 = 'text-blue-300'
 const color2 = 'text-pink-300'
@@ -596,7 +596,7 @@ const onBack = () => {
   if (gameStarted && !gameFinished && !confirm('Do you want to leave this page now?'))
     return
 
-  goto(getPath('/'))
+  goto(homePath)
 }
 
 const showResetDialog = () => {

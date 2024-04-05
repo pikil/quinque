@@ -50,13 +50,17 @@ const resetVh = () => {
 
 $: title = mainNameShort
 
-onMount(() => {
+onMount(async () => {
   resetVh()
   window.addEventListener('resize', resetVh)
 
-  setTimeout(() => {
-    mounting = false
-  }, 1000)
+  const cloak = new Promise((resolve) => {
+    setTimeout(resolve, 1000)
+  })
+
+  await cloak
+
+  mounting = false
 })
 
 onNavigate((navigation) => {

@@ -2,6 +2,18 @@ import { browser } from '$app/environment'
 
 const blockScrollClasses = ['overflow-hidden', 'scroll-blocked']
 
+export const sublinkClasses = 'p-1.5 text-sm border-b-2 transition-colors'
+
+export const sublinkActiveClasses = sublinkClasses + ' text-white border-primary'
+
+export const sublinkPassiveClasses = sublinkClasses + ' text-faded border-gray-700 hover:text-white hover:border-primary'
+
+export const pageTitleClasses = 'pt-6 pb-2 text-xl font-bold'
+
+export const pageParagraphClasses = 'py-2'
+
+export const linkClasses = 'text-primary hover:underline'
+
 export const blockGlobalScroll = () => {
   if (browser) {
     document.body.classList.add(...blockScrollClasses)

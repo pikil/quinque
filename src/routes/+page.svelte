@@ -3,20 +3,23 @@
     <Button
       href={rulesPath}
       label="Rules"
-      class={headTextLinkClasses}
+      title="Visit the details rules page"
+      class={sublinkPassiveClasses}
       dense
       rounded={false}
     />
     <Button
       href={aboutPath}
       label="About"
-      class={headTextLinkClasses}
+      title="Visit About us section with details on Service and Privacy aspects"
+      class={sublinkPassiveClasses}
       rounded={false}
       dense
     />
     <Button
       href={repoPath}
-      class={headLinkClasses}
+      title="Visit the project's Github repository"
+      class={sublinkPassiveClasses}
       rounded={false}
       icon={biGithub}
       iconClass="h-5 h-5"
@@ -24,7 +27,8 @@
     />
     <Button
       href={discordPath}
-      class={headLinkClasses}
+      title="Visit the project's Discord server"
+      class={sublinkPassiveClasses}
       rounded={false}
       icon={biDiscord}
       iconClass="h-5 h-5"
@@ -69,6 +73,7 @@
       {#each buttons as { label, onclick }}
         <Button
           {label}
+          title={'Start the game with the size of ' + label}
           dense
           rounded={false}
           class={btnClasses}
@@ -106,6 +111,7 @@ import { allowedGridSizes } from '$data/arrays'
 import { playModes, transitionParamsStandard } from '$data/objects'
 import { aboutPath, discordPath, mainDescription, repoPath, rulesPath } from '$data/strings'
 import Button from '$ui/buttons/Button.svelte'
+import { sublinkPassiveClasses } from '$utils/dom'
 import { getPath } from '$utils/generators'
 import { biDiscord, biGithub } from '$vendor/icons/bootstrap-icons'
 import { fade } from 'svelte/transition'
@@ -116,8 +122,6 @@ const inactiveBtnClass = ' text-gray-500 hover:text-gray-100'
 const modeBtnClasses = 'py-1.5'
 const leftBtnClasses = modeBtnClasses
 const rightBtnClasses = modeBtnClasses
-const headLinkClasses = 'border-b-2 text-faded border-transparent hover:text-white hover:border-primary transition-colors'
-const headTextLinkClasses = headLinkClasses + ' px-2 py-1'
 
 /**
  * @type {Number}

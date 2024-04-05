@@ -21,7 +21,7 @@
     <div class="text-faded text-sm">
       <p>* This screen changes with every player's turn;</p>
       <p>
-        ** Refer to <a href={rulesPath} target="_blank" class="text-primary hover:underline">game rules</a> for more details;
+        ** Refer to <a href={rulesPath} target="_blank" class={linkClasses}>game rules</a> for more details;
       </p>
     </div>
   </div>
@@ -33,6 +33,7 @@ import { getModeIcon } from '$lib'
 import { noop } from 'svelte/internal'
 import Modal from '$ui/Modal.svelte'
 import { rulesPath } from '$data/strings'
+import { linkClasses } from '$utils/dom'
 
 const previewClasses = 'h-4 w-4'
 const followingPreviewClasses = previewClasses + ' text-faded'
