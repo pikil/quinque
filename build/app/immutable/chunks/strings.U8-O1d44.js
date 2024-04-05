@@ -1,1 +1,0 @@
-import{g as t}from"./generators.DQl_b8YR.js";const o="Quinque",s="The game of colour domination",n="https://discord.com/channels/1205689011583066143",c="https://github.com/pikil/quinque",e=t("/page/about"),i=t("/page/rules");export{e as a,c as b,o as c,n as d,s as m,i as r};
