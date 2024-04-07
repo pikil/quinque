@@ -38,6 +38,7 @@ import peerConnection from '$utils/rtc/connection'
 import { peerStatuses, rtcTypes } from '$data/objects'
 import PeerCrypto from '$utils/peer-crypto'
 import { consoleWarn } from '$utils/console'
+import { popupConfirm } from '$utils/validation'
 
 const inputClasses = 'p-2 border border-gray-700 rounded-md w-full bg-gray-800'
 const copyAvailable = navigatorCopyAvailable()
@@ -293,8 +294,10 @@ const createRoom = async () => {
 
   room = new FirestoreRoom('', await PeerCrypto.exportPublicKeyToJwk(), PeerCrypto.ivString(), size)
 
-  if (await !room.save() && confirm('This room ID is already taken. Refresh the page to get a new one.'))
+  if ((await !room.save())) {
+    await popupConfirm('This room ID is already taken. Refresh the page to get a new one.')
     window.location.reload()
+  }
 
   roomLink = $page.url.protocol + '//'
     + $page.url.host

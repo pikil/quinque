@@ -20,6 +20,9 @@
 {/if}
 <div id="modal" class="fixed z-40" />
 <div id="backdrop" />
+<Modal showing={confirmDataProvided} title="Confirm" on:ok={$confirmData.ok} on:dismiss={$confirmData.dismiss}>
+  <p>{$confirmData.text}</p>
+</Modal>
 <script>
 import '../css/app.css'
 import { mainNameShort } from '$data/strings'
@@ -29,6 +32,8 @@ import { onNavigate } from '$app/navigation'
 import { fade } from 'svelte/transition'
 import { transitionParamsStandard } from '$data/objects'
 import { quintInOut } from 'svelte/easing'
+import Modal from '$ui/Modal.svelte'
+import { confirmData } from '$stores/system-store'
 
 const rectClasses = 'h-20 w-20 rounded-md relative flex flex-col justify-center items-center text-white font-bold opacity-95'
 const indigoRectClasses = rectClasses + ' left-5 bg-indigo-400 -rotate-[30deg]'
@@ -49,6 +54,7 @@ const resetVh = () => {
 }
 
 $: title = mainNameShort
+$: confirmDataProvided = !!$confirmData?.text
 
 onMount(async () => {
   resetVh()

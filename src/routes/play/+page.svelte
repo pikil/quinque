@@ -140,6 +140,7 @@ import OnlineRoomSetter from '$blocks/OnlineRoomSetter.svelte'
 import peerConnection from '$utils/rtc/connection'
 import RulesBlock from '$blocks/RulesBlock.svelte'
 import { homePath } from '$data/strings'
+import { popupConfirm } from '$utils/validation'
 
 const color1 = 'text-blue-300'
 const color2 = 'text-pink-300'
@@ -592,8 +593,8 @@ const onBlockEnter = ({ detail: { rowIndex, colIndex } }) => {
   hoverCoords = [rowIndex, colIndex]
 }
 
-const onBack = () => {
-  if (gameStarted && !gameFinished && !confirm('Do you want to leave this page now?'))
+const onBack = async () => {
+  if (gameStarted && !gameFinished && !(await popupConfirm('Do you want to leave this page now?')))
     return
 
   goto(homePath)
