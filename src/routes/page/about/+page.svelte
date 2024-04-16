@@ -1,6 +1,5 @@
 <!-- eslint-disable max-len -->
-<div class="max-w-[600px] max-auto text-white px-2">
-  <PageHeader {title} />
+<div class="text-white px-2">
   <AboutPageSublinks selectedIndex={0} />
   <div class="px-4">
     <h3 class={pageTitleClasses}>What is {mainNameShort}?</h3>
@@ -31,9 +30,9 @@
 </div>
 <script>
 import { mainNameShort } from '$data/strings'
-import PageHeader from '../../../layouts/PageHeader.svelte'
 import { pageParagraphClasses, pageTitleClasses } from '$utils/dom'
 import AboutPageSublinks from '$blocks/AboutPageSublinks.svelte'
+import { headerTitle } from '$stores/layout-store'
 
-const title = 'About ' + mainNameShort
+$headerTitle = 'About ' + mainNameShort
 </script>

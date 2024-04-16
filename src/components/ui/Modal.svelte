@@ -15,7 +15,7 @@
       <div
         role="button"
         tabindex="0"
-        class="flex min-h-full justify-center p-4 text-center items-center sm:p-0 "
+        class="flex min-h-full justify-center p-4 text-center items-center sm:p-0 cursor-auto"
         on:click|self={onDismiss}
         on:keypress|self={onDismiss}
       >

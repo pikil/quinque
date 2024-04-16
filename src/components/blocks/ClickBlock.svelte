@@ -86,19 +86,19 @@ const onLeave = () => {
 }
 
 $: iconClasses = 'h-3 w-3 opacity-50'
-  + (selectCandidate === 'color1' ? ' text-indigo-400' : ' text-rose-400')
+  + (selectCandidate === 'color1' ? ' text-color1' : ' text-color2')
 $: bgClasses = selected === 'color1'
-  ? ' bg-indigo-400 sel-color1'
+  ? ' bg-color1 sel-color1'
   : (selected === 'color2'
-    ? ' bg-pink-400 sel-color2'
+    ? ' bg-color2 sel-color2'
     : ' bg-gray-600'
   )
 $: hoverClasses = selected
   ? ''
   : (hoverColor === 'color1'
-    ? ' hover:bg-indigo-400'
+    ? ' hover:bg-color1'
     : (hoverColor === 'color2'
-      ? ' hover:bg-rose-400'
+      ? ' hover:bg-color2'
       : ' hover:bg-gray-400'
     )
   )

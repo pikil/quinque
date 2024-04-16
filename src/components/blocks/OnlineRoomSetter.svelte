@@ -37,7 +37,7 @@ import { allowedGridSizes } from '$data/arrays'
 import peerConnection from '$utils/rtc/connection'
 import { peerStatuses, rtcTypes } from '$data/objects'
 import PeerCrypto from '$utils/peer-crypto'
-import { consoleWarn } from '$utils/console'
+import { consoleInfo, consoleWarn } from '$utils/console'
 import { popupConfirm } from '$utils/validation'
 
 const inputClasses = 'p-2 border border-gray-700 rounded-md w-full bg-gray-800'
@@ -97,14 +97,18 @@ const handleStateChange = (evt) => {
 
   if (!pc)
     connectionError = 'Could not create a gaming session...'
-  if (pc.connectionState === 'connected')
+  else if (pc.connectionState === 'connected')
     dispatch('connected', {
       size: roomCache.size,
       status: roomCache.type === rtcTypes.OFFER ? peerStatuses.CONNECTED_AS_PLAYER1 : peerStatuses.CONNECTED_AS_PLAYER2,
       turns: roomCache.turns
     })
   else if (pc.connectionState === 'failed')
-    connectionError = 'Negotiation failed. Check your network or disable VPN if you use one...'
+    connectionError = 'Negotiation failed. Check your network or VPN...'
+  else if (pc.connectionState === 'connecting')
+    consoleInfo('Connecting the peer...')
+  else
+    connectionError = 'Unknown network error...'
 }
 
 /**
@@ -162,7 +166,7 @@ const respondToOffer = async () => {
 }
 
 const respondToAnswer = async () => {
-  if (!room)
+  if (!room || roomCache.answer === '-')
     return
 
   // @ts-ignore

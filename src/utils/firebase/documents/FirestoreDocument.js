@@ -81,7 +81,9 @@ export default class FirestoreDocument {
    * @returns {Promise<void>}
    */
   update (data) {
-    return updateDoc(this.ref, data)
+    return updateDoc(this.ref, data).catch(() => {
+      consoleWarn('Could not update the document...')
+    })
   }
 
   /**

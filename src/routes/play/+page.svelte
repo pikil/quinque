@@ -8,15 +8,15 @@
       />
       <div class="flex-1 flex flex-row justify-center relative">
         <div>
-          <ModesForecaster
-            class={forecasterClasses}
-            color={turnColor}
-          />
           <GameScore
             score1={counts[0]}
             score2={counts[1]}
             score1Class={'font-bold ' + color1}
             score2Class={'font-bold ' + color2}
+          />
+          <ModesForecaster
+            class={forecasterClasses}
+            color={turnColor}
           />
         </div>
       </div>
@@ -97,7 +97,7 @@
       <Button
         label="Play again"
         icon={fasRotateRight}
-        class="border border-indigo-300 text-indigo-300 mx-auto mt-10 px-6"
+        class="border border-primary text-primary mx-auto mt-10 px-6"
         on:click={showResetDialog}
       />
       <Button
@@ -108,7 +108,7 @@
     </div>
   </div>
 </Modal>
-<Modal showing={awaitingForPeer || peerDisconnected} title="Waiting for peer to accept" hideOk on:dismiss={onBack}>
+<Modal showing={awaitingForPeer || peerDisconnected} title="Peer connection" hideOk on:dismiss={onBack}>
   {#if peerDisconnected}
     <p>Player disconnected... Please start another session.</p>
   {:else}
@@ -141,9 +141,10 @@ import peerConnection from '$utils/rtc/connection'
 import RulesBlock from '$blocks/RulesBlock.svelte'
 import { homePath } from '$data/strings'
 import { popupConfirm } from '$utils/validation'
+import { headerTitle } from '$stores/layout-store'
 
-const color1 = 'text-blue-300'
-const color2 = 'text-pink-300'
+const color1 = 'text-color1'
+const color2 = 'text-color2'
 
 /**
  * @type {Array<Array<String|false>>}
@@ -594,7 +595,7 @@ const onBlockEnter = ({ detail: { rowIndex, colIndex } }) => {
 }
 
 const onBack = async () => {
-  if (gameStarted && !gameFinished && !(await popupConfirm('Do you want to leave this page now?')))
+  if (gameStarted && !gameFinished && !(await popupConfirm('Do you want end the game?')))
     return
 
   goto(homePath)
@@ -709,7 +710,7 @@ $: player1Turn = isEven(turnCount)
 $: currentTurnColor = player1Turn ? 'color1' : 'color2'
 $: turnColor = player1Turn ? color1 : color2
 $: counts = getSelectionCounts(selections)
-$: forecasterClasses = 'pb-2'
+$: forecasterClasses = 'pt-4'
   + (gameFinished ? ' invisible' : '')
 $: playingWithComputer = playMode === playModes.AI
 $: playingOnline = !playingWithComputer && playMode === playModes.FRIEND_ONLINE
@@ -733,6 +734,8 @@ $: turnLabel = previewCoords
   )
 $: awaitingForPeer = peerStatus === peerStatuses.CONNECTING
 $: peerDisconnected = playingOnline && peerStatus === peerStatuses.DISCONNECTED
+
+$headerTitle = null
 
 resetSelections()
 

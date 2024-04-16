@@ -1,6 +1,5 @@
 <!-- eslint-disable max-len -->
-<div class="max-w-[600px] max-auto text-white px-2">
-  <PageHeader {title} />
+<div class="text-white px-2">
   <AboutPageSublinks selectedIndex={1} />
   <div class="px-4">
     <p class={pageParagraphClasses}>Welcome to {mainNameShort}! These Terms of Service ("Terms") govern your use of our game service ("Service"). By accessing or using our Service, you agree to be bound by these Terms.</p>
@@ -37,7 +36,7 @@
 import AboutPageSublinks from '$blocks/AboutPageSublinks.svelte'
 import { discordPath, mainNameShort } from '$data/strings'
 import { linkClasses, pageParagraphClasses, pageTitleClasses } from '$utils/dom'
-import PageHeader from '../../../layouts/PageHeader.svelte'
+import { headerTitle } from '$stores/layout-store'
 
-const title = 'Terms of Service'
+$headerTitle = 'Terms of Service'
 </script>

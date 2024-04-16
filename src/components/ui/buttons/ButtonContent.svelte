@@ -4,10 +4,10 @@
 {#if label}
   <div class={labelClasses}>{label}</div>
 {/if}
+<slot />
 {#if iconRight}
   <Icon name={iconRight} class={iconClass} />
 {/if}
-<slot />
 <script>
 import Icon from '$ui/Icon.svelte'
 

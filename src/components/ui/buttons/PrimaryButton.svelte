@@ -11,6 +11,8 @@
   {disabled}
   {loading}
   {target}
+  {activeClass}
+  {inactiveClass}
   on:click
 >
   <slot />
@@ -73,6 +75,16 @@ export let title = undefined
  */
 export let target = undefined
 
-$: classes = ' bg-primary text-white'
+/**
+ * @type {String|undefined}
+ */
+ export let activeClass = undefined
+
+/**
+ * @type {String|undefined}
+ */
+export let inactiveClass = undefined
+
+$: classes = 'bg-primary text-white'
   + ($$props.class ? ' ' + $$props.class : '')
 </script>

@@ -1,10 +1,9 @@
-<div class="max-w-[600px] max-auto text-white px-2">
-  <PageHeader {title} />
+<div class="text-white px-2">
   <RulesBlock />
 </div>
 <script>
-import PageHeader from '../../../layouts/PageHeader.svelte'
 import RulesBlock from '$blocks/RulesBlock.svelte'
+import { headerTitle } from '$stores/layout-store'
 
-const title = 'Game rules'
+$headerTitle = 'Game rules'
 </script>

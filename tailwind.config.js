@@ -5,6 +5,8 @@ export default {
     extend: {
       colors: {
         primary: 'rgb(var(--primary) / <alpha-value>)',
+        color1: 'rgb(var(--color1) / <alpha-value>)',
+        color2: 'rgb(var(--color2) / <alpha-value>)',
         faded: 'rgb(var(--faded) / <alpha-value>)'
       },
       screens: {

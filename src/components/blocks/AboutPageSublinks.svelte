@@ -15,7 +15,7 @@ export let selectedIndex = -1
 
 const links = [
   {
-    label: 'About',
+    label: 'The game',
     href: aboutPath
   },
   {

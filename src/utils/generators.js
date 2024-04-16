@@ -14,7 +14,6 @@ export const randomStr = (len = 20) => {
  * @returns {String}
  */
 export const getPath = (url) => {
-  // let path = import.meta.env.BASE_URL // Cannot use this for now, as it's different in production
   let path = import.meta.env.VITE_APP_BASE
 
   if (path.endsWith('/'))

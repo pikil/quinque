@@ -1,5 +1,5 @@
 <div class="px-4">
-  <ul class="list-disc pl-6 sm:pl-16">
+  <ul class="list-disc pl-6">
     <li class={liClasses}>You and your opponent have to fill the grid with your colour;</li>
     <li class={liClasses}>Set your colour on the grid by tapping the square without a colour;</li>
     <li class={liClasses}>The game takes places in turns: First player, then Second player, then First player again and so on;</li>
@@ -47,7 +47,7 @@ import {
 } from '$vendor/icons/custom-icons'
 
 const liClasses = 'py-2'
-const iconClasses = 'h-4 w-4 text-pink-400'
+const iconClasses = 'h-4 w-4 text-color2'
 
 const patterns = [
   {

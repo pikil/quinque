@@ -1,15 +1,17 @@
 <svelte:head>
   <title>{title}</title>
 </svelte:head>
-{#if !mounting}
-  <div transition:fade={transitionParamsStandard} class="h-full flex flex-col">
-    <Main>
-      <slot />
-    </Main>
-  </div>
-{:else}
+<div transition:fade={transitionParamsStandard} class="h-full flex flex-col uppercase">
+  {#if $headerTitle}
+    <Header />
+  {/if}
+  <Main>
+    <slot />
+  </Main>
+</div>
+{#if $mounting}
   <div
-    transition:fade={transitionParams}
+    out:fade={transitionParams}
     class="fixed h-device w-full top-0 left-0 z-50 flex flex-col items-center justify-center bg-gray-800"
   >
     <div class="flex flex-row justify-center animate-bounce">
@@ -26,7 +28,7 @@
 <script>
 import '../css/app.css'
 import { mainNameShort } from '$data/strings'
-import Main from '../layouts/Main.svelte'
+import Main from '$layouts/Main.svelte'
 import { onMount } from 'svelte'
 import { onNavigate } from '$app/navigation'
 import { fade } from 'svelte/transition'
@@ -34,19 +36,16 @@ import { transitionParamsStandard } from '$data/objects'
 import { quintInOut } from 'svelte/easing'
 import Modal from '$ui/Modal.svelte'
 import { confirmData } from '$stores/system-store'
+import { mounting, headerTitle } from '$stores/layout-store'
+import Header from '$layouts/Header.svelte'
 
 const rectClasses = 'h-20 w-20 rounded-md relative flex flex-col justify-center items-center text-white font-bold opacity-95'
-const indigoRectClasses = rectClasses + ' left-5 bg-indigo-400 -rotate-[30deg]'
-const pinkRectClasses = rectClasses + ' -left-5 top-2 bg-pink-400 -rotate-[8deg]'
+const indigoRectClasses = rectClasses + ' left-5 bg-color1 -rotate-[30deg]'
+const pinkRectClasses = rectClasses + ' -left-5 top-2 bg-color2 -rotate-[8deg]'
 const transitionParams = {
   easing: quintInOut,
   duration: 300
 }
-
-/**
- * @type {Boolean}
- */
-let mounting = true
 
 const resetVh = () => {
   // From https://css-tricks.com/the-trick-to-viewport-units-on-mobile/
@@ -66,7 +65,7 @@ onMount(async () => {
 
   await cloak
 
-  mounting = false
+  $mounting = false
 })
 
 onNavigate((navigation) => {

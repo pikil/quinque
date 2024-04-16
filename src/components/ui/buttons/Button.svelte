@@ -23,6 +23,7 @@
 <script>
 import ButtonContent from '$ui/buttons/ButtonContent.svelte'
 import PageLoader from '$blocks/loaders/PageLoader.svelte'
+import { page } from '$app/stores'
 
 /**
  * @type {HTMLButtonElement|HTMLAnchorElement?}
@@ -99,6 +100,17 @@ export let target = undefined
  */
 export let rounded = true
 
+/**
+ * @type {String}
+ */
+export let activeClass = ''
+
+/**
+ * @type {String}
+ */
+export let inactiveClass = ''
+
+$: isActive = href === $page.url.pathname
 $: disabledClasses = (disabled || loading)
   ? ' opacity-70 cursor-not-allowed pointer-events-none'
   : ''
@@ -110,6 +122,7 @@ $: classes = 'flex flex-row gap-x-2 items-center justify-center outline-none sel
   + denseClasses
   + externalClasses
   + roundedClasses
+  + (isActive ? ' ' + activeClass : ' ' + inactiveClass)
 $: {
   if (btn) {
     if (loading) {

@@ -1,8 +1,8 @@
-<div class="flex flex-row items-center justify-center py-2">
+<div class="flex flex-row items-center justify-center">
   <GameScoreDigit digit={score1Arr[0]} class={score1Class} />
   <GameScoreDigit digit={score1Arr[1]} class={score1Class} />
   <GameScoreDigit digit={score1Arr[2]} class={score1Class} />
-  <div class="text-faded px-2">-</div>
+  <div class="text-primary px-2">-</div>
   <GameScoreDigit digit={score2Arr[0]} class={score2Class} />
   <GameScoreDigit digit={score2Arr[1]} class={score2Class} />
   <GameScoreDigit digit={score2Arr[2]} class={score2Class} />

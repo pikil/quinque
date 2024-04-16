@@ -1,6 +1,5 @@
 <!-- eslint-disable max-len -->
-<div class="max-w-[600px] max-auto text-white px-2">
-  <PageHeader {title} />
+<div class="text-white px-2">
   <AboutPageSublinks selectedIndex={2} />
   <div class="px-4">
     <p  class={pageParagraphClasses}>At {mainNameShort}, we take your privacy seriously. This Privacy Policy outlines how we collect, use, and protect your information when you use our online chess/battleship game service.</p>
@@ -26,10 +25,10 @@
 </div>
 <script>
 import { mainNameShort } from '$data/strings'
-import PageHeader from '../../../layouts/PageHeader.svelte'
 import { discordPath } from '$data/strings'
 import { linkClasses, pageParagraphClasses, pageTitleClasses } from '$utils/dom'
 import AboutPageSublinks from '$blocks/AboutPageSublinks.svelte'
+import { headerTitle } from '$stores/layout-store'
 
-const title = 'Privacy policy'
+$headerTitle = 'Privacy policy'
 </script>

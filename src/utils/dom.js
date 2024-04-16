@@ -14,6 +14,9 @@ export const pageParagraphClasses = 'py-2'
 
 export const linkClasses = 'text-primary hover:underline'
 
+// eslint-disable-next-line max-len
+export const mainBtnClasses = 'text-2xl rounded-xl text-primary opacity-80 border-2 border-primary hover:opacity-100 w-full max-w-72 hover:max-w-[19rem] py-5 transition-[max-width,opacity]'
+
 export const blockGlobalScroll = () => {
   if (browser) {
     document.body.classList.add(...blockScrollClasses)
