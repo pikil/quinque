@@ -1,4 +1,0 @@
-import{u as f}from"./scheduler.B-DWYx8-.js";function I(t){const s=t-1;return s*s*s+1}function p(t){return(t*=2)<1?.5*t*t*t*t*t:.5*((t-=2)*t*t*t*t+2)}function O(t,{delay:s=0,duration:n=400,easing:o=f}={}){const a=+getComputedStyle(t).opacity;return{delay:s,duration:n,easing:o,css:r=>`opacity: ${r*a}`}}function d(t,{delay:s=0,duration:n=400,easing:o=I,start:a=0,opacity:r=0}={}){const e=getComputedStyle(t),c=+e.opacity,N=e.transform==="none"?"":e.transform,u=1-a,E=c*(1-r);return{delay:s,duration:n,easing:o,css:(A,i)=>`
-			transform: ${N} scale(${1-u*i});
-			opacity: ${c-E*i}
-		`}}const y={SINGLE:0,AXES:1,DIAGONAL:2,HORIZONTAL:3,VERTICAL:4,RISING:5,FALLING:6},L={duration:200,easing:p},S={AI:0,FRIEND_LOCAL:1,FRIEND_ONLINE:2},m={ANSWER:"answer",OFFER:"offer"},R={CONNECTING:0,CONNECTED_AS_PLAYER1:1,CONNECTED_AS_PLAYER2:2,DISCONNECTED:3};export{R as a,y as e,O as f,S as p,p as q,m as r,d as s,L as t};
