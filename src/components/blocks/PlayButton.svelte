@@ -9,12 +9,12 @@
 />
 <Button
   iconRight={fasChevronDown}
-  iconClass="text-faded h-4 w-4"
+  iconClass="text-primary h-4 w-4"
   class="text-2xl"
   on:click={showSelection}
 >
   <p>
-    <span class="text-faded">{size}</span>
+    <span class="text-primary">{size}</span>
   </p>
 </Button>
 <Modal showing={selectionShowing} hideOk title="Grid size" on:dismiss={hideSelection}>

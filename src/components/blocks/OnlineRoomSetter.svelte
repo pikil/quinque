@@ -6,7 +6,7 @@
 {:else if connectionError}
   <p class="text-faded">{connectionError}</p>
 {:else if roomLink}
-  <p class="pb-2">Room id: <span class="font-bold">{room?.id}</span></p>
+  <p class="pb-4 text-faded">Room id:&ensp;<span class="text-white">{room?.id}</span></p>
   <input value={roomLink} class={inputClasses} readonly />
   {#if copyAvailable}
     <div class="flex flex-row items-center gap-4 pt-6">
