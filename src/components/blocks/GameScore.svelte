@@ -1,14 +1,25 @@
-<div class="flex flex-row items-center justify-center">
-  <GameScoreDigit digit={score1Arr[0]} class={score1Class} />
-  <GameScoreDigit digit={score1Arr[1]} class={score1Class} />
-  <GameScoreDigit digit={score1Arr[2]} class={score1Class} />
-  <div class="text-primary px-2">-</div>
-  <GameScoreDigit digit={score2Arr[0]} class={score2Class} />
-  <GameScoreDigit digit={score2Arr[1]} class={score2Class} />
-  <GameScoreDigit digit={score2Arr[2]} class={score2Class} />
+<div class="flex flex-row gap-3 items-center">
+  <div class="flex flex-row border-2 border-color1 rounded-md">
+    <GameScoreDigit digit={score1Arr[0]} class={score1Class} />
+    <div class={separator1Class} />
+    <GameScoreDigit digit={score1Arr[1]} class={score1Class} />
+    <div class={separator1Class} />
+    <GameScoreDigit digit={score1Arr[2]} class={score1Class} />
+  </div>
+  <div class="text-primary">-</div>
+  <div class="flex flex-row border-2 border-color2 rounded-md">
+    <GameScoreDigit digit={score2Arr[0]} class={score2Class} />
+    <div class={separator2Class} />
+    <GameScoreDigit digit={score2Arr[1]} class={score2Class} />
+    <div class={separator2Class} />
+    <GameScoreDigit digit={score2Arr[2]} class={score2Class} />
+  </div>
 </div>
 <script>
 import GameScoreDigit from '$blocks/GameScoreDigit.svelte'
+
+const separator1Class = 'border border-color1 h-[30px]'
+const separator2Class = 'border border-color2 h-[30px]'
 
 /**
  * @type {Number}

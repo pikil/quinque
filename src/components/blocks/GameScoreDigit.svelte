@@ -25,10 +25,15 @@ export let height = 30
 /**
  * @type {Number}
  */
-export let width = 15
+export let width = 28
 
-$: style = 'width: ' + width + 'px;height: ' + height + 'px'
+/**
+ * @type {Number}
+ */
+export let borderOffset = 0
+
+$: style = 'width: ' + (width + borderOffset) + 'px;height: ' + (height + borderOffset) + 'px'
 $: classes = 'overflow-hidden'
   + ($$props.class ? ' ' + $$props.class : '')
-$: transformClasses = 'transform: translateY(-' + (digit * height) + 'px)'
+$: transformClasses = 'transform: translateY(-' + (digit * (height + borderOffset)) + 'px)'
 </script>

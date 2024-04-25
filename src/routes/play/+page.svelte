@@ -710,7 +710,7 @@ $: player1Turn = isEven(turnCount)
 $: currentTurnColor = player1Turn ? 'color1' : 'color2'
 $: turnColor = player1Turn ? color1 : color2
 $: counts = getSelectionCounts(selections)
-$: forecasterClasses = 'pt-4'
+$: forecasterClasses = 'pt-2'
   + (gameFinished ? ' invisible' : '')
 $: playingWithComputer = playMode === playModes.AI
 $: playingOnline = !playingWithComputer && playMode === playModes.FRIEND_ONLINE
