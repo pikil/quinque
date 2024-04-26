@@ -11,8 +11,8 @@
           <GameScore
             score1={counts[0]}
             score2={counts[1]}
-            score1Class={'font-bold ' + color1}
-            score2Class={'font-bold ' + color2}
+            score1Class={color1}
+            score2Class={color2}
           />
           <ModesForecaster
             class={forecasterClasses}
@@ -595,7 +595,7 @@ const onBlockEnter = ({ detail: { rowIndex, colIndex } }) => {
 }
 
 const onBack = async () => {
-  if (gameStarted && !gameFinished && !(await popupConfirm('Do you want end the game?')))
+  if (gameStarted && !gameFinished && !(await popupConfirm('Finish the game and go to main menu?')))
     return
 
   goto(homePath)
@@ -710,7 +710,7 @@ $: player1Turn = isEven(turnCount)
 $: currentTurnColor = player1Turn ? 'color1' : 'color2'
 $: turnColor = player1Turn ? color1 : color2
 $: counts = getSelectionCounts(selections)
-$: forecasterClasses = 'pt-2'
+$: forecasterClasses = 'pt-3'
   + (gameFinished ? ' invisible' : '')
 $: playingWithComputer = playMode === playModes.AI
 $: playingOnline = !playingWithComputer && playMode === playModes.FRIEND_ONLINE

@@ -25,7 +25,7 @@ export let height = 30
 /**
  * @type {Number}
  */
-export let width = 28
+export let width = 26
 
 /**
  * @type {Number}

@@ -1,4 +1,11 @@
-<div role="button" tabindex="0" class={classes} on:click={showDetails} on:keypress={noop}>
+<div
+  role="button"
+  tabindex="0"
+  class={classes}
+  title="Current play sequence"
+  on:click={showDetails}
+  on:keypress={noop}
+>
   <Icon name={modeIcon} class={currentClasses} />
   <Icon name={mode1Icon} class={followingPreviewClasses} />
   <Icon name={mode2Icon} class={followingPreviewClasses} />
@@ -7,7 +14,7 @@
   <div class="flex flex-col gap-6">
     <p class="text-center text-faded">The current sequence is:</p>
     <div class="flex flex-col items-center justify-center gap-2">
-      <p>Pattern/color to play</p>
+      <p>Current pattern and colour</p>
       <Icon name={modeIcon} class={currentDetailClasses} />
     </div>
     <div class="flex flex-col items-center justify-center gap-2">
@@ -61,7 +68,7 @@ const hideDetails = () => {
 $: modeIcon = getModeIcon($enteringMode)
 $: mode1Icon = getModeIcon($enteringMode1)
 $: mode2Icon = getModeIcon($enteringMode2)
-$: classes = 'flex flex-row items-center justify-center gap-4'
+$: classes = 'flex flex-row items-center justify-center gap-6'
   + ($$props.class ? ' ' + $$props.class : '')
 $: currentClasses = previewClasses + ' ' + color
 $: currentDetailClasses = detailClasses + ' ' + color

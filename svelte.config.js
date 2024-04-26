@@ -5,9 +5,6 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 const config = {
   kit: {
     appDir: 'app',
-    paths: {
-      base: '/quinque'
-    },
     adapter: adapter({
       fallback: 'index.html'
     }),

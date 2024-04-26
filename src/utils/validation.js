@@ -7,11 +7,15 @@ const unsetConfirmData = () => {
 
 /**
  * @param {String} text
+ * @param {String} okLabel
+ * @param {String} dismissLabel
  * @returns {Promise<Boolean>}
  */
-export const popupConfirm = text => new Promise((resolve) => {
+export const popupConfirm = (text, okLabel = 'OK', dismissLabel = 'Cancel') => new Promise((resolve) => {
   confirmData.set({
     text,
+    okLabel,
+    dismissLabel,
     ok: () => {
       unsetConfirmData()
       resolve(true)

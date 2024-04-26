@@ -1,13 +1,13 @@
 <div class="flex flex-row gap-3 items-center">
-  <div class="flex flex-row border-2 border-color1 rounded-md">
+  <div class={color1BlockClass}>
     <GameScoreDigit digit={score1Arr[0]} class={score1Class} />
     <div class={separator1Class} />
     <GameScoreDigit digit={score1Arr[1]} class={score1Class} />
     <div class={separator1Class} />
     <GameScoreDigit digit={score1Arr[2]} class={score1Class} />
   </div>
-  <div class="text-primary">-</div>
-  <div class="flex flex-row border-2 border-color2 rounded-md">
+  <div class="text-xs text-gray-500">vs</div>
+  <div class={color2BlockClass}>
     <GameScoreDigit digit={score2Arr[0]} class={score2Class} />
     <div class={separator2Class} />
     <GameScoreDigit digit={score2Arr[1]} class={score2Class} />
@@ -18,8 +18,13 @@
 <script>
 import GameScoreDigit from '$blocks/GameScoreDigit.svelte'
 
-const separator1Class = 'border border-color1 h-[30px]'
-const separator2Class = 'border border-color2 h-[30px]'
+const borderOpacity = 'border-opacity-30'
+const blockClass = 'flex flex-row border-2 rounded-md ' + borderOpacity
+const separatorClass = 'border h-[30px] ' + borderOpacity
+const color1BlockClass = blockClass + ' border-color1'
+const color2BlockClass = blockClass + ' border-color2'
+const separator1Class = separatorClass + ' border-color1'
+const separator2Class = separatorClass + ' border-color2'
 
 /**
  * @type {Number}

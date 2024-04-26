@@ -1,6 +1,3 @@
-{#if description}
-  <p class="text-faded text-lg text-center">{description}</p>
-{/if}
 <Button
   {label}
   {href}
@@ -55,11 +52,6 @@ export let mode = playModes.AI
  * @type {String}
  */
 export let label = 'Play'
-
-/**
- * @type {String}
- */
-export let description = ''
 
 /**
  * @type {Number}

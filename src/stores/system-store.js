@@ -7,5 +7,7 @@ import { writable } from 'svelte/store'
 export const confirmData = writable({
   text: '',
   ok: noop,
+  okLabel: 'OK',
+  dismissLabel: 'Cancel',
   dismiss: noop
 })

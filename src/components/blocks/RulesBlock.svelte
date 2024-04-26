@@ -28,7 +28,7 @@
     <!-- eslint-disable-next-line max-len -->
     <li class={liClasses}>Once a block is placed, it becomes inactive and it will add up 3, 4 or 5 points (depending on it's neighbours) to the total colour's score at the end of the game;</li>
     <!-- eslint-disable-next-line max-len -->
-    <li class={liClasses}>When a colored block is placed, it can change the color of adjacent blocks if it's positioned next to a block of the same color on both sides, effectively 'flipping' them.</li>
+    <li class={liClasses}>When a coloured block is placed, it can change the colour of adjacent blocks if it's positioned next to a block of the same colour on both sides, effectively 'flipping' them.</li>
     <li class={liClasses}>The game ends when there are no free blocks left on the grid;</li>
     <li class={liClasses}>The player with the highest number of points wins.</li>
     <li class={liClasses}>Enjoy the game and good luck outsmarting the opponent!</li>

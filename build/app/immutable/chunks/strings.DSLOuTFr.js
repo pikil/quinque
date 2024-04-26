@@ -1,1 +1,0 @@
-import{g as t}from"./dom.HBLi8492.js";const s="Quinque",o="https://discord.com/channels/1205689011583066143",e="https://github.com/pikil/quinque",c=t("/page/about"),h=t("/page/rules"),r=t("/page/terms-of-service"),p=t("/page/privacy-policy"),i=t("/");export{c as a,e as b,o as d,i as h,s as m,p,h as r,r as t};

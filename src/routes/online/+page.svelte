@@ -2,7 +2,7 @@
   {#if navigatingAway}
     <ListLoader />
   {:else}
-    <PlayButton mode={playModes.FRIEND_ONLINE} label="Host" description="Online game with a friend" />
+    <PlayButton mode={playModes.FRIEND_ONLINE} label="Host" />
     <div class="pt-6">
       <p class="text-faded text-center pb-4">Or join</p>
       <div class="flex flex-row items-center justify-center">
@@ -33,7 +33,7 @@ import { getPath } from '$utils/generators'
 import { goto } from '$app/navigation'
 import { tick } from 'svelte'
 
-$headerTitle = 'Online game'
+$headerTitle = 'Play online'
 
 /**
  * @type {String}

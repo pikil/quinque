@@ -22,7 +22,14 @@
 {/if}
 <div id="modal" class="fixed z-40" />
 <div id="backdrop" />
-<Modal showing={confirmDataProvided} title="Confirm" on:ok={$confirmData.ok} on:dismiss={$confirmData.dismiss}>
+<Modal
+  showing={confirmDataProvided}
+  title="Confirm"
+  okLabel={$confirmData.okLabel}
+  dismissLabel={$confirmData.dismissLabel}
+  on:ok={$confirmData.ok}
+  on:dismiss={$confirmData.dismiss}
+>
   <p>{$confirmData.text}</p>
 </Modal>
 <script>
