@@ -66,11 +66,9 @@ onMount(async () => {
   resetVh()
   window.addEventListener('resize', resetVh)
 
-  const cloak = new Promise((resolve) => {
-    setTimeout(resolve, 1000)
+  await new Promise((resolve) => {
+    setTimeout(resolve, 800)
   })
-
-  await cloak
 
   $mounting = false
 })

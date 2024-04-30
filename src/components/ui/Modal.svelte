@@ -119,10 +119,16 @@ export let hideOk = false
 export let hideCancel = false
 
 const onOK = () => {
+  if (disabled || hideOk)
+    return
+
   dispatch('ok')
 }
 
 const onDismiss = () => {
+  if (hideCancel)
+    return
+
   dispatch('dismiss')
 }
 

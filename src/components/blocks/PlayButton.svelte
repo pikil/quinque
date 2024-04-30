@@ -1,10 +1,4 @@
 <Button
-  {label}
-  {href}
-  rounded={false}
-  class={mainBtnClasses}
-/>
-<Button
   iconRight={fasChevronDown}
   iconClass="text-primary h-4 w-4"
   class="text-2xl"
@@ -14,6 +8,12 @@
     <span class="text-primary">{size}</span>
   </p>
 </Button>
+<Button
+  {label}
+  {href}
+  rounded={false}
+  class={mainBtnClasses}
+/>
 <Modal showing={selectionShowing} hideOk title="Grid size" on:dismiss={hideSelection}>
   <div class="flex flex-col gap-4">
     {#each sizeButtons as { onclick, label }}

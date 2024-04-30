@@ -63,6 +63,9 @@ body {
   display: block;
   animation: bottomBubbles ease-in-out 0.75s forwards;
 }
+.animate-bounce {
+  animation-timing-function: ease-in-out;
+}
 
 @keyframes topBubbles {
   0% {
