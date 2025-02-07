@@ -8,7 +8,7 @@
       <div class="flex flex-row items-center justify-center">
         <input
           bind:value={joinId}
-          class="w-24 h-12 p-2 bg-gray-600 rounded-l-md text-gray-300 uppercase outline-none"
+          class="w-24 h-12 p-2 bg-gray-600 rounded-l-md text-gray-300 uppercase outline-hidden"
           placeholder="Room ID"
           maxlength="6"
         />

@@ -102,8 +102,8 @@ $: hoverClasses = selected
       : ' hover:bg-gray-400'
     )
   )
-$: classes = 'flex-1 aspect-square text-sm transition-colors duration-300 rounded-sm sm:rounded-md border border-gray-600 bubbly relative'
-  + ' cursor-pointer outline-none'
+$: classes = 'flex-1 aspect-square text-sm transition-colors duration-300 rounded-xs sm:rounded-md border border-gray-600 bubbly relative'
+  + ' cursor-pointer outline-hidden'
   + ' flex flex-col justify-center items-center'
   + ' bg-opacity-80 hover:bg-opacity-100'
   + hoverClasses

@@ -4,7 +4,7 @@
     transition:fade|global={transitionParamsStandard}
     role="button"
     tabindex="0"
-    class="fixed z-[35] inset-0 backdrop-brightness-75 backdrop-blur"
+    class="fixed z-35 inset-0 backdrop-brightness-75 backdrop-blur-sm"
     on:click
     on:keypress
   />

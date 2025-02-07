@@ -117,7 +117,7 @@ $: disabledClasses = (disabled || loading)
 $: denseClasses = (dense ? '' : ((icon || iconRight && !label) ? ' p-2' : ' py-3 px-4' ))
 $: externalClasses = ($$props.class) ? ' ' + $$props.class : ''
 $: roundedClasses = (rounded ? ' rounded-full' : '')
-$: classes = 'flex flex-row gap-x-2 items-center justify-center outline-none select-none transition-width'
+$: classes = 'flex flex-row gap-x-2 items-center justify-center outline-hidden select-none transition-width'
   + disabledClasses
   + denseClasses
   + externalClasses
