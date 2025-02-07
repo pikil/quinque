@@ -92,12 +92,13 @@
           score2={counts[1]}
           score1Class={'font-bold ' + color1}
           score2Class={'font-bold ' + color2}
+          class="pt-6 pb-8"
         />
       </div>
       <Button
         label="Play again"
         icon={fasRotateRight}
-        class="border border-primary text-primary mx-auto mt-10 px-6"
+        class="border border-primary text-primary mx-auto px-6"
         on:click={showResetDialog}
       />
       <Button

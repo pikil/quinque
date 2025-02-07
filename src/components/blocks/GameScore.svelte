@@ -1,4 +1,4 @@
-<div class="flex flex-row gap-3 items-center">
+<div class={containerClasses}>
   <div class={color1BlockClass}>
     <GameScoreDigit digit={score1Arr[0]} class={score1Class} />
     <div class={separator1Class} />
@@ -17,6 +17,7 @@
 </div>
 <script>
 import GameScoreDigit from '$blocks/GameScoreDigit.svelte'
+  import { derived } from 'svelte/store'
 
 const borderOpacity = 'border-opacity-30'
 const blockClass = 'flex flex-row border-2 rounded-md ' + borderOpacity
@@ -67,4 +68,6 @@ const splitDigits = (num) => {
 
 $: score1Arr = splitDigits(score1)
 $: score2Arr = splitDigits(score2)
+$: containerClasses = 'flex flex-row gap-3 items-center'
+  + ($$props.class ? ' ' + $$props.class : '')
 </script>

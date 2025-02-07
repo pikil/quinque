@@ -11,7 +11,7 @@
     role="dialog"
     aria-modal="true"
   >
-    <div class="fixed inset-0 z-10 overflow-y-auto" transition:scale|global={transitionParams}>
+    <div transition:scale|global={transitionParams} class="fixed inset-0 z-10 overflow-y-auto">
       <div
         role="button"
         tabindex="0"
@@ -20,7 +20,7 @@
         on:keypress|self={onDismiss}
       >
         <div class="relative transform overflow-hidden rounded-lg shadow-lg shadow-gray-800 text-white text-left sm:my-8 w-full max-w-[600px]">
-          <div class="bg-gray-600 pt-2 pb-6">
+          <div class="bg-gray-600 pt-3 pb-6">
             {#if title}
               <div id="modal-title" class="flex flex-row gap-3 items-center pl-4 pr-2 pb-3">
                 <div class="grow min-w-0 ellipsis text-gray-400 select-none">{title}</div>
