@@ -2,7 +2,7 @@
   iconRight={fasChevronDown}
   iconClass="text-primary h-4 w-4"
   class="text-2xl"
-  on:click={showSelection}
+  onclick={showSelection}
 >
   <p>
     <span class="text-primary">{size}</span>
@@ -14,10 +14,10 @@
   rounded={false}
   class={mainBtnClasses}
 />
-<Modal showing={selectionShowing} hideOk title="Grid size" on:dismiss={hideSelection}>
+<Modal showing={selectionShowing} hideOk title="Grid size" ondismiss={hideSelection}>
   <div class="flex flex-col gap-4">
     {#each sizeButtons as { onclick, label }}
-      <Button {label} class={selectBtnClasses} on:click={onclick} />
+      <Button {label} class={selectBtnClasses} onclick={onclick} />
     {/each}
   </div>
 </Modal>
@@ -31,7 +31,19 @@ import { getPath } from '$utils/generators'
 import { defaultGridSize } from '$data/numbers'
 import { playModes } from '$data/objects'
 
-const selectBtnClasses = 'w-full text-2xl hover:bg-gray-700 transition-colors'
+/**
+ * @typedef {Object} Props
+ * @property {Number} [mode]
+ * @property {String} [label]
+ */
+
+/** @type {Props} */
+let {
+  mode = playModes.AI,
+  label = 'Play'
+} = $props()
+
+const selectBtnClasses = 'w-full text-2xl hover:bg-gray-700 transition-colors duration-300'
 
 const sizeButtons = allowedGridSizes.map((s) => {
   return {
@@ -46,22 +58,12 @@ const sizeButtons = allowedGridSizes.map((s) => {
 /**
  * @type {Number}
  */
-export let mode = playModes.AI
-
-/**
- * @type {String}
- */
-export let label = 'Play'
-
-/**
- * @type {Number}
- */
-let selectedSize = defaultGridSize
+let selectedSize = $state(defaultGridSize)
 
 /**
  * @type {Boolean}
  */
-let selectionShowing = false
+let selectionShowing = $state(false)
 
 const showSelection = () => {
   selectionShowing = true
@@ -71,6 +73,6 @@ const hideSelection = () => {
   selectionShowing = false
 }
 
-$: size = selectedSize + ' blocks'
-$: href = getPath('/play?s=' + selectedSize) + (mode ? '&m=' + mode : '')
+let size = $derived(selectedSize + ' blocks')
+let href = $derived(getPath('/play?s=' + selectedSize) + (mode ? '&m=' + mode : ''))
 </script>

@@ -1,5 +1,5 @@
-import { confirmData } from "$stores/system-store"
-import { noop } from "svelte/internal"
+import { confirmData } from '$stores/system-store'
+import { noop } from '$utils'
 
 const unsetConfirmData = () => {
   confirmData.set({ text: '', ok: noop, dismiss: noop })

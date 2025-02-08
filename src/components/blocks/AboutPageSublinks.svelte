@@ -9,9 +9,14 @@ import Button from '$ui/buttons/Button.svelte'
 import { sublinkActiveClasses, sublinkPassiveClasses } from '$utils/dom'
 
 /**
- * @type {0|1|2|-1}
+ * @typedef {Object} Props
+ * @property {0|1|2|-1} [selectedIndex]
  */
-export let selectedIndex = -1
+
+/** @type {Props} */
+let {
+  selectedIndex = -1
+} = $props()
 
 const links = [
   {

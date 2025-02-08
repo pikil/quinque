@@ -1,4 +1,4 @@
-import { noop } from 'svelte/internal'
+import { noop } from '$utils'
 import { writable } from 'svelte/store'
 
 /**

@@ -66,31 +66,16 @@ const mainButtons = [
   }
 ]
 
-if (import.meta.env.VITE_CLIENT_ID)
-  mainButtons.push(
-    {
-      label: '2 players',
-      href: getPath('/two-players')
-    }
-  )
-  // @todo Finalize Discord-related functionality once approved by the Discord team
-  // mainButtons.push(
-  //   {
-  //     label: '2 players',
-  //     href: getPath('/two-players-discord')
-  //   }
-  // )
-else
-  mainButtons.push(
-    {
-      label: '2 players',
-      href: getPath('/two-players')
-    },
-    {
-      label: 'Online',
-      href: getPath('/online')
-    }
-  )
+mainButtons.push(
+  {
+    label: '2 players',
+    href: getPath('/two-players')
+  },
+  {
+    label: 'Online',
+    href: getPath('/online')
+  }
+)
 
 $headerTitle = null
 

@@ -3,8 +3,8 @@ module.exports = {
   root: true,
   extends: [
     'eslint:recommended',
-    'plugin:svelte/recommended',
-    'plugin:tailwindcss/recommended'
+    'plugin:svelte/recommended'
+    // 'plugin:tailwindcss/recommended'
   ],
   parserOptions: {
     sourceType: 'module',
@@ -13,8 +13,7 @@ module.exports = {
   },
   env: {
     browser: true,
-    es2017: true,
-    node: true
+    es2017: true
   },
   plugins: [
     'prettier'

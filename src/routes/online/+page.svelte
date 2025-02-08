@@ -17,7 +17,7 @@
           class="text-primary bg-gray-600 rounded-r-md"
           rounded={false}
           disabled={joinBtnDisabled}
-          on:click={goToRoom}
+          onclick={goToRoom}
         />
       </div>
     </div>
@@ -38,12 +38,12 @@ $headerTitle = 'Play online'
 /**
  * @type {String}
  */
-let joinId = ''
+let joinId = $state('')
 
 /**
  * @type {Boolean}
  */
-let navigatingAway = false
+let navigatingAway = $state(false)
 
 const goToRoom = async () => {
   navigatingAway = true
@@ -55,5 +55,5 @@ const goToRoom = async () => {
   )
 }
 
-$: joinBtnDisabled = joinId.length !== 6
+let joinBtnDisabled = $derived(joinId.length !== 6)
 </script>

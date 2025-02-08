@@ -13,78 +13,53 @@
   {target}
   {activeClass}
   {inactiveClass}
-  on:click
+  {onclick}
 >
-  <slot />
+  {@render children?.()}
 </Button>
 <script>
 import Button from '$ui/buttons/Button.svelte'
+import { noop } from '$utils'
 
 /**
- * @type {'reset'|'submit'|'button'|undefined}
+ * @typedef {Object} Props
+ * @property {String} [href]
+ * @property {String} [icon]
+ * @property {String} [iconRight]
+ * @property {String} [iconClass]
+ * @property {String} [title]
+ * @property {Boolean} [dense]
+ * @property {'button'|'submit'|'reset'} [type]
+ * @property {Boolean} [disabled]
+ * @property {Boolean|String} [loading]
+ * @property {String} [label]
+ * @property {'_blank'|'_parent'|'_self'|'_top'} [target]
+ * @property {String} [activeClass]
+ * @property {String} [inactiveClass]
+ * @property {String} [class]
+ * @property {(event: MouseEvent) => void} [onclick]
+ * @property {import('svelte').Snippet<[]>} [children]
  */
-export let type = undefined
 
-/**
- * @type {String|undefined}
- */
-export let label = undefined
+/** @type {Props} */
+let {
+  href,
+  icon,
+  iconRight,
+  iconClass = 'w-4 h-4',
+  title,
+  dense = false,
+  type = 'button',
+  disabled = false,
+  loading = false,
+  label = '',
+  target,
+  activeClass = '',
+  inactiveClass = '',
+  class: klass,
+  onclick = noop,
+  children
+} = $props()
 
-/**
- * @type {String|undefined}
- */
-export let href = undefined
-
-/**
- * @type {String|undefined}
- */
-export let icon = undefined
-
-/**
- * @type {String|undefined}
- */
-export let iconRight = undefined
-
-/**
- * @type {String|undefined}
- */
-export let iconClass = undefined
-
-/**
- * @type {Boolean|undefined}
- */
-export let dense = undefined
-
-/**
- * @type {Boolean|undefined}
- */
-export let disabled = undefined
-
-/**
- * @type {Boolean|String|undefined}
- */
-export let loading = undefined
-
-/**
- * @type {String|undefined}
- */
-export let title = undefined
-
-/**
- * @type {'_blank'|'_parent'|'_self'|'_top'|undefined}
- */
-export let target = undefined
-
-/**
- * @type {String|undefined}
- */
- export let activeClass = undefined
-
-/**
- * @type {String|undefined}
- */
-export let inactiveClass = undefined
-
-$: classes = 'bg-primary text-white'
-  + ($$props.class ? ' ' + $$props.class : '')
+let classes = $derived('bg-primary text-white' + (klass ? ' ' + klass : ''))
 </script>

@@ -1,7 +1,7 @@
 import { consoleWarn } from '$utils/console'
 import { doc, getDoc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore'
-import { noop } from 'svelte/internal'
 import { getDb } from '../app'
+import { noop } from '$utils'
 
 /**
  * @param {Object.<String, any>} instance

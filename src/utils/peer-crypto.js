@@ -162,7 +162,7 @@ class PeerCrypto {
   }
 
   ivString () {
-    return arrayBufferToBase64(this.iv)
+    return arrayBufferToBase64(this.iv.buffer)
   }
 }
 

@@ -1,6 +1,4 @@
-import { browser } from '$app/environment'
-
-export const navigatorCopyAvailable = () => browser && !!navigator?.clipboard
+export const navigatorCopyAvailable = () => !!navigator?.clipboard
 
 /**
  * @param {String} text

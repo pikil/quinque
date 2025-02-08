@@ -14,7 +14,7 @@
         label="Copy link"
         icon={fasCopy}
         class="text-primary border-2 border-primary px-4"
-        on:click={copyRoomLink}
+        onclick={copyRoomLink}
       />
       {#if valuesCopied}
         <p class={valuesCopied.class}>{valuesCopied.label}</p>
@@ -26,9 +26,9 @@
 {/if}
 <script>
 import PageLoader from '$blocks/loaders/PageLoader.svelte'
-import { createEventDispatcher, onDestroy, onMount } from 'svelte'
+import { onDestroy, onMount } from 'svelte'
 import FirestoreRoom from '$utils/firebase/documents/FirestoreRoom'
-import { page } from '$app/stores'
+import { page } from '$app/state'
 import Button from '$ui/buttons/Button.svelte'
 import { navigatorCopyAvailable, copyToClipboard } from '$utils/navigator'
 import { fasCopy } from '$vendor/icons/fontawesome6-icons'
@@ -40,10 +40,18 @@ import PeerCrypto from '$utils/peer-crypto'
 import { consoleInfo, consoleWarn } from '$utils/console'
 import { popupConfirm } from '$utils/validation'
 
+/**
+ * @typedef {Object} Props
+ * @property {Function} onconnected
+ */
+
+/** @type {Props} */
+let {
+  onconnected
+} = $props()
+
 const inputClasses = 'p-2 border border-gray-700 rounded-md w-full bg-gray-800'
 const copyAvailable = navigatorCopyAvailable()
-
-const dispatch = createEventDispatcher()
 
 /**
  * @type {Object.<String, true>}
@@ -53,27 +61,27 @@ const candidatesCache = {}
 /**
  * @type {Boolean?}
  */
-let webrtcSupported = null
+let webrtcSupported = $state(null)
 
 /**
  * @type {String}
  */
-let roomLink = ''
+let roomLink = $state('')
 
 /**
  * @type {Object.<String, String|Boolean>?}
  */
-let valuesCopied = null
+let valuesCopied = $state(null)
 
 /**
  * @type {String}
  */
-let connectionError = ''
+let connectionError = $state('')
 
 /**
  * @type {FirestoreRoom?}
  */
-let room = null
+let room = $state(null)
 
 /**
  * @type {import('firebase/firestore').Unsubscribe?}
@@ -98,7 +106,7 @@ const handleStateChange = (evt) => {
   if (!pc)
     connectionError = 'Could not create a gaming session...'
   else if (pc.connectionState === 'connected')
-    dispatch('connected', {
+    onconnected({
       size: roomCache.size,
       status: roomCache.type === rtcTypes.OFFER ? peerStatuses.CONNECTED_AS_PLAYER1 : peerStatuses.CONNECTED_AS_PLAYER2,
       turns: roomCache.turns
@@ -291,7 +299,7 @@ const connectToRoom = async (roomId) => {
 const createRoom = async () => {
   await PeerCrypto.init()
 
-  let size = parseInt($page.url.searchParams.get('s') || String(defaultGridSize))
+  let size = parseInt(page.url.searchParams.get('s') || String(defaultGridSize))
 
   if (!allowedGridSizes.includes(size))
     size = defaultGridSize
@@ -303,9 +311,9 @@ const createRoom = async () => {
     window.location.reload()
   }
 
-  roomLink = $page.url.protocol + '//'
-    + $page.url.host
-    + $page.url.pathname
+  roomLink = page.url.protocol + '//'
+    + page.url.host
+    + page.url.pathname
     + '?room=' + room.id
 
   room.subscribeToData(updateRoomData)
@@ -324,7 +332,7 @@ onMount(() => {
   if (!webrtcSupported)
     return
 
-  const roomId = $page.url.searchParams.get('room')
+  const roomId = page.url.searchParams.get('room')
 
   if (roomId)
     connectToRoom(roomId)

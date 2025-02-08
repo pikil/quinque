@@ -1,8 +1,8 @@
-<span class={classes}>
+<span class={klass}>
   <div class="flex flex-col justify-center items-center">
     <div class="lds-ellipsis relative h-10 w-[76px] flex flex-row items-center">
       {#each { length: 4 } as num}
-        <div data-attr={num} />
+        <div data-attr={num}></div>
       {/each}
     </div>
   </div>
@@ -12,12 +12,16 @@
 </span>
 <script>
 /**
- * @type {String}
+ * @typedef {Object} Props
+ * @property {String} [label]
+ * @property {String} [class]
  */
-export let label = ''
 
-$: classes = ''
-  + ($$props.class ? ' ' + $$props.class : '')
+/** @type {Props} */
+let {
+  label = '',
+  class: klass
+} = $props()
 </script>
 <style>
 .lds-ellipsis div {

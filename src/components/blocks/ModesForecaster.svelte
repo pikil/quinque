@@ -3,14 +3,14 @@
   tabindex="0"
   class={classes}
   title="Current play sequence"
-  on:click={showDetails}
-  on:keypress={noop}
+  onclick={showDetails}
+  onkeypress={noop}
 >
   <Icon name={modeIcon} class={currentClasses} />
   <Icon name={mode1Icon} class={followingPreviewClasses} />
   <Icon name={mode2Icon} class={followingPreviewClasses} />
 </div>
-<Modal showing={showingDetails} hideOk on:dismiss={hideDetails}>
+<Modal showing={showingDetails} hideOk ondismiss={hideDetails}>
   <div class="flex flex-col gap-6">
     <p class="text-center text-faded">The current sequence is:</p>
     <div class="flex flex-col items-center justify-center gap-2">
@@ -37,10 +37,10 @@
 import Icon from '$ui/Icon.svelte'
 import { enteringMode, enteringMode1, enteringMode2 } from '$stores/user-store'
 import { getModeIcon } from '$lib'
-import { noop } from 'svelte/internal'
 import Modal from '$ui/Modal.svelte'
 import { rulesPath } from '$data/strings'
 import { linkClasses } from '$utils/dom'
+import { noop } from '$utils'
 
 const previewClasses = 'h-4 w-4'
 const followingPreviewClasses = previewClasses + ' text-faded'
@@ -48,14 +48,21 @@ const detailClasses = 'h-8 w-8'
 const followingDetailClasses = detailClasses + ' text-faded'
 
 /**
- * @type {String}
+ * @typedef {Object} Props
+ * @property {String} color
+ * @property {String} [class]
  */
-export let color
+
+/** @type {Props} */
+let {
+  color,
+  class: klass
+} = $props()
 
 /**
  * @type {Boolean}
  */
-let showingDetails = false
+let showingDetails = $state(false)
 
 const showDetails = () => {
   showingDetails = true
@@ -65,11 +72,10 @@ const hideDetails = () => {
   showingDetails = false
 }
 
-$: modeIcon = getModeIcon($enteringMode)
-$: mode1Icon = getModeIcon($enteringMode1)
-$: mode2Icon = getModeIcon($enteringMode2)
-$: classes = 'flex flex-row items-center justify-center gap-6'
-  + ($$props.class ? ' ' + $$props.class : '')
-$: currentClasses = previewClasses + ' ' + color
-$: currentDetailClasses = detailClasses + ' ' + color
+let modeIcon = $derived(getModeIcon($enteringMode))
+let mode1Icon = $derived(getModeIcon($enteringMode1))
+let mode2Icon = $derived(getModeIcon($enteringMode2))
+let classes = $derived('flex flex-row items-center justify-center gap-6' + (klass ? ' ' + klass : ''))
+let currentClasses = $derived(previewClasses + ' ' + color)
+let currentDetailClasses = $derived(detailClasses + ' ' + color)
 </script>

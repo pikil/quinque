@@ -2,10 +2,10 @@
   role="button"
   tabindex="0"
   class={classes}
-  on:click={onClick}
-  on:mouseenter={onEnter}
-  on:mouseleave={onLeave}
-  on:keypress={noop}
+  onclick={onClick}
+  onmouseenter={onEnter}
+  onmouseleave={onLeave}
+  onkeypress={noop}
 >
   {#if !selected}
     {#if isHovering}
@@ -20,50 +20,41 @@ import { getModeIcon } from '$lib'
 import { enteringMode } from '$stores/user-store'
 import Icon from '$ui/Icon.svelte'
 import { fasCircle } from '$vendor/icons/fontawesome6-icons'
-import { createEventDispatcher, tick } from 'svelte'
-import { noop } from 'svelte/internal'
+import { tick } from 'svelte'
+import { noop } from '$utils'
 
-const dispatch = createEventDispatcher()
+/**
+ * @typedef {Object} Props
+ * @property {Number[]?} [hoverCoords]
+ * @property {Boolean?} [disabled]
+ * @property {Number} rowIndex
+ * @property {Number} colIndex
+ * @property {String|false} [selected]
+ * @property {String|false} [selectCandidate]
+ * @property {String} [hoverColor]
+ * @property {Function} [onclick]
+ * @property {Function} [onenter]
+ * @property {Function} [onleave]
+ */
+
+/** @type {Props} */
+let {
+  hoverCoords = null,
+  disabled = false,
+  rowIndex,
+  colIndex,
+  selected = false,
+  selectCandidate = false,
+  hoverColor = '',
+  onclick,
+  onenter,
+  onleave
+} = $props()
 
 /**
  * @type {Boolean}
  */
-let isAnimating = false
-
-/**
- * @type {Number[]?}
- */
-export let hoverCoords = null
-
-/**
- * @type {Boolean?}
- */
-export let disabled = false
-
-/**
- * @type {Number}
- */
-export let rowIndex
-
-/**
- * @type {Number}
- */
-export let colIndex
-
-/**
- * @type {String|false}
- */
-export let selected = false
-
-/**
- * @type {String|false}
- */
-export let selectCandidate = false
-
-/**
- * @type {String}
- */
-export let hoverColor = ''
+let isAnimating = $state(false)
 
 const animate = () => {
   isAnimating = true
@@ -74,26 +65,28 @@ const animate = () => {
 }
 
 const onClick = async () => {
-  dispatch('click', { rowIndex, colIndex })
+  if (onclick)
+    onclick({ rowIndex, colIndex })
 }
 
 const onEnter = () => {
-  dispatch('enter', { rowIndex, colIndex })
+  if (onenter)
+    onenter({ rowIndex, colIndex })
 }
 
 const onLeave = () => {
-  dispatch('leave', { rowIndex, colIndex })
+  if (onleave)
+    onleave({ rowIndex, colIndex })
 }
 
-$: iconClasses = 'h-3 w-3 opacity-50'
-  + (selectCandidate === 'color1' ? ' text-color1' : ' text-color2')
-$: bgClasses = selected === 'color1'
+let iconClasses = $derived('h-3 w-3 opacity-50' + (selectCandidate === 'color1' ? ' text-color1' : ' text-color2'))
+let bgClasses = $derived(selected === 'color1'
   ? ' bg-color1 sel-color1'
   : (selected === 'color2'
     ? ' bg-color2 sel-color2'
     : ' bg-gray-600'
-  )
-$: hoverClasses = selected
+  ))
+let hoverClasses = $derived(selected
   ? ''
   : (hoverColor === 'color1'
     ? ' hover:bg-color1'
@@ -101,19 +94,20 @@ $: hoverClasses = selected
       ? ' hover:bg-color2'
       : ' hover:bg-gray-400'
     )
-  )
-$: classes = 'flex-1 aspect-square text-sm transition-colors duration-300 rounded-xs sm:rounded-md border border-gray-600 bubbly relative'
+  ))
+let classes = $derived('flex-1 aspect-square text-sm transition-colors duration-300 rounded-xs sm:rounded-md border border-gray-600 bubbly relative'
   + ' cursor-pointer outline-hidden'
   + ' flex flex-col justify-center items-center'
   + ' bg-opacity-80 hover:bg-opacity-100'
   + hoverClasses
   + bgClasses
   + (selected || disabled ? ' pointer-events-none' : '' )
-  + (isAnimating ? ' animate' : '')
-$: currentModeIcon = getModeIcon($enteringMode)
-$: isHovering = hoverCoords && rowIndex === hoverCoords[0] && colIndex === hoverCoords[1]
-$: {
+  + (isAnimating ? ' animate' : ''))
+let currentModeIcon = $derived(getModeIcon($enteringMode))
+let isHovering = $derived(hoverCoords && rowIndex === hoverCoords[0] && colIndex === hoverCoords[1])
+
+$effect(() => {
   if (selected)
     tick().then(animate)
-}
+})
 </script>

@@ -6,7 +6,7 @@
     <Header />
   {/if}
   <Main>
-    <slot />
+    {@render children?.()}
   </Main>
 </div>
 {#if $mounting}
@@ -15,20 +15,19 @@
     class="fixed h-device w-full top-0 left-0 z-50 flex flex-col items-center justify-center bg-gray-800"
   >
     <div class="flex flex-row justify-center animate-bounce">
-      <div class={indigoRectClasses} />
-      <div class={pinkRectClasses} />
+      <div class={indigoRectClasses}></div>
+      <div class={pinkRectClasses}></div>
     </div>
   </div>
 {/if}
-<div id="modal" class="fixed z-40" />
-<div id="backdrop" />
+<div id="modal" class="fixed z-40"></div>
 <Modal
   showing={confirmDataProvided}
   title="Confirm"
   okLabel={$confirmData.okLabel}
   dismissLabel={$confirmData.dismissLabel}
-  on:ok={$confirmData.ok}
-  on:dismiss={$confirmData.dismiss}
+  onok={$confirmData.ok}
+  ondismiss={$confirmData.dismiss}
 >
   <p>{$confirmData.text}</p>
 </Modal>
@@ -46,6 +45,16 @@ import { confirmData } from '$stores/system-store'
 import { mounting, headerTitle } from '$stores/layout-store'
 import Header from '$layouts/Header.svelte'
 
+/**
+ * @typedef {Object} Props
+ * @property {import('svelte').Snippet} [children]
+ */
+
+/** @type {Props} */
+let {
+  children
+} = $props()
+
 const rectClasses = 'h-20 w-20 rounded-md relative flex flex-col justify-center items-center text-white font-bold opacity-95'
 const indigoRectClasses = rectClasses + ' left-5 bg-color1 -rotate-[30deg]'
 const pinkRectClasses = rectClasses + ' -left-5 top-2 bg-color2 -rotate-[8deg]'
@@ -59,8 +68,8 @@ const resetVh = () => {
   document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`)
 }
 
-$: title = mainNameShort
-$: confirmDataProvided = !!$confirmData?.text
+let title = $derived(mainNameShort)
+let confirmDataProvided = $derived(!!$confirmData?.text)
 
 onMount(async () => {
   resetVh()

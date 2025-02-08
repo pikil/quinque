@@ -16,8 +16,9 @@ const color = 'color2'
  */
 const sumGetter = (i, j, selections, coords) => {
   let sum = getBlockValue(selections, i, j, color)
+  let k = coords.length
 
-  for (let k = 0; k < coords.length; k++) {
+  while (k--) {
     const [row, col] = coords[k]
 
     if (selections[row] && selections[row][col] === false)

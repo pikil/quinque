@@ -4,7 +4,7 @@
 {#if label}
   <div class={labelClasses}>{label}</div>
 {/if}
-<slot />
+{@render children?.()}
 {#if iconRight}
   <Icon name={iconRight} class={iconClass} />
 {/if}
@@ -12,30 +12,24 @@
 import Icon from '$ui/Icon.svelte'
 
 /**
- * @type {String}
+ * @typedef {Object} Props
+ * @property {String} [label]
+ * @property {String} [iconClass]
+ * @property {String} [icon]
+ * @property {String} [iconRight]
+ * @property {String} [labelClass]
+ * @property {import('svelte').Snippet} [children]
  */
-export let label = ''
 
-/**
- * @type {String}
- */
-export let iconClass = 'w-4 h-4'
+/** @type {Props} */
+let {
+  label = '',
+  iconClass = 'w-4 h-4',
+  icon,
+  iconRight,
+  labelClass = '',
+  children
+} = $props()
 
-/**
- * @type {String|undefined}
- */
-export let icon = undefined
-
-/**
- * @type {String|undefined}
- */
-export let iconRight = undefined
-
-/**
- * @type {String|undefined}
- */
-export let labelClass = ''
-
-$: labelClasses = 'ellipsis'
-  + (labelClass ? ' ' + labelClass : '')
+let labelClasses = $derived('ellipsis' + (labelClass ? ' ' + labelClass : ''))
 </script>

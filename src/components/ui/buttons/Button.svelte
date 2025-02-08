@@ -1,11 +1,11 @@
 {#if href}
   <a bind:this={btn} {href} {title} class={classes} {target}>
     <ButtonContent {icon} {iconRight} {iconClass} {label} {labelClass}>
-      <slot />
+      {@render children?.()}
     </ButtonContent>
   </a>
 {:else}
-  <button bind:this={btn} {type} {title} class={classes} {disabled} on:click>
+  <button bind:this={btn} {type} {title} class={classes} {disabled} {onclick}>
     {#if loading}
       {#if typeof loading === 'string'}
         {loading}
@@ -15,7 +15,7 @@
       </div>
     {:else}
       <ButtonContent {icon} {iconRight} {iconClass} {label} {labelClass}>
-        <slot />
+        {@render children?.()}
       </ButtonContent>
     {/if}
   </button>
@@ -23,107 +23,77 @@
 <script>
 import ButtonContent from '$ui/buttons/ButtonContent.svelte'
 import PageLoader from '$blocks/loaders/PageLoader.svelte'
-import { page } from '$app/stores'
+import { page } from '$app/state'
+import { noop } from '$utils'
+
+/**
+ * @typedef {Object} Props
+ * @property {String} [href]
+ * @property {String} [icon]
+ * @property {String} [iconRight]
+ * @property {String} [iconClass]
+ * @property {String} [labelClass]
+ * @property {String} [title]
+ * @property {Boolean} [dense]
+ * @property {'button'|'submit'|'reset'} [type]
+ * @property {String} [loaderClass]
+ * @property {Boolean} [disabled]
+ * @property {Boolean|String} [loading]
+ * @property {String} [label]
+ * @property {'_blank'|'_parent'|'_self'|'_top'} [target]
+ * @property {Boolean} [rounded]
+ * @property {String} [activeClass]
+ * @property {String} [inactiveClass]
+ * @property {String} [class]
+ * @property {(event: MouseEvent) => void} [onclick]
+ * @property {import('svelte').Snippet<[]>} [children]
+ */
+
+/** @type {Props} */
+let {
+  href,
+  icon,
+  iconRight,
+  iconClass = 'w-4 h-4',
+  labelClass,
+  title,
+  dense = false,
+  type = 'button',
+  loaderClass = 'scale-50',
+  disabled = false,
+  loading = false,
+  label = '',
+  target,
+  rounded = true,
+  activeClass = '',
+  inactiveClass = '',
+  class: klass,
+  onclick = noop,
+  children
+} = $props()
 
 /**
  * @type {HTMLButtonElement|HTMLAnchorElement?}
  */
-let btn = null
+let btn = $state(null)
 
-/**
- * @type {String|undefined}
- */
-export let href = undefined
-
-/**
- * @type {String|undefined}
- */
-export let icon = undefined
-
-/**
- * @type {String|undefined}
- */
-export let iconRight = undefined
-
-/**
- * @type {String|undefined}
- */
-export let iconClass = 'w-4 h-4'
-
-/**
- * @type {String|undefined}
- */
-export let labelClass = undefined
-
-/**
- * @type {String|undefined}
- */
-export let title = undefined
-
-/**
- * @type {Boolean}
- */
-export let dense = false
-
-/**
- * @type {'button'|'submit'|'reset'|undefined}
- */
-export let type = 'button'
-
-/**
- * @type {String|undefined}
- */
-export let loaderClass = 'scale-50'
-
-/**
- * @type {Boolean}
- */
-export let disabled = false
-
-/**
- * @type {Boolean|String}
- */
-export let loading = false
-
-/**
- * @type {String}
- */
-export let label = ''
-
-/**
- * @type {'_blank'|'_parent'|'_self'|'_top'|undefined}
- */
-export let target = undefined
-
-/**
- * @type {Boolean}
- */
-export let rounded = true
-
-/**
- * @type {String}
- */
-export let activeClass = ''
-
-/**
- * @type {String}
- */
-export let inactiveClass = ''
-
-$: isActive = href === $page.url.pathname
-$: disabledClasses = (disabled || loading)
+let isActive = $derived(href === page.url.pathname)
+let disabledClasses = $derived((disabled || loading)
   ? ' opacity-70 cursor-not-allowed pointer-events-none'
   : ''
-$: denseClasses = (dense ? '' : ((icon || iconRight && !label) ? ' p-2' : ' py-3 px-4' ))
-$: externalClasses = ($$props.class) ? ' ' + $$props.class : ''
-$: roundedClasses = (rounded ? ' rounded-full' : '')
-$: classes = 'flex flex-row gap-x-2 items-center justify-center outline-hidden select-none transition-width'
+)
+let denseClasses = $derived((dense ? '' : ((icon || iconRight && !label) ? ' p-2' : ' py-3 px-4' )))
+let externalClasses = $derived((klass) ? ' ' + klass : '')
+let roundedClasses = $derived((rounded ? ' rounded-full' : ''))
+let classes = $derived('flex flex-row gap-x-2 items-center justify-center outline-hidden select-none transition-width cursor-pointer'
   + disabledClasses
   + denseClasses
   + externalClasses
   + roundedClasses
   + (isActive ? ' ' + activeClass : ' ' + inactiveClass)
-$: {
+)
+
+$effect(() => {
   if (btn) {
     if (loading) {
       btn.style.height = ((btn.clientHeight || 0) + 1).toString() + 'px'
@@ -134,5 +104,5 @@ $: {
       btn.style.minWidth = ''
     }
   }
-}
+})
 </script>

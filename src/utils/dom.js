@@ -1,5 +1,3 @@
-import { browser } from '$app/environment'
-
 const blockScrollClasses = ['overflow-hidden', 'scroll-blocked']
 
 export const sublinkClasses = 'p-1.5 text-sm border-b-2 transition-colors'
@@ -18,17 +16,13 @@ export const linkClasses = 'text-primary hover:underline'
 export const mainBtnClasses = 'text-2xl rounded-xl text-primary border-2 border-primary w-full max-w-72 hover:max-w-[19rem] py-5 transition-[max-width]'
 
 export const blockGlobalScroll = () => {
-  if (browser) {
-    document.body.classList.add(...blockScrollClasses)
-    document.documentElement.classList.add('overflow-hidden')
-  }
+  document.body.classList.add(...blockScrollClasses)
+  document.documentElement.classList.add('overflow-hidden')
 }
 
 export const unblockGlobalScroll = () => {
-  if (browser) {
-    document.body.classList.remove(...blockScrollClasses)
-    document.documentElement.classList.remove('overflow-hidden')
-  }
+  document.body.classList.remove(...blockScrollClasses)
+  document.documentElement.classList.remove('overflow-hidden')
 }
 
 /**
