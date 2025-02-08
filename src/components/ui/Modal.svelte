@@ -122,5 +122,5 @@ const onDismiss = () => {
   ondismiss()
 }
 
-let classes = $derived('relative z-40 p-4' + (klass ? ' ' + klass : ''))
+let classes = $derived('absolute z-40 p-4' + (klass ? ' ' + klass : ''))
 </script>

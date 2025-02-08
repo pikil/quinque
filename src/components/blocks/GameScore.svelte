@@ -65,5 +65,5 @@ const splitDigits = (num) => {
 
 let score1Arr = $derived(splitDigits(score1))
 let score2Arr = $derived(splitDigits(score2))
-let containerClasses = $derived('flex flex-row gap-3 items-center' + (klass ? ' ' + klass : ''))
+let containerClasses = $derived('flex flex-row gap-3 items-center justify-center' + (klass ? ' ' + klass : ''))
 </script>
