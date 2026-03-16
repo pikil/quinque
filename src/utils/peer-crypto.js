@@ -132,7 +132,7 @@ class PeerCrypto {
     return arrayBufferToBase64(await crypto.subtle.encrypt(
       {
         name: algo,
-        iv: iv || this.iv
+        iv: /** @type {BufferSource} */ (iv || this.iv)
       },
       key,
       (new TextEncoder()).encode(data)
@@ -154,7 +154,7 @@ class PeerCrypto {
     return (new TextDecoder()).decode(await crypto.subtle.decrypt(
       {
         name: algo,
-        iv: iv || this.iv
+        iv: /** @type {BufferSource} */ (iv || this.iv)
       },
       key,
       base64ToArrayBuffer(base64)

@@ -6,18 +6,18 @@ import { headerTitle } from '$stores/layout-store'
 import PlayButton from '$blocks/PlayButton.svelte'
 import { playModes } from '$data/objects'
 import { onMount } from 'svelte'
-import { DiscordSDK } from '@discord/embedded-app-sdk'
+// import { DiscordSDK } from '@discord/embedded-app-sdk'
 
 $headerTitle = 'Play with friend'
 
-/**
- * @type {DiscordSDK?}
- */
-let discordSdk = null
+// /**
+//  * @type {DiscordSDK?}
+//  */
+// let discordSdk = null
 
 const startSdk = () => {
-  if (!discordSdk)
-    discordSdk = new DiscordSDK(import.meta.env.VITE_CLIENT_ID)
+  // if (!discordSdk)
+  //   discordSdk = new DiscordSDK(import.meta.env.VITE_CLIENT_ID)
 
   // @todo Finalize Discord-related functionality once approved by the Discord team
 }

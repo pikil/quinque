@@ -69,7 +69,7 @@ let webrtcSupported = $state(null)
 let roomLink = $state('')
 
 /**
- * @type {Object.<string, string|boolean>?}
+ * @type {Object.<'class'|'label', string>?}
  */
 let valuesCopied = $state(null)
 

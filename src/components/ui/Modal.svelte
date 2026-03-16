@@ -16,7 +16,7 @@
           <Backdrop {showing} onclick={onDismiss} />
           <div
             transition:scale|global={transitionParams}
-            class="relative transform overflow-hidden rounded-lg shadow-lg shadow-gray-800 text-white text-left sm:my-8 w-full max-w-[600px] z-40"
+            class="relative transform overflow-hidden rounded-lg shadow-lg shadow-gray-800 text-white text-left sm:my-8 w-full max-w-150 z-40"
           >
             <div class="bg-gray-600 pt-3 pb-6">
               {#if title}
@@ -67,9 +67,7 @@ import { quintInOut } from 'svelte/easing'
 import Button from '$ui/buttons/Button.svelte'
 import { biX } from '$vendor/icons/bootstrap-icons'
 import ModalWrapper from '$components/wrappers/ModalWrapper.svelte'
-import { portal } from '$utils/dom'
 import Backdrop from '$ui/Backdrop.svelte'
-  import { beforeNavigate } from '$app/navigation'
 
 /**
  * @typedef {Object} Props

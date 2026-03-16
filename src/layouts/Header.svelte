@@ -1,6 +1,6 @@
 <svelte:window bind:innerWidth></svelte:window>
 
-<header class="w-full max-w-[600px] mx-auto flex flex-row items-center py-4 gap-6 px-2">
+<header class="w-full max-w-150 mx-auto flex flex-row items-center py-4 gap-6 px-2">
   <Button {href} icon={fasArrowLeft} {label} class="text-primary" />
   <h2 class="flex-1 text-xl text-white text-center">{$headerTitle}</h2>
   <div class={rightSpaceClass}></div>

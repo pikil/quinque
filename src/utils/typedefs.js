@@ -1,18 +1,20 @@
 /**
- * @typedef {Object.<string, string|Function>} ConfirmData
+ * @typedef {Object} ConfirmData
  * @property {string} text
  * @property {Function} ok
+ * @property {string} [okLabel]
+ * @property {string} [dismissLabel]
  * @property {Function} dismiss
  */
 
 /**
- * @typedef {Object.<'rowIndex'|'colIndex', number>} PosData
+ * @typedef {Object} PosData
  * @property {number} rowIndex
  * @property {number} colIndex
  */
 
 /**
- * @typedef {Object.<'size'|'status'|'turns', number>} ConnData
+ * @typedef {Object} ConnData
  * @property {number} size
  * @property {number} status
  * @property {number[]} turns

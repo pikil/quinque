@@ -1,6 +1,6 @@
 <span class={klass}>
   <div class="flex flex-col justify-center items-center">
-    <div class="lds-ellipsis relative h-10 w-[76px] flex flex-row items-center">
+    <div class="lds-ellipsis relative h-10 w-19 flex flex-row items-center">
       {#each { length: 4 } as num}
         <div data-attr={num}></div>
       {/each}

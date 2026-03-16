@@ -26,7 +26,7 @@
         onclick={showResetDialog}
       />
     </div>
-    <div class="flex-1 flex flex-col justify-center w-full max-w-[600px] mx-auto gap-1 px-3">
+    <div class="flex-1 flex flex-col justify-center w-full max-w-150 mx-auto gap-1 px-3">
       <div class="relative">
         <p class={turnLabelClasses}>{turnLabel}</p>
       </div>
