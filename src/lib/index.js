@@ -12,14 +12,14 @@ import {
 export const getRandomEnteringMode = () => Math.floor(Math.random() * Object.keys(enterModes).length)
 
 /**
- * @param {Number} num
- * @returns {Boolean}
+ * @param {number} num
+ * @returns {boolean}
  */
 export const isEven = num => !num || !(num %2)
 
 /**
-* @param {Number} mode
-@returns {String}
+* @param {number} mode
+@returns {string}
 */
 export const getModeIcon = (mode) => {
   switch (mode) {
@@ -34,11 +34,11 @@ export const getModeIcon = (mode) => {
 }
 
 /**
- * @param {Array<Array<String|false>>} selArr
- * @param {Number} row
- * @param {Number} col
- * @param {String} color
- * @returns {Number}
+ * @param {Array<Array<string|false>>} selArr
+ * @param {number} row
+ * @param {number} col
+ * @param {string} color
+ * @returns {number}
  */
 export const getBlockValue = (selArr, row, col, color) => {
   if (selArr[row] === undefined || selArr[row][col] === undefined)
@@ -65,7 +65,7 @@ export const getBlockValue = (selArr, row, col, color) => {
 }
 
 /**
- * @param {Number} length
+ * @param {number} length
  */
 export const generateTurnsSequence = (length) => {
   const turns = []

@@ -39,7 +39,7 @@ export const getDb = () => {
 
 /**
  * @param {import('@firebase/app').FirebaseError} error
- * @param {String} fallbackMessage
- * @returns {String}
+ * @param {string} fallbackMessage
+ * @returns {string}
  */
 export const decodeFirebaseError = ({ code }, fallbackMessage = 'Service error..') => (errors[code]) ? errors[code] : fallbackMessage

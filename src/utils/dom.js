@@ -26,13 +26,13 @@ export const unblockGlobalScroll = () => {
 }
 
 /**
- * @type {Object.<String, HTMLElement>}
+ * @type {Object.<string, HTMLElement?>}
  */
-const portalCache = {}
+const portalCache = Object.create(null)
 
 /**
- * @param {String} id
- * @returns {HTMLElement}
+ * @param {string} id
+ * @returns {HTMLElement?}
  */
 const getPortalElement = (id) => {
   if (!portalCache[id])
@@ -43,7 +43,7 @@ const getPortalElement = (id) => {
 
 /**
  * @param {HTMLElement} node
- * @param {String} id
+ * @param {string} id
  */
 export const portal = (node, id = 'modal') => {
   const portalContainer = getPortalElement(id)

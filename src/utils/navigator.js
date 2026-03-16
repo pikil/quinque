@@ -1,8 +1,8 @@
 export const navigatorCopyAvailable = () => !!navigator?.clipboard
 
 /**
- * @param {String} text
- * @returns {Boolean}
+ * @param {string} text
+ * @returns {boolean}
  */
 export const copyToClipboard = (text) => {
   if (!navigatorCopyAvailable())

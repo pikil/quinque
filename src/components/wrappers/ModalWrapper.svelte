@@ -5,8 +5,8 @@ import { blockGlobalScroll, unblockGlobalScroll } from '$utils/dom'
 
 /**
  * @typedef {Object} Props
- * @property {Boolean} [showing]
- * @property {Boolean} [disabled]
+ * @property {boolean} [showing]
+ * @property {boolean} [disabled]
  * @property {Function} [onok]
  * @property {Function} [ondismiss]
  * @property {import('svelte').Snippet} [children]

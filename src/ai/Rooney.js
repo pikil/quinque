@@ -3,16 +3,16 @@ import { getBlockValue } from '$lib'
 
 /**
  * Indicates the color used in the selections
- * @type {String}
+ * @type {string}
  */
 const color = 'color2'
 
 /**
- * @param {Number} i
- * @param {Number} j
- * @param {Array<Array<String|false>>} selections
- * @param {Array<Number[]>} coords
- * @returns {Number}
+ * @param {number} i
+ * @param {number} j
+ * @param {Array<Array<string|false>>} selections
+ * @param {Array<number[]>} coords
+ * @returns {number}
  */
 const sumGetter = (i, j, selections, coords) => {
   let sum = getBlockValue(selections, i, j, color)
@@ -34,7 +34,7 @@ const sumGetter = (i, j, selections, coords) => {
  */
 export default class {
   /**
-   * @param {Array<Array<String|false>>} selections
+   * @param {Array<Array<string|false>>} selections
    */
   constructor (selections) {
     this.selections = selections
@@ -47,7 +47,7 @@ export default class {
 
   /**
    * @param {Function} coordsFn
-   * @returns {Array<Number[]>}
+   * @returns {Array<number[]>}
    */
   getBenefitSums (coordsFn) {
     const candidates = []
@@ -71,7 +71,7 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectSingleBlock () {
     const candidates = this.getBenefitSums(() => [])
@@ -81,14 +81,14 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectInAxes () {
     const candidates = this.getBenefitSums(
       /**
-       * @param {Number} i
-       * @param {Number} j
-       * @returns {Array<Number[]>}
+       * @param {number} i
+       * @param {number} j
+       * @returns {Array<number[]>}
        */
       (i, j) => [
         [i - 1, j],
@@ -102,14 +102,14 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectInDiagonals () {
     const candidates = this.getBenefitSums(
       /**
-       * @param {Number} i
-       * @param {Number} j
-       * @returns {Array<Number[]>}
+       * @param {number} i
+       * @param {number} j
+       * @returns {Array<number[]>}
        */
       (i, j) => [
         [i + 1, j + 1],
@@ -123,14 +123,14 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectInHorizontal () {
     const candidates = this.getBenefitSums(
       /**
-       * @param {Number} i
-       * @param {Number} j
-       * @returns {Array<Number[]>}
+       * @param {number} i
+       * @param {number} j
+       * @returns {Array<number[]>}
        */
       (i, j) => [
         [i, j + 1],
@@ -144,14 +144,14 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectInVertical () {
     const candidates = this.getBenefitSums(
       /**
-       * @param {Number} i
-       * @param {Number} j
-       * @returns {Array<Number[]>}
+       * @param {number} i
+       * @param {number} j
+       * @returns {Array<number[]>}
        */
       (i, j) => [
         [i + 1, j],
@@ -165,14 +165,14 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectInRisingDiagonal () {
     const candidates = this.getBenefitSums(
       /**
-       * @param {Number} i
-       * @param {Number} j
-       * @returns {Array<Number[]>}
+       * @param {number} i
+       * @param {number} j
+       * @returns {Array<number[]>}
        */
       (i, j) => [
         [i - 1, j + 1],
@@ -186,14 +186,14 @@ export default class {
   }
 
   /**
-   * @returns {Number[]}
+   * @returns {number[]}
    */
   selectInFallingDiagonal () {
     const candidates = this.getBenefitSums(
       /**
-       * @param {Number} i
-       * @param {Number} j
-       * @returns {Array<Number[]>}
+       * @param {number} i
+       * @param {number} j
+       * @returns {Array<number[]>}
        */
       (i, j) => [
         [i + 1, j + 1],
@@ -207,8 +207,8 @@ export default class {
   }
 
   /**
-   * @param {Number} mode
-   * @returns {Promise<Number[]?>}
+   * @param {number} mode
+   * @returns {Promise<number[]?>}
    */
   selectBlock (mode) {
     const requestId = Date.now()

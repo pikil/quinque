@@ -1,5 +1,5 @@
 /**
- * @type {Object.<String, String>}
+ * @type {Object.<string, string>}
  */
 export default {
   'auth/email-already-in-use': 'This email is already in use...',

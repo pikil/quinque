@@ -12,11 +12,11 @@ const digitClass = 'flex flex-col justify-center items-center text-xl'
 
 /**
  * @typedef {Object} Props
- * @property {Number} [digit]
- * @property {Number} [height]
- * @property {Number} [width]
- * @property {Number} [borderOffset]
- * @property {String} [class]
+ * @property {number} [digit]
+ * @property {number} [height]
+ * @property {number} [width]
+ * @property {number} [borderOffset]
+ * @property {string} [class]
  */
 
 /** @type {Props} */

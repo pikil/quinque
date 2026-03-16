@@ -49,8 +49,8 @@ const followingDetailClasses = detailClasses + ' text-faded'
 
 /**
  * @typedef {Object} Props
- * @property {String} color
- * @property {String} [class]
+ * @property {string} color
+ * @property {string} [class]
  */
 
 /** @type {Props} */
@@ -60,7 +60,7 @@ let {
 } = $props()
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let showingDetails = $state(false)
 

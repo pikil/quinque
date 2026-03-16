@@ -1,7 +1,7 @@
 import { browser } from '$app/environment'
 
 /**
- * @type {String?}
+ * @type {string?}
  */
 let ua = null
 
@@ -12,12 +12,12 @@ const setUa = () => {
 }
 
 /**
- * @type {Object.<String, any>}
+ * @type {Object.<string, any>}
  */
 const cache = {}
 
 /**
- * @param {String} key
+ * @param {string} key
  * @param {Function} getterFn
  * @returns {any}
  */

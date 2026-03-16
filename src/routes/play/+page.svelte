@@ -148,47 +148,47 @@ const color1 = 'text-color1'
 const color2 = 'text-color2'
 
 /**
- * @type {Array<Array<String|false>>}
+ * @type {Array<Array<string|false>>}
  */
 let selections = $state([])
 
 /**
- * @type {Array<Array<String|false>>}
+ * @type {Array<Array<string|false>>}
  */
 let selectCandidates = $state([])
 
 /**
- * @type {Number}
+ * @type {number}
  */
 let turnCount = $state(0)
 
 /**
- * @type {Number[]}
+ * @type {number[]}
  */
 let predefinedTurns = []
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let resetDialogShowing = $state(false)
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let winnerShowing = $state(false)
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let gameStarted = false
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let gameFinished = $state(false)
 
 /**
- * @type {Number[]?}
+ * @type {number[]?}
  */
 let previewCoords = $state(null)
 
@@ -198,32 +198,32 @@ let previewCoords = $state(null)
 let computer = null
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let thinking = $state(false)
 
 /**
- * @type {Number[]?}
+ * @type {number[]?}
  */
 let hoverCoords = $state(null)
 
 /**
- * @type {Number}
+ * @type {number}
  */
 let playMode = $state(playModes.AI)
 
 /**
- * @type {Number?}
+ * @type {number?}
  */
 let peerStatus = $state(null)
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let showingRules = $state(false)
 
 /**
- * @param {Object.<String, any>} data
+ * @param {Object.<string, any>} data
  */
 const sendPeerMessage = data => peerConnection.sendChannelMessage(JSON.stringify(data))
 
@@ -231,10 +231,10 @@ const urlSize = parseInt(page.url.searchParams.get('s') || String(defaultGridSiz
 let gridSize = $state(allowedGridSizes.indexOf(urlSize) >= 0 ? urlSize : defaultGridSize)
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @param {String} selectionColor
- * @returns {Number[]|undefined}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @param {string} selectionColor
+ * @returns {number[]|undefined}
  */
 const selectBlock = (rowIndex, colIndex, selectionColor) => {
   if (!selections[rowIndex] || selections[rowIndex][colIndex] !== false)
@@ -246,9 +246,9 @@ const selectBlock = (rowIndex, colIndex, selectionColor) => {
 }
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @returns {Array<Number[]>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @returns {Array<number[]>}
  */
 const getCoordsInAxes = (rowIndex, colIndex) => [
   [rowIndex, colIndex],
@@ -259,9 +259,9 @@ const getCoordsInAxes = (rowIndex, colIndex) => [
 ]
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @returns {Array<Number[]>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @returns {Array<number[]>}
  */
 const getCoordsInDiagonals = (rowIndex, colIndex) => [
   [rowIndex, colIndex],
@@ -272,9 +272,9 @@ const getCoordsInDiagonals = (rowIndex, colIndex) => [
 ]
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @returns {Array<Number[]>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @returns {Array<number[]>}
  */
 const getCoordsInFalling = (rowIndex, colIndex) => [
   [rowIndex, colIndex],
@@ -285,9 +285,9 @@ const getCoordsInFalling = (rowIndex, colIndex) => [
 ]
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @returns {Array<Number[]>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @returns {Array<number[]>}
  */
 const getCoordsInBacking = (rowIndex, colIndex) => [
   [rowIndex, colIndex],
@@ -298,9 +298,9 @@ const getCoordsInBacking = (rowIndex, colIndex) => [
 ]
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @returns {Array<Number[]>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @returns {Array<number[]>}
  */
 const getCoordsInHorizontal = (rowIndex, colIndex) => [
   [rowIndex, colIndex],
@@ -311,9 +311,9 @@ const getCoordsInHorizontal = (rowIndex, colIndex) => [
 ]
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @returns {Array<Number[]>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @returns {Array<number[]>}
  */
 const getCoordsInVertical = (rowIndex, colIndex) => [
   [rowIndex, colIndex],
@@ -324,16 +324,16 @@ const getCoordsInVertical = (rowIndex, colIndex) => [
 ]
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @param {String} selectionColor
- * @returns {Array<Number[]|undefined>}
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @param {string} selectionColor
+ * @returns {Array<number[]|undefined>}
  */
 const selectSiblings = (rowIndex, colIndex, selectionColor) => {
   const selected = []
 
   /**
-   * @type {Array<Number[]>}
+   * @type {Array<number[]>}
    */
   let coords = []
 
@@ -354,8 +354,8 @@ const selectSiblings = (rowIndex, colIndex, selectionColor) => {
 }
 
 /**
- * @param {Array<Number[]|undefined>} lastSelectedArr
- * @param {String} selectionColor
+ * @param {Array<number[]|undefined>} lastSelectedArr
+ * @param {string} selectionColor
  */
 const getAdjacentBlockCoordinates = (lastSelectedArr, selectionColor) => {
   const coords = []
@@ -396,8 +396,8 @@ const getAdjacentBlockCoordinates = (lastSelectedArr, selectionColor) => {
 }
 
 /**
- * @param {Array<Number[]|undefined>} lastSelectedArr
- * @param {String} selectionColor
+ * @param {Array<number[]|undefined>} lastSelectedArr
+ * @param {string} selectionColor
  */
 const convertAdjacentBlocks = (lastSelectedArr, selectionColor) => {
   const coords = getAdjacentBlockCoordinates(lastSelectedArr, selectionColor)
@@ -421,9 +421,9 @@ const selectAsAMachine = async () => {
 }
 
 /**
- * @param {Number} rowIndex
- * @param {Number} colIndex
- * @param {Boolean} [isEmulator] - Whether this is a turn emulator (when it's either a computer or a remote player)
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ * @param {boolean} [isEmulator] - Whether this is a turn emulator (when it's either a computer or a remote player)
  */
 const selectInCoordinates = async (rowIndex, colIndex, isEmulator) => {
   if (gameFinished)
@@ -485,7 +485,7 @@ const onBlockSelect = async ({ rowIndex, colIndex }) => {
 
 const resetSelectCandidates = () => {
   /**
-   * @type {String|false[][]}
+   * @type {string|false[][]}
    */
   const arr = []
 
@@ -503,7 +503,7 @@ const resetSelectCandidates = () => {
 
 const resetSelections = () => {
   /**
-   * @type {String|false[][]}
+   * @type {string|false[][]}
    */
   const arr = []
 
@@ -520,7 +520,7 @@ const resetSelections = () => {
 }
 
 /**
- * @param {Array<Array<String|false>>} selArr
+ * @param {Array<Array<string|false>>} selArr
  */
 const getSelectionCounts = (selArr) => {
   let color1Count = 0
@@ -539,7 +539,7 @@ const getSelectionCounts = (selArr) => {
 }
 
 /**
- * @param {Boolean} [isReaction] Whether this reset is triggered by a remote reset
+ * @param {boolean} [isReaction] Whether this reset is triggered by a remote reset
  */
 const resetGame = (isReaction) => {
   resetSelections()
@@ -574,7 +574,7 @@ const resetGame = (isReaction) => {
  */
 const onBlockEnter = ({ rowIndex, colIndex }) => {
   /**
-   * @type {Array<Number[]>}
+   * @type {Array<number[]>}
    */
   let coords = []
 

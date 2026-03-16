@@ -8,8 +8,8 @@ const defViewbox = '0 0 24 24'
 
 /**
  * @typedef {Object} Props
- * @property {String} name
- * @property {String} class
+ * @property {string} name
+ * @property {string} class
  */
 
 /** @type {Props} */
@@ -20,6 +20,6 @@ let {
 
 let [def, box] = $derived(name.split('|'))
 let viewBox = $derived(box || defViewbox)
-let paths = $derived(def.split('&&').map((/** @type {String} */ path) => path.split('@@')))
+let paths = $derived(def.split('&&').map((/** @type {string} */ path) => path.split('@@')))
 let iconClasses = $derived('fill-current inline' + (klass ? ' ' + klass : ''))
 </script>

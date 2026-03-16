@@ -4,8 +4,8 @@ import { getDb } from '../app'
 import { noop } from '$utils'
 
 /**
- * @param {Object.<String, any>} instance
- * @returns {Object.<String, any>}
+ * @param {Object.<string, any>} instance
+ * @returns {Object.<string, any>}
  */
 const buildObject = (instance) => {
   const obj = Object.create(null)
@@ -18,9 +18,9 @@ const buildObject = (instance) => {
 
 export default class FirestoreDocument {
   /**
-   * @param {String} id
-   * @param {String} collection
-   * @param {String[]} fields
+   * @param {string} id
+   * @param {string} collection
+   * @param {string[]} fields
    */
   constructor (id, collection, fields) {
     this.id = id
@@ -54,9 +54,9 @@ export default class FirestoreDocument {
   }
 
   /**
-   * @param {Boolean} overwrite
+   * @param {boolean} overwrite
    * @param {Function} presaveFn
-   * @returns {Promise<Boolean>}
+   * @returns {Promise<boolean>}
    */
   async save (overwrite = false, presaveFn = noop) {
     try {
@@ -77,7 +77,7 @@ export default class FirestoreDocument {
   }
 
   /**
-   * @param {Object.<String, any>} data
+   * @param {Object.<string, any>} data
    * @returns {Promise<void>}
    */
   update (data) {

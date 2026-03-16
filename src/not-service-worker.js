@@ -34,7 +34,7 @@ self.addEventListener('activate', (event) => {
 })
 
 /**
- * @param {Object.<String, any>} request
+ * @param {RequestInfo} request
  * @returns {Promise<Response>}
  */
 const fetchAndCache = async (request) => {
@@ -55,7 +55,7 @@ const fetchAndCache = async (request) => {
   }
 }
 
-self.addEventListener('fetch', (/** @type {Object.<String, any>} */ event) => {
+self.addEventListener('fetch', (/** @type {Object.<string, any>} */ event) => {
   if (event.request.method !== 'GET' || event.request.headers.has('range'))
     return
 

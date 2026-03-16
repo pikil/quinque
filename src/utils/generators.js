@@ -10,8 +10,8 @@ export const randomStr = (len = 20) => {
 }
 
 /**
- * @param {String} url
- * @returns {String}
+ * @param {string} url
+ * @returns {string}
  */
 export const getPath = (url) => {
   let path = import.meta.env.VITE_APP_BASE

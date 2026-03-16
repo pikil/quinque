@@ -7,13 +7,13 @@ const algo = 'AES-GCM'
 
 /**
  * @param {ArrayBuffer} arrayBuffer
- * @returns {String}
+ * @returns {string}
  */
 // @ts-ignore
 const arrayBufferToBase64 = arrayBuffer => btoa(String.fromCharCode.apply(null, new Uint8Array(arrayBuffer)))
 
 /**
- * @param {String} base64
+ * @param {string} base64
  * @returns {ArrayBuffer}
  */
 const base64ToArrayBuffer = (base64) => {
@@ -27,7 +27,7 @@ const base64ToArrayBuffer = (base64) => {
 }
 
 /**
-* @param {String} jwkString
+* @param {string} jwkString
 * @returns {Promise<CryptoKey>}
 */
 const parseJwkPublicKey = (jwkString) => {
@@ -89,7 +89,7 @@ class PeerCrypto {
   }
 
   /**
-   * @returns {Promise<String>}
+   * @returns {Promise<string>}
    */
   async exportPublicKeyToJwk () {
     if (!this.pubKey)
@@ -99,7 +99,7 @@ class PeerCrypto {
   }
 
   /**
-   * @param {String} keyString
+   * @param {string} keyString
    */
   async setSharedKeyFromJwkString (keyString) {
     this.shared = {
@@ -111,14 +111,14 @@ class PeerCrypto {
   }
 
   /**
-   * @param {String} iv
+   * @param {string} iv
    */
   setIvFromRemote (iv) {
     this.iv = new Uint8Array(base64ToArrayBuffer(iv))
   }
 
   /**
-   * @param {String} data
+   * @param {string} data
    * @param {CryptoKey} [key]
    * @param {Uint8Array} [iv]
    */
@@ -140,7 +140,7 @@ class PeerCrypto {
   }
 
   /**
-   * @param {String} base64
+   * @param {string} base64
    * @param {CryptoKey} [key]
    * @param {Uint8Array} [iv]
    */

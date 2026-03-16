@@ -54,27 +54,27 @@ const inputClasses = 'p-2 border border-gray-700 rounded-md w-full bg-gray-800'
 const copyAvailable = navigatorCopyAvailable()
 
 /**
- * @type {Object.<String, true>}
+ * @type {Object.<string, true>}
  */
 const candidatesCache = {}
 
 /**
- * @type {Boolean?}
+ * @type {boolean?}
  */
 let webrtcSupported = $state(null)
 
 /**
- * @type {String}
+ * @type {string}
  */
 let roomLink = $state('')
 
 /**
- * @type {Object.<String, String|Boolean>?}
+ * @type {Object.<string, string|boolean>?}
  */
 let valuesCopied = $state(null)
 
 /**
- * @type {String}
+ * @type {string}
  */
 let connectionError = $state('')
 
@@ -89,7 +89,7 @@ let room = $state(null)
 let unsubscribeRoomData = null
 
 /**
- * @type {Object.<'type'|'offer'|'answer'|'offerIceCandidates'|'answerIceCandidates', String|Number>}
+ * @type {Object.<'type'|'offer'|'answer'|'offerIceCandidates'|'answerIceCandidates', string|number>}
  */
 const roomCache = {}
 
@@ -120,7 +120,7 @@ const handleStateChange = (evt) => {
 }
 
 /**
- * @param {String} type
+ * @param {string} type
  * @param {RTCIceCandidate?} candidate
  */
 const addIceCandidate = async (type, candidate) => {
@@ -231,7 +231,7 @@ const updateRoomData = async (snapshot) => {
   }
 
   /**
-   * @param {String[]} candidates
+   * @param {string[]} candidates
    */
   const parseCandidates = async (candidates) => {
     await peerConnection.remoteDescriptionApplied
@@ -267,7 +267,7 @@ const updateRoomData = async (snapshot) => {
 }
 
 /**
- * @param {String} roomId
+ * @param {string} roomId
  */
 const connectToRoom = async (roomId) => {
   await PeerCrypto.init()

@@ -6,10 +6,10 @@ const unsetConfirmData = () => {
 }
 
 /**
- * @param {String} text
- * @param {String} okLabel
- * @param {String} dismissLabel
- * @returns {Promise<Boolean>}
+ * @param {string} text
+ * @param {string} okLabel
+ * @param {string} dismissLabel
+ * @returns {Promise<boolean>}
  */
 export const popupConfirm = (text, okLabel = 'OK', dismissLabel = 'Cancel') => new Promise((resolve) => {
   confirmData.set({
@@ -29,13 +29,13 @@ export const popupConfirm = (text, okLabel = 'OK', dismissLabel = 'Cancel') => n
 
 /**
  * @param {any} str
- * @returns {Boolean}
+ * @returns {boolean}
  */
 export const isString = str => typeof str === 'string'
 
 /**
  * @param {any} str
- * @param {Number} [minLen]
- * @returns {Boolean}
+ * @param {number} [minLen]
+ * @returns {boolean}
  */
 export const stringHasContent = (str, minLen) => isString(str) && ((!minLen && str !== '') || (!!minLen && str.length >= minLen))

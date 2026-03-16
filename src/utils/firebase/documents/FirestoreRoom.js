@@ -7,14 +7,14 @@ import FirestoreDocument from './FirestoreDocument'
 import { arrayUnion } from 'firebase/firestore'
 
 /**
- * @param {String} type
- * @returns {String}
+ * @param {string} type
+ * @returns {string}
  */
 const generateCandidatesKey = type => type === rtcTypes.OFFER ? 'offerIceCandidates' : 'answerIceCandidates'
 
 /**
  * @param {Date} date
- * @returns {String}
+ * @returns {string}
  */
 const generateName = (date) => {
   const monthNum = (date.getMonth() + 1) * 31
@@ -24,10 +24,10 @@ const generateName = (date) => {
 
 export default class FirestoreRoom extends FirestoreDocument {
   /**
-   * @param {String} id
-   * @param {String} [answerPubKey]
-   * @param {String} [iv]
-   * @param {Number} [size]
+   * @param {string} id
+   * @param {string} [answerPubKey]
+   * @param {string} [iv]
+   * @param {number} [size]
    */
   constructor (id, answerPubKey, iv, size = defaultGridSize) {
     const date = new Date()
@@ -58,7 +58,7 @@ export default class FirestoreRoom extends FirestoreDocument {
   }
 
   /**
-   * @param {String} offer
+   * @param {string} offer
    */
   saveOffer (offer) {
     this.offer = offer
@@ -66,7 +66,7 @@ export default class FirestoreRoom extends FirestoreDocument {
   }
 
   /**
-   * @param {String} answer
+   * @param {string} answer
    */
   saveAnswer (answer) {
     this.answer = answer
@@ -74,7 +74,7 @@ export default class FirestoreRoom extends FirestoreDocument {
   }
 
   /**
-   * @param {String} type
+   * @param {string} type
    * @param {Object?} candidate
    */
   addIceCandidate (type, candidate) {
@@ -83,7 +83,7 @@ export default class FirestoreRoom extends FirestoreDocument {
   }
 
   /**
-   * @param {String} type
+   * @param {string} type
    */
   clearIceCandidates (type) {
     const key = generateCandidatesKey(type)

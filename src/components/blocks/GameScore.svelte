@@ -20,11 +20,11 @@ import GameScoreDigit from '$blocks/GameScoreDigit.svelte'
 
 /**
  * @typedef {Object} Props
- * @property {Number} score1
- * @property {Number} score2
- * @property {String} score1Class
- * @property {String} score2Class
- * @property {String} [class]
+ * @property {number} score1
+ * @property {number} score2
+ * @property {string} score1Class
+ * @property {string} score2Class
+ * @property {string} [class]
  */
 
 /** @type {Props} */
@@ -45,7 +45,7 @@ const separator1Class = separatorClass + ' border-color1'
 const separator2Class = separatorClass + ' border-color2'
 
 /**
- * @param {Number} num
+ * @param {number} num
  */
 const splitDigits = (num) => {
   if (num <= 0)

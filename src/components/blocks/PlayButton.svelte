@@ -33,8 +33,8 @@ import { playModes } from '$data/objects'
 
 /**
  * @typedef {Object} Props
- * @property {Number} [mode]
- * @property {String} [label]
+ * @property {number} [mode]
+ * @property {string} [label]
  */
 
 /** @type {Props} */
@@ -56,12 +56,12 @@ const sizeButtons = allowedGridSizes.map((s) => {
 })
 
 /**
- * @type {Number}
+ * @type {number}
  */
 let selectedSize = $state(defaultGridSize)
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let selectionShowing = $state(false)
 

@@ -14,7 +14,7 @@ import { fasArrowLeft } from '$vendor/icons/fontawesome6-icons'
 const hideThreshold = 512
 
 /**
- * @type {Number}
+ * @type {number}
  */
 let innerWidth = $state(0)
 

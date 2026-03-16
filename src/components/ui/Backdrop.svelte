@@ -14,7 +14,7 @@ import { transitionParamsStandard } from '$data/objects'
 
 /**
  * @typedef {Object} Props
- * @property {Boolean} [showing]
+ * @property {boolean} [showing]
  * @property {(event: MouseEvent|KeyboardEvent) => void} [onclick]
  */
 

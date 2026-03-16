@@ -13,11 +13,11 @@ import Icon from '$ui/Icon.svelte'
 
 /**
  * @typedef {Object} Props
- * @property {String} [label]
- * @property {String} [iconClass]
- * @property {String} [icon]
- * @property {String} [iconRight]
- * @property {String} [labelClass]
+ * @property {string} [label]
+ * @property {string} [iconClass]
+ * @property {string} [icon]
+ * @property {string} [iconRight]
+ * @property {string} [labelClass]
  * @property {import('svelte').Snippet} [children]
  */
 

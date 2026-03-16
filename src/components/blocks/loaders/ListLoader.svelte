@@ -13,8 +13,8 @@
 <script>
 /**
  * @typedef {Object} Props
- * @property {String} [label]
- * @property {String} [class]
+ * @property {string} [label]
+ * @property {string} [class]
  */
 
 /** @type {Props} */

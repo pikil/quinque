@@ -25,13 +25,13 @@ import { noop } from '$utils'
 
 /**
  * @typedef {Object} Props
- * @property {Number[]?} [hoverCoords]
- * @property {Boolean?} [disabled]
- * @property {Number} rowIndex
- * @property {Number} colIndex
- * @property {String|false} [selected]
- * @property {String|false} [selectCandidate]
- * @property {String} [hoverColor]
+ * @property {number[]?} [hoverCoords]
+ * @property {boolean?} [disabled]
+ * @property {number} rowIndex
+ * @property {number} colIndex
+ * @property {string|false} [selected]
+ * @property {string|false} [selectCandidate]
+ * @property {string} [hoverColor]
  * @property {Function} [onclick]
  * @property {Function} [onenter]
  * @property {Function} [onleave]
@@ -52,7 +52,7 @@ let {
 } = $props()
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let isAnimating = $state(false)
 

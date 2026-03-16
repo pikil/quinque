@@ -36,12 +36,12 @@ import { tick } from 'svelte'
 $headerTitle = 'Play online'
 
 /**
- * @type {String}
+ * @type {string}
  */
 let joinId = $state('')
 
 /**
- * @type {Boolean}
+ * @type {boolean}
  */
 let navigatingAway = $state(false)
 

@@ -77,7 +77,7 @@ class PeerConnection {
   }
 
   /**
-   * @param {String} name
+   * @param {string} name
    */
   createDatachannel (name = 'default') {
     this.dataChannel = this.connection?.createDataChannel(name) || null
@@ -110,7 +110,7 @@ class PeerConnection {
   }
 
   /**
-   * @param {Object.<'type'|'sdp', String>} d
+   * @param {Object.<'type'|'sdp', string>} d
    * @returns {Promise<void>}
    */
   async setRemoteDescription (d) {
@@ -120,7 +120,7 @@ class PeerConnection {
   }
 
   /**
-   * @param {Object.<'type'|'sdp', String>} d
+   * @param {Object.<'type'|'sdp', string>} d
    * @returns {Promise<void>|undefined}
    */
   setLocalDescription (d) {
@@ -136,7 +136,7 @@ class PeerConnection {
   }
 
   /**
-   * @param {String} string
+   * @param {string} string
    * @returns {void}
    */
   sendChannelMessage (string) {
