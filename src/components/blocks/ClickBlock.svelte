@@ -5,23 +5,42 @@
   onclick={onClick}
   onmouseenter={onEnter}
   onmouseleave={onLeave}
-  onkeypress={noop}
+  onkeypress={onKeyPress}
+  aria-label={ariaLabel}
+  aria-pressed={selected !== false}
 >
-  {#if !selected}
+  {#if selected === 'color1'}
+    {#if $preferences.colorblindMode}
+      <div class="pattern-color1" aria-hidden="true"></div>
+    {/if}
+  {:else if selected === 'color2'}
+    {#if $preferences.colorblindMode}
+      <div class="pattern-color2" aria-hidden="true"></div>
+    {/if}
+  {:else}
     {#if isHovering}
       <Icon name={currentModeIcon} class="h-4 w-4 text-black" />
     {:else if selectCandidate}
-      <Icon name={fasCircle} class={iconClasses} />
+      {#if $preferences.colorblindMode}
+        <Icon 
+          name={selectCandidate === 'color1' ? fasCircle : fasCircleNotch} 
+          class={iconClasses} 
+        />
+      {:else}
+        <Icon name={fasCircle} class={iconClasses} />
+      {/if}
     {/if}
   {/if}
 </div>
 <script>
 import { getModeIcon } from '$lib'
 import { enteringMode } from '$stores/user-store'
+import { preferences } from '$stores/preferences-store'
 import Icon from '$ui/Icon.svelte'
-import { fasCircle } from '$vendor/icons/fontawesome6-icons'
+import { fasCircle, fasCircleNotch } from '$vendor/icons/fontawesome6-icons'
 import { tick } from 'svelte'
 import { noop } from '$utils'
+import { browser } from '$app/environment'
 
 /**
  * @typedef {Object} Props
@@ -65,8 +84,13 @@ const animate = () => {
 }
 
 const onClick = async () => {
-  if (onclick)
+  if (onclick) {
     onclick({ rowIndex, colIndex })
+    // Haptic feedback on mobile
+    if (browser && $preferences.hapticFeedback && navigator.vibrate) {
+      navigator.vibrate(10)
+    }
+  }
 }
 
 const onEnter = () => {
@@ -77,6 +101,13 @@ const onEnter = () => {
 const onLeave = () => {
   if (onleave)
     onleave({ rowIndex, colIndex })
+}
+
+const onKeyPress = (/** @type {KeyboardEvent} */ event) => {
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault()
+    onClick()
+  }
 }
 
 let iconClasses = $derived('h-3 w-3 opacity-50' + (selectCandidate === 'color1' ? ' text-color1' : ' text-color2'))
@@ -105,9 +136,39 @@ let classes = $derived('flex-1 aspect-square text-sm transition-colors duration-
   + (isAnimating ? ' animate' : ''))
 let currentModeIcon = $derived(getModeIcon($enteringMode))
 let isHovering = $derived(hoverCoords && rowIndex === hoverCoords[0] && colIndex === hoverCoords[1])
+let ariaLabel = $derived(`Grid cell row ${rowIndex + 1} column ${colIndex + 1}${selected ? ` selected ${selected}` : ''}`)
 
 $effect(() => {
   if (selected)
     tick().then(animate)
 })
 </script>
+<style>
+  .pattern-color1 {
+    position: absolute;
+    inset: 4px;
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(0, 0, 0, 0.3) 4px,
+      rgba(0, 0, 0, 0.3) 8px
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .pattern-color2 {
+    position: absolute;
+    inset: 4px;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 4px,
+      rgba(0, 0, 0, 0.3) 4px,
+      rgba(0, 0, 0, 0.3) 8px
+    );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+</style>

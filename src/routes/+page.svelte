@@ -41,6 +41,14 @@
       iconClass="h-5 h-5"
       target="_blank"
     />
+    <Button
+      title="Open settings"
+      class={sublinkPassiveClasses}
+      rounded={false}
+      icon={biGear}
+      iconClass="h-5 h-5"
+      onclick={openSettings}
+    />
   </div>
   {#each mainButtons as { label, href }}
     <Button
@@ -51,13 +59,23 @@
     />
   {/each}
 </div>
+<Modal
+  showing={settingsShowing}
+  hideOk
+  title="Settings"
+  ondismiss={closeSettings}
+>
+  <SettingsToggle />
+</Modal>
 <script>
 import { aboutPath, discordPath, repoPath, rulesPath } from '$data/strings'
 import { getPath } from '$utils/generators'
 import { headerTitle } from '$stores/layout-store'
 import Button from '$ui/buttons/Button.svelte'
 import { mainBtnClasses, sublinkPassiveClasses } from '$utils/dom'
-import { biDiscord, biGithub } from '$vendor/icons/bootstrap-icons'
+import { biDiscord, biGithub, biGear } from '$vendor/icons/bootstrap-icons'
+import Modal from '$ui/Modal.svelte'
+import SettingsToggle from '$ui/SettingsToggle.svelte'
 
 const mainButtons = [
   {
@@ -76,6 +94,16 @@ mainButtons.push(
     href: getPath('/online')
   }
 )
+
+let settingsShowing = $state(false)
+
+const openSettings = () => {
+  settingsShowing = true
+}
+
+const closeSettings = () => {
+  settingsShowing = false
+}
 
 $headerTitle = null
 

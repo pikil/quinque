@@ -71,10 +71,10 @@ body {
   background-size: 20% 20%, 40% 40%, 30% 30%, 40% 40%, 36% 36%, 20% 20%, 30% 30%, 20% 20%, 36% 36%;
 }
 .bubbly.sel-color1:before, .bubbly.sel-color1:after {
-  background-image: radial-gradient(circle, cornflowerblue 20%, transparent 20%), radial-gradient(circle, transparent 20%, cornflowerblue 20%, transparent 30%), radial-gradient(circle, cornflowerblue 20%, transparent 20%), radial-gradient(circle, cornflowerblue 20%, transparent 20%), radial-gradient(circle, transparent 10%, cornflowerblue 15%, transparent 20%), radial-gradient(circle, cornflowerblue 20%, transparent 20%), radial-gradient(circle, cornflowerblue 20%, transparent 20%), radial-gradient(circle, cornflowerblue 20%, transparent 20%), radial-gradient(circle, cornflowerblue 20%, transparent 20%);
+  background-image: radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%), radial-gradient(circle, transparent 20%, rgb(var(--color1)) 20%, transparent 30%), radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%), radial-gradient(circle, transparent 10%, rgb(var(--color1)) 15%, transparent 20%), radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color1)) 20%, transparent 20%);
 }
 .bubbly.sel-color2:before, .bubbly.sel-color2:after {
-  background-image: radial-gradient(circle, hotpink 20%, transparent 20%), radial-gradient(circle, transparent 20%, hotpink 20%, transparent 30%), radial-gradient(circle, hotpink 20%, transparent 20%), radial-gradient(circle, hotpink 20%, transparent 20%), radial-gradient(circle, transparent 10%, hotpink 15%, transparent 20%), radial-gradient(circle, hotpink 20%, transparent 20%), radial-gradient(circle, hotpink 20%, transparent 20%), radial-gradient(circle, hotpink 20%, transparent 20%), radial-gradient(circle, hotpink 20%, transparent 20%);
+  background-image: radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%), radial-gradient(circle, transparent 20%, rgb(var(--color2)) 20%, transparent 30%), radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%), radial-gradient(circle, transparent 10%, rgb(var(--color2)) 15%, transparent 20%), radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%), radial-gradient(circle, rgb(var(--color2)) 20%, transparent 20%);
 }
 .bubbly:after {
   display: none;
@@ -120,5 +120,49 @@ body {
   100% {
     background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
     background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .bubbly:before,
+  .bubbly:after {
+    display: none !important;
+  }
+  
+  .animate-bounce {
+    animation: none !important;
+  }
+}
+
+/* Pulse animation for active turn indicator */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 15px currentColor, 0 0 25px currentColor;
+    opacity: 0.8;
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Mobile-optimized touch targets */
+@media (max-width: 640px) {
+  .touch-target-min {
+    min-width: 44px;
+    min-height: 44px;
   }
 }

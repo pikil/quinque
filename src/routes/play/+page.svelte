@@ -722,8 +722,9 @@ let turnLabelColorClasses = $derived(playingWithComputer && !player1Turn
   || (playingOnline && !player1Turn && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2)
   ? ' text-faded'
   : ' ' + turnColor)
-let turnLabelClasses = $derived('font-bold text-center text-sm pb-1' // 'absolute -bottom-4 w-full text-center'
-  + turnLabelColorClasses)
+let turnLabelClasses = $derived('font-bold text-center text-sm py-1 rounded-lg mb-2' // 'absolute -bottom-4 w-full text-center'
+  + turnLabelColorClasses
+  + (!gameFinished && !thinking ? ' pulse-glow' : ''))
 let turnLabel = $derived(previewCoords
   ? 'Confirm selection'
   : (player1Turn
