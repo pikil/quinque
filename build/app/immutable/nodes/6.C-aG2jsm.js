@@ -1,0 +1,1 @@
+import"../chunks/Bzak7iHL.js";import"../chunks/BWFaYa6u.js";import{g as t,a,h as p,c as i,d as m,r as c}from"../chunks/Dk8wXFmE.js";import{R as d}from"../chunks/DHuc6sm1.js";import{h as l}from"../chunks/nZZduYxC.js";var n=i('<div class="text-white px-2"><!></div>');function x(e){const[h,o]=p();t(l,"Game rules");var s=n(),r=m(s);d(r),c(s),a(e,s),o()}export{x as component};

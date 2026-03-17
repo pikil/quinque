@@ -1,7 +1,7 @@
 <div class="h-device relative">
-  {#if winnerShowing && counts[0] !== counts[1]}
+  <!-- {#if winnerShowing && counts[0] !== counts[1]}
     <Confetti primaryColor={counts[0] > counts[1] ? '#818cf8' : '#f472b6'} />
-  {/if}
+  {/if} -->
   <div class={colClasses}>
     <div class="flex flex-row gap-2 pb-2 pt-3 px-2 items-start">
       <Button
@@ -146,7 +146,7 @@ import RulesBlock from '$blocks/RulesBlock.svelte'
 import { homePath } from '$data/strings'
 import { popupConfirm } from '$utils/validation'
 import { headerTitle } from '$stores/layout-store'
-import Confetti from '$ui/Confetti.svelte'
+// import Confetti from '$ui/Confetti.svelte'
 
 const color1 = 'text-color1'
 const color2 = 'text-color2'

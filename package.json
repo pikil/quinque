@@ -1,9 +1,10 @@
 {
   "name": "quinque",
-  "version": "1.2.1",
+  "version": "1.2.6",
   "private": true,
   "scripts": {
     "dev": "vite dev",
+    "host": "vite dev --host",
     "build": "vite build && cp build/index.html build/404.html",
     "not-dev": "cp src/manifest.json static/manifest.json && vite dev",
     "not-build": "cp src/manifest.json static/manifest.json && vite build",

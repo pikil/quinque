@@ -1,0 +1,1 @@
+import{w as s}from"./Dk8wXFmE.js";const c="quinque-preferences",n={colorblindMode:!1,reducedMotion:!1,hapticFeedback:!0,soundEnabled:!1},a=(t,r)=>{const o=s((()=>{try{const e=localStorage.getItem(t);return e?JSON.parse(e):r}catch{return r}})());return o.subscribe(e=>{localStorage.setItem(t,JSON.stringify(e))}),o},i=a(c,n);export{i as p};
