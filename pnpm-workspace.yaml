@@ -1,0 +1,5 @@
+allowBuilds:
+  '@firebase/util': false
+  esbuild: true
+  protobufjs: false
+minimumReleaseAge: 10080

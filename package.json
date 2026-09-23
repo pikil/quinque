@@ -2,7 +2,15 @@
   "name": "quinque",
   "version": "1.2.6",
   "private": true,
+  "packageManager": "pnpm@12.4.2",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "onFail": "error"
+    }
+  },
   "scripts": {
+    "preinstall": "node -e \"if (!process.env.npm_config_user_agent?.startsWith('pnpm/')) { console.error('Use pnpm, not npm/yarn.'); process.exit(1); }\"",
     "dev": "vite dev",
     "host": "vite dev --host",
     "build": "vite build && cp build/index.html build/404.html",
