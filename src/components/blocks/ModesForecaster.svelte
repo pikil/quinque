@@ -28,7 +28,7 @@
     <div class="text-faded text-sm">
       <p>* This screen changes with every player's turn;</p>
       <p>
-        ** Refer to <a href={rulesPath} target="_blank" class={linkClasses}>game rules</a> for more details;
+        ** Refer to <a href={resolve('/page/rules')} target="_blank" class={linkClasses}>game rules</a> for more details;
       </p>
     </div>
   </div>
@@ -38,7 +38,7 @@ import Icon from '$ui/Icon.svelte'
 import { enteringMode, enteringMode1, enteringMode2 } from '$stores/user-store'
 import { getModeIcon } from '$lib'
 import Modal from '$ui/Modal.svelte'
-import { rulesPath } from '$data/strings'
+import { resolve } from '$app/paths'
 import { linkClasses } from '$utils/dom'
 import { noop } from '$utils'
 

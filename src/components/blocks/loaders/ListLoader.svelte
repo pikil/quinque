@@ -1,7 +1,7 @@
 <span class={klass}>
   <div class="flex flex-col justify-center items-center">
     <div class="lds-ellipsis relative h-10 w-19 flex flex-row items-center">
-      {#each { length: 4 } as num}
+      {#each { length: 4 } as num, i (i)}
         <div data-attr={num}></div>
       {/each}
     </div>

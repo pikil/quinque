@@ -30,7 +30,7 @@ $effect(() => {
   /**
    * @param {KeyboardEvent} evt
    */
-    const handleKeyboard = (evt) => {
+  const handleKeyboard = (evt) => {
     // Do not listen for events when in inputs
     // @ts-ignore
     if (['input', 'textarea'].indexOf(evt.target?.type) >= 0)

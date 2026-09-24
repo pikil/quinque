@@ -8,16 +8,3 @@ export const randomStr = (len = 20) => {
 
   return result
 }
-
-/**
- * @param {string} url
- * @returns {string}
- */
-export const getPath = (url) => {
-  let path = import.meta.env.VITE_APP_BASE
-
-  if (path.endsWith('/'))
-    path = path.slice(0, -1)
-
-  return path + url
-}

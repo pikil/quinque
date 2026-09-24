@@ -8,7 +8,7 @@
   </div>
   <div class="flex flex-row justify-center items-center gap-6 text-gray-300 pb-4">
     <Button
-      href={rulesPath}
+      href={resolve('/page/rules')}
       label="Rules"
       title="Visit the details rules page"
       class={sublinkPassiveClasses}
@@ -16,7 +16,7 @@
       rounded={false}
     />
     <Button
-      href={aboutPath}
+      href={resolve('/page/about')}
       label="About"
       title="Visit About us section with details on Service and Privacy aspects"
       class={sublinkPassiveClasses}
@@ -50,7 +50,7 @@
       onclick={openSettings}
     />
   </div>
-  {#each mainButtons as { label, href }}
+  {#each mainButtons as { label, href } (label)}
     <Button
       {href}
       {label}
@@ -68,8 +68,8 @@
   <SettingsToggle />
 </Modal>
 <script>
-import { aboutPath, discordPath, repoPath, rulesPath } from '$data/strings'
-import { getPath } from '$utils/generators'
+import { discordPath, repoPath } from '$data/strings'
+import { resolve } from '$app/paths'
 import { headerTitle } from '$stores/layout-store'
 import Button from '$ui/buttons/Button.svelte'
 import { mainBtnClasses, sublinkPassiveClasses } from '$utils/dom'
@@ -80,18 +80,18 @@ import SettingsToggle from '$ui/SettingsToggle.svelte'
 const mainButtons = [
   {
     label: '1 player',
-    href: getPath('/single')
+    href: resolve('/single')
   }
 ]
 
 mainButtons.push(
   {
     label: '2 players',
-    href: getPath('/two-players')
+    href: resolve('/two-players')
   },
   {
     label: 'Online',
-    href: getPath('/online')
+    href: resolve('/online')
   }
 )
 

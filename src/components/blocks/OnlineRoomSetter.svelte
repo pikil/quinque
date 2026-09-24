@@ -299,7 +299,7 @@ const connectToRoom = async (roomId) => {
 const createRoom = async () => {
   await PeerCrypto.init()
 
-  let size = parseInt(page.url.searchParams.get('s') || String(defaultGridSize))
+  let size = parseInt(page.url.searchParams.get('s') || String(defaultGridSize), 10)
 
   if (!allowedGridSizes.includes(size))
     size = defaultGridSize

@@ -18,7 +18,7 @@
     <h3 class={pageTitleClasses}>Changes to This Privacy Policy</h3>
     <p  class={pageParagraphClasses}>We may update this Privacy Policy from time to time. We encourage you to review this policy periodically for any changes.</p>
     <h3 class={pageTitleClasses}>Contact Us</h3>
-    <p  class={pageParagraphClasses}>If you have any questions or concerns about this Privacy Policy, please contact us at our <a href={discordPath} target="_blank" class={linkClasses}>Discord server</a>.</p>
+    <p  class={pageParagraphClasses}>If you have any questions or concerns about this Privacy Policy, please contact us at our <a href={discordPath} target="_blank" rel="external" class={linkClasses}>Discord server</a>.</p>
     <p  class={pageParagraphClasses}>By using our game service, you agree to the terms of this Privacy Policy.</p>
     <p  class={pageParagraphClasses}>Last Updated: 04/04/2024</p>
   </div>

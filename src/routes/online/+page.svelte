@@ -29,8 +29,8 @@ import PlayButton from '$blocks/PlayButton.svelte'
 import { playModes } from '$data/objects'
 import ListLoader from '$blocks/loaders/ListLoader.svelte'
 import Button from '$ui/buttons/Button.svelte'
-import { getPath } from '$utils/generators'
 import { goto } from '$app/navigation'
+import { resolve } from '$app/paths'
 import { tick } from 'svelte'
 
 $headerTitle = 'Play online'
@@ -51,7 +51,7 @@ const goToRoom = async () => {
   await tick()
 
   goto(
-    getPath('/play?room=' + encodeURIComponent(joinId.toUpperCase()))
+    resolve(`/play?room=${encodeURIComponent(joinId.toUpperCase())}`)
   )
 }
 

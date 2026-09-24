@@ -34,10 +34,10 @@
         <p class={turnLabelClasses}>{turnLabel}</p>
       </div>
       <!-- eslint-disable-next-line no-unused-vars -->
-      {#each { length: gridSize } as _, rowIndex}
+      {#each { length: gridSize } as _, rowIndex (rowIndex)}
         <div class="flex flex-row gap-1">
           <!-- eslint-disable-next-line no-unused-vars -->
-          {#each { length: gridSize } as _, colIndex}
+          {#each { length: gridSize } as _, colIndex (colIndex)}
             <ClickBlock
               {rowIndex}
               {colIndex}
@@ -143,9 +143,10 @@ import Rooney from '../../ai/Rooney'
 import OnlineRoomSetter from '$blocks/OnlineRoomSetter.svelte'
 import peerConnection from '$utils/rtc/connection'
 import RulesBlock from '$blocks/RulesBlock.svelte'
-import { homePath } from '$data/strings'
+import { resolve } from '$app/paths'
 import { popupConfirm } from '$utils/validation'
 import { headerTitle } from '$stores/layout-store'
+import { consoleWarn } from '$utils/console'
 // import Confetti from '$ui/Confetti.svelte'
 
 const color1 = 'text-color1'
@@ -231,7 +232,7 @@ let showingRules = $state(false)
  */
 const sendPeerMessage = data => peerConnection.sendChannelMessage(JSON.stringify(data))
 
-const urlSize = parseInt(page.url.searchParams.get('s') || String(defaultGridSize))
+const urlSize = parseInt(page.url.searchParams.get('s') || String(defaultGridSize), 10)
 let gridSize = $state(allowedGridSizes.indexOf(urlSize) >= 0 ? urlSize : defaultGridSize)
 
 /**
@@ -603,7 +604,7 @@ const onBack = async () => {
   if (gameStarted && !gameFinished && !(await popupConfirm('Finish the game and go to main menu?')))
     return
 
-  goto(homePath)
+  goto(resolve('/'))
 }
 
 const showResetDialog = () => {
@@ -696,6 +697,7 @@ const onPeerConnect = ({ size, status, turns }) => {
     } catch (error) {
       peerConnection?.close()
       peerStatus = peerStatuses.DISCONNECTED
+      consoleWarn(error)
     }
   }
 
@@ -752,7 +754,7 @@ onMount(() => {
     playMode = playModes.FRIEND_ONLINE
     peerStatus = peerStatuses.CONNECTING
   } else {
-    const m = parseInt(page.url.searchParams.get('m') || String(playModes.AI))
+    const m = parseInt(page.url.searchParams.get('m') || String(playModes.AI), 10)
 
     if (Object.values(playModes).includes(m))
       playMode = m

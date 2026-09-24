@@ -22,9 +22,9 @@
       <Icon name={currentModeIcon} class="h-4 w-4 text-black" />
     {:else if selectCandidate}
       {#if $preferences.colorblindMode}
-        <Icon 
-          name={selectCandidate === 'color1' ? fasCircle : fasCircleNotch} 
-          class={iconClasses} 
+        <Icon
+          name={selectCandidate === 'color1' ? fasCircle : fasCircleNotch}
+          class={iconClasses}
         />
       {:else}
         <Icon name={fasCircle} class={iconClasses} />
@@ -39,7 +39,6 @@ import { preferences } from '$stores/preferences-store'
 import Icon from '$ui/Icon.svelte'
 import { fasCircle, fasCircleNotch } from '$vendor/icons/fontawesome6-icons'
 import { tick } from 'svelte'
-import { noop } from '$utils'
 import { browser } from '$app/environment'
 
 /**

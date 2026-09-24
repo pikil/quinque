@@ -1,4 +1,5 @@
 {#if href}
+  <!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
   <a bind:this={btn} {href} {title} class={classes} {target}>
     <ButtonContent {icon} {iconRight} {iconClass} {label} {labelClass}>
       {@render children?.()}

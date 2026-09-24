@@ -56,7 +56,7 @@
   /**
    * @param {string} primaryColor
    */
-  const getColors = (primaryColor) => [
+  const getColors = primaryColor => [
     primaryColor,
     primaryColor === '#818cf8' ? '#f472b6' : '#818cf8',
     '#fbbf24',
@@ -117,7 +117,7 @@
     })
 
     // Remove particles that fall below viewport
-    particles = particles.filter((p) => p.y < 120)
+    particles = particles.filter(p => p.y < 120)
 
     if (particles.length > 0)
       requestAnimationFrame(() => animate(startTime))

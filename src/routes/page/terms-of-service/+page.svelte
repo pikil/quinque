@@ -27,7 +27,7 @@
     <h3 class={pageTitleClasses}>Modifications</h3>
     <p class={pageParagraphClasses}>We may modify or update these Terms from time to time. We will notify you of any material changes by posting the updated Terms on our website. Your continued use of our Service after the effective date of the updated Terms constitutes your acceptance of the modified Terms.</p>
     <h3 class={pageTitleClasses}>Contact Us</h3>
-    <p class={pageParagraphClasses}>If you have any questions or concerns about these Terms, please contact us at our <a href={discordPath} target="_blank" class={linkClasses}>Discord server</a>.</p>
+    <p class={pageParagraphClasses}>If you have any questions or concerns about these Terms, please contact us at our <a href={discordPath} target="_blank" rel="external" class={linkClasses}>Discord server</a>.</p>
     <p class={pageParagraphClasses}>By using our Service, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Service.</p>
     <p class={pageParagraphClasses}>Last Updated: 04/04/2024</p>
   </div>

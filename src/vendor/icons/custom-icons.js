@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-
 export const customIconAxesDirection = 'M0,23 L20,23 L20,43 L0,43 Z@@fill-rule:evenodd;'
   + '&&M23,46 L43,46 L43,66 L23,66 Z&&@@fill-rule:evenodd;'
   + '&&M46,23 L66,23 L66,43 L46,43 Z@@fill-rule:evenodd;'

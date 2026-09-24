@@ -8,7 +8,7 @@
     <li class={liClasses}>
       The patterns are:
       <ul>
-        {#each patterns as { icon, pattern }}
+        {#each patterns as { icon, pattern }, i (i)}
           <li class={liClasses}><Icon name={icon} class={iconClasses} />&nbsp;&nbsp;{pattern};</li>
         {/each}
       </ul>
@@ -24,7 +24,6 @@
         <li>Four blocks in a 2x2 square: 3 + 3 + 3 + 3 = 12 points</li>
       </ul>
     </li>
-    
     <li class={liClasses}>Once a block is placed, it becomes inactive and it will add up 3, 4 or 5 points (depending on it's neighbours) to the total colour's score at the end of the game;</li>
     <li class={liClasses}>When a coloured block is placed, it can change the colour of adjacent blocks if it's positioned next to a block of the same colour on both sides, effectively 'flipping' them.</li>
     <li class={liClasses}>The game ends when there are no free blocks left on the grid;</li>

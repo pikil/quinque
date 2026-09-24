@@ -1,8 +1,10 @@
 <div class={classes} {style}>
   <div class="transition-transform duration-500" style={transformClasses}>
-    {#each { length: 2 } as _}
-      {#each { length: 10 } as __, i}
-        <div class={digitClass} {style}>{i}</div>
+    <!-- eslint-disable-next-line no-unused-vars -->
+    {#each { length: 2 } as _, i (i)}
+      <!-- eslint-disable-next-line no-unused-vars -->
+      {#each { length: 10 } as __, j (j)}
+        <div class={digitClass} {style}>{j}</div>
       {/each}
     {/each}
   </div>

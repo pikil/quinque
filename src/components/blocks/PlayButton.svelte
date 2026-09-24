@@ -16,7 +16,7 @@
 />
 <Modal showing={selectionShowing} hideOk title="Grid size" ondismiss={hideSelection}>
   <div class="flex flex-col gap-4">
-    {#each sizeButtons as { onclick, label }}
+    {#each sizeButtons as { onclick, label }, i (i)}
       <Button {label} class={selectBtnClasses} onclick={onclick} />
     {/each}
   </div>
@@ -27,7 +27,7 @@ import { fasChevronDown } from '$vendor/icons/fontawesome6-icons'
 import { mainBtnClasses } from '$utils/dom'
 import Modal from '$ui/Modal.svelte'
 import { allowedGridSizes } from '$data/arrays'
-import { getPath } from '$utils/generators'
+import { resolve } from '$app/paths'
 import { defaultGridSize } from '$data/numbers'
 import { playModes } from '$data/objects'
 
@@ -74,5 +74,5 @@ const hideSelection = () => {
 }
 
 let size = $derived(selectedSize + ' blocks')
-let href = $derived(getPath('/play?s=' + selectedSize) + (mode ? '&m=' + mode : ''))
+let href = $derived(resolve(`/play?s=${selectedSize}${mode ? '&m=' + mode : ''}`))
 </script>

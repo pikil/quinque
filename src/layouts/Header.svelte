@@ -6,7 +6,7 @@
   <div class={rightSpaceClass}></div>
 </header>
 <script>
-import { homePath } from '$data/strings'
+import { resolve } from '$app/paths'
 import { headerHref, headerTitle } from '$stores/layout-store'
 import Button from '$ui/buttons/Button.svelte'
 import { fasArrowLeft } from '$vendor/icons/fontawesome6-icons'
@@ -19,7 +19,7 @@ const hideThreshold = 512
 let innerWidth = $state(0)
 
 let smallScreen = $derived(innerWidth < hideThreshold)
-let href = $derived($headerHref || homePath)
+let href = $derived($headerHref || resolve('/'))
 let label = $derived(smallScreen  ? undefined : 'Back')
 let rightSpaceClass = $derived(smallScreen ? 'w-[32px]' : 'w-[82px]')
 </script>

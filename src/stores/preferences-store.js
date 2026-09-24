@@ -16,7 +16,9 @@ const defaultPreferences = {
  */
 const createPersistedStore = (key, defaultValue) => {
   const getStoredValue = () => {
-    if (!browser) return defaultValue
+    if (!browser)
+      return defaultValue
+
     try {
       const stored = localStorage.getItem(key)
       return stored ? JSON.parse(stored) : defaultValue

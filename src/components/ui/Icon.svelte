@@ -1,5 +1,5 @@
 <svg {viewBox} class={iconClasses}>
-  {#each paths as [d, style, transform]}
+  {#each paths as [d, style, transform], i (i)}
     <path d={d} style={style} transform={transform} />
   {/each}
 </svg>

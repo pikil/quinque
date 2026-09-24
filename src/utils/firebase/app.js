@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app'
 import errors from './errors'
 
 /**
- * @type {import('@firebase/app').FirebaseApp?}
+ * @type {import('firebase/app').FirebaseApp?}
  */
 let _app = null
 
@@ -38,7 +38,7 @@ export const getDb = () => {
 }
 
 /**
- * @param {import('@firebase/app').FirebaseError} error
+ * @param {import('firebase/app').FirebaseError} error
  * @param {string} fallbackMessage
  * @returns {string}
  */
