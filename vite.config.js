@@ -1,7 +1,11 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { sveltekit } from '@sveltejs/kit/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vite'
-import { https } from './dev_srv.json' with { type: 'json' }
+
+// Local-only SSL settings; absent on CI, where only `vite build` runs.
+const devServerFile = new URL('./dev_srv.json', import.meta.url)
+const { https } = existsSync(devServerFile) ? JSON.parse(readFileSync(devServerFile, 'utf8')) : {}
 
 export default defineConfig({
   plugins: [

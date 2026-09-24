@@ -2,6 +2,7 @@
 node_modules
 /.svelte-kit
 /package
+/build
 /.env
 /.env.*
 !.env.example
@@ -10,7 +11,6 @@ vite.config.ts.timestamp-*
 build.zip
 /dev_srv.json
 /tmp
-/static/manifest.json
 /backend/vendor
 *debug.log
 *.pem
