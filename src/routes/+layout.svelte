@@ -43,6 +43,7 @@ import { quintInOut } from 'svelte/easing'
 import Modal from '$ui/Modal.svelte'
 import { confirmData } from '$stores/system-store'
 import { mounting, headerTitle } from '$stores/layout-store'
+import { preferences } from '$stores/preferences-store'
 import Header from '$layouts/Header.svelte'
 
 /**
@@ -70,6 +71,10 @@ const resetVh = () => {
 
 let title = $derived(mainNameShort)
 let confirmDataProvided = $derived(!!$confirmData?.text)
+
+$effect(() => {
+  document.documentElement.classList.toggle('reduce-motion', $preferences.reducedMotion)
+})
 
 onMount(async () => {
   resetVh()

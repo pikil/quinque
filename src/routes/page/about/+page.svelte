@@ -10,7 +10,7 @@
     <p class={pageParagraphClasses}>Turns: Players strategically place their coloured blocks on the grid, aiming to outmaneuver their adversary.</p>
     <p class={pageParagraphClasses}>Victory: The player who gains more points at the end of the game, wins.</p>
     <p class={pageParagraphClasses}>Tactical Moves:</p>
-    <p class={pageParagraphClasses}>Blocking: Prevent your opponent from completing a line by strategically placing your blocks.</p>
+    <p class={pageParagraphClasses}>Blocking: Claim the free blocks your opponent needs before they can, and flip their blocks by surrounding them on both sides.</p>
     <p class={pageParagraphClasses}>Countering: Anticipate your opponent's moves and counter their strategies.</p>
     <p class={pageParagraphClasses}>{mainNameShort} combines logic, foresight, and cunning—a true test of mental prowess. Can you outwit your opponent and claim victory?</p>
   </div>
@@ -23,7 +23,7 @@
   <div class="px-4 pt-8">
     <h3 class={pageTitleClasses}>Origins</h3>
     <p class={pageParagraphClasses}>This game came up to the author when they were waiting for the flight from Christchurch to Auckland with his wife. He forgot to take the card games with him, but he still had to come up with something to pass the time.</p>
-    <p>So, instead of the game itself, he had a wonderful idea to pitch to the wife with the game and it's rules.</p>
+    <p>So, instead of the game itself, he had a wonderful idea to pitch to the wife with the game and its rules.</p>
     <p>The plan worked and the time passed during that discussion, and the first working prototype of the game was designed on the laptop during the flight.</p>
     <p class={pageParagraphClasses}>This game is free and opensource, so you are free to play the game here or you are free to fork the source code and edit it in any way.</p>
   </div>

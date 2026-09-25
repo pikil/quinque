@@ -36,13 +36,12 @@ let {
   class: klass
 } = $props()
 
-const borderOpacity = 'border-opacity-30'
-const blockClass = 'flex flex-row border-2 rounded-md ' + borderOpacity
-const separatorClass = 'border h-[30px] ' + borderOpacity
-const color1BlockClass = blockClass + ' border-color1'
-const color2BlockClass = blockClass + ' border-color2'
-const separator1Class = separatorClass + ' border-color1'
-const separator2Class = separatorClass + ' border-color2'
+const blockClass = 'flex flex-row border-2 rounded-md'
+const separatorClass = 'border h-[30px]'
+const color1BlockClass = blockClass + ' border-color1/30'
+const color2BlockClass = blockClass + ' border-color2/30'
+const separator1Class = separatorClass + ' border-color1/30'
+const separator2Class = separatorClass + ' border-color2/30'
 
 /**
  * @param {number} num

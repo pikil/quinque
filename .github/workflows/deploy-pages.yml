@@ -18,22 +18,26 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install dependencies
         run: pnpm i
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm check
 
       - name: build
         env:
           VITE_FB_API_KEY: ${{ vars.VITE_FB_API_KEY }}
           VITE_FB_AUTH_DOMAIN: ${{ vars.VITE_FB_AUTH_DOMAIN }}
           VITE_FB_PROJECT_ID: ${{ vars.VITE_FB_PROJECT_ID }}
-          VITE_FB_DB_URL: ${{ vars.VITE_FB_DB_URL }}
           VITE_FB_STORAGE_BUCKET: ${{ vars.VITE_FB_STORAGE_BUCKET }}
           VITE_FB_SENDER_ID: ${{ vars.VITE_FB_SENDER_ID }}
           VITE_FB_APP_ID: ${{ vars.VITE_FB_APP_ID }}
-          VITE_CLIENT_ID: ${{ vars.VITE_CLIENT_ID }}
         run: |
           pnpm run build
 

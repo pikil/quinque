@@ -1,7 +1,4 @@
 <div class="h-device relative">
-  <!-- {#if winnerShowing && counts[0] !== counts[1]}
-    <Confetti primaryColor={counts[0] > counts[1] ? '#818cf8' : '#f472b6'} />
-  {/if} -->
   <div class={colClasses}>
     <div class="flex flex-row gap-2 pb-2 pt-3 px-2 items-start">
       <Button
@@ -70,7 +67,7 @@
   onok={() => { resetGame() }}
   ondismiss={hideResetDialog}
 >
-  <p>This will reset the current board and it's progress. Continue?</p>
+  <p>This will reset the current board and its progress. Continue?</p>
 </Modal>
 <Modal
   showing={winnerShowing}
@@ -147,7 +144,6 @@ import { resolve } from '$app/paths'
 import { popupConfirm } from '$utils/validation'
 import { headerTitle } from '$stores/layout-store'
 import { consoleWarn } from '$utils/console'
-// import Confetti from '$ui/Confetti.svelte'
 
 const color1 = 'text-color1'
 const color2 = 'text-color2'
@@ -171,6 +167,12 @@ let turnCount = $state(0)
  * @type {number[]}
  */
 let predefinedTurns = []
+
+/**
+ * Bumped on every online reset so moves and resets from an older game are dropped
+ * @type {number}
+ */
+let gameEpoch = 0
 
 /**
  * @type {boolean}
@@ -442,11 +444,11 @@ const selectInCoordinates = async (rowIndex, colIndex, isEmulator) => {
     selectionColor
   )
 
+  if (playingOnline && isEmulator !== true)
+    sendPeerMessage({ type: 'placedBlock', rowIndex, colIndex, epoch: gameEpoch })
+
   // All blocks are filled
   if (!Object.values(selections).some(row => row.some(c => !c))) {
-    if (playingOnline)
-      sendPeerMessage({ type: 'placedBlock', rowIndex, colIndex })
-
     gameFinished = true
     setTimeout(showWinnerDialog, 500)
     return
@@ -459,24 +461,25 @@ const selectInCoordinates = async (rowIndex, colIndex, isEmulator) => {
   if (player1Turn) {
     $enteringMode = $enteringMode1
     $enteringMode1 = $enteringMode2
-    $enteringMode2 = (playingOnline) ? predefinedTurns[turnCount + 1] : getRandomEnteringMode()
+    $enteringMode2 = (playingOnline) ? predefinedTurns[turnCount / 2 + 2] : getRandomEnteringMode()
   }
 
   if (isEmulator === true)
     return
 
-  if (playingWithComputer) {
+  if (playingWithComputer)
     selectAsAMachine()
-  } else if (playingOnline) {
-    sendPeerMessage({ type: 'placedBlock', rowIndex, colIndex })
+  else if (playingOnline)
     thinking = true
-  }
 }
 
 /**
  * @param {PosData} data
  */
 const onBlockSelect = async ({ rowIndex, colIndex }) => {
+  if (thinking || gameFinished || selections[rowIndex]?.[colIndex] !== false)
+    return
+
   if (platform.is.webMobile) {
     if (!previewCoords || previewCoords[0] !== rowIndex || previewCoords[1] !== colIndex) {
       previewCoords = [rowIndex, colIndex]
@@ -566,10 +569,11 @@ const resetGame = (isReaction) => {
       thinking = true
 
     if (!isReaction) {
+      gameEpoch++
       predefinedTurns = generateTurnsSequence(gridSize * gridSize)
       $enteringMode1 = predefinedTurns[1]
       $enteringMode2 = predefinedTurns[2]
-      sendPeerMessage({ type: 'resetGame', turns: predefinedTurns })
+      sendPeerMessage({ type: 'resetGame', turns: predefinedTurns, epoch: gameEpoch })
     }
   }
 }
@@ -641,6 +645,7 @@ const onPeerConnect = ({ size, status, turns }) => {
   gridSize = size
   peerStatus = status
   predefinedTurns = turns
+  gameEpoch = 0
 
   resetSelections()
 
@@ -661,29 +666,30 @@ const onPeerConnect = ({ size, status, turns }) => {
 
   peerConnection.onmessage = (/** @type {MessageEvent} */ { data }) => {
     try {
-      const { type, rowIndex, colIndex, turns } = JSON.parse(data)
+      const { type, rowIndex, colIndex, turns, epoch } = JSON.parse(data)
 
       switch (type) {
         case 'placedBlock':
+          if (epoch !== gameEpoch)
+            break
+
           selectInCoordinates(rowIndex, colIndex, true)
           thinking = false
           break
         case 'resetGame': {
-          const reset = () => {
-            resetGame(true)
+          const isRoomCreator = peerStatus === peerStatuses.CONNECTED_AS_PLAYER2
 
-            if (turns) {
-              predefinedTurns = turns
-              $enteringMode1 = turns[1]
-              $enteringMode2 = turns[2]
-            }
-          }
+          if (epoch < gameEpoch || (epoch === gameEpoch && isRoomCreator))
+            break
 
-          if (winnerShowing) {
-            hideWinnerDialog()
-            setTimeout(reset, 250)
-          } else {
-            reset()
+          gameEpoch = epoch
+          hideWinnerDialog()
+          resetGame(true)
+
+          if (turns) {
+            predefinedTurns = turns
+            $enteringMode1 = turns[1]
+            $enteringMode2 = turns[2]
           }
           break
         }
@@ -734,10 +740,10 @@ let turnLabelClasses = $derived('font-bold text-center text-sm py-1 rounded-lg m
 let turnLabel = $derived(previewCoords
   ? 'Confirm selection'
   : (player1Turn
-    ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player\'s 1 turn...')
+    ? (playingWithComputer || (playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER2) ? 'Your turn' : 'Player 1\'s turn...')
     : (playingWithComputer
       ? 'Computer...'
-      : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player\'s 2 turn...')
+      : ((playingOnline && peerStatus === peerStatuses.CONNECTED_AS_PLAYER1) ? 'Your turn' : 'Player 2\'s turn...')
     )
   ))
 let awaitingForPeer = $derived(peerStatus === peerStatuses.CONNECTING)
@@ -767,9 +773,10 @@ onMount(() => {
 })
 
 beforeNavigate(() => {
-  sendPeerMessage({ type: 'left' })
+  if (!playingOnline)
+    return
 
-  if (playingOnline)
-    peerConnection?.close()
+  sendPeerMessage({ type: 'left' })
+  peerConnection.close()
 })
 </script>

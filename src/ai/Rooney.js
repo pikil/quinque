@@ -216,7 +216,7 @@ export default class {
 
     return new Promise((resolve) => {
       setTimeout(() => {
-        // Another action is launched alteady
+        // Another action is launched already
         if (this.requestId !== requestId) {
           resolve(null)
           return

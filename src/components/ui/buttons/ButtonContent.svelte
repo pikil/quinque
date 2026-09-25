@@ -31,5 +31,5 @@ let {
   children
 } = $props()
 
-let labelClasses = $derived('ellipsis' + (labelClass ? ' ' + labelClass : ''))
+let labelClasses = $derived('truncate' + (labelClass ? ' ' + labelClass : ''))
 </script>

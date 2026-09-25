@@ -26,7 +26,7 @@
       <Icon name={mode2Icon} class={followingDetailClasses} />
     </div>
     <div class="text-faded text-sm">
-      <p>* This screen changes with every player's turn;</p>
+      <p>* This screen changes every round: both players get the same pattern, one after the other;</p>
       <p>
         ** Refer to <a href={resolve('/page/rules')} target="_blank" class={linkClasses}>game rules</a> for more details;
       </p>

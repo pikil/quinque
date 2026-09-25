@@ -27,6 +27,9 @@ const onDismiss = () => {
 }
 
 $effect(() => {
+  if (!showing)
+    return
+
   /**
    * @param {KeyboardEvent} evt
    */
@@ -58,10 +61,10 @@ $effect(() => {
     }
   }
 
-  if (showing) {
-    document.addEventListener('keydown', handleKeyboard)
-    blockGlobalScroll()
-  } else {
+  document.addEventListener('keydown', handleKeyboard)
+  blockGlobalScroll()
+
+  return () => {
     document.removeEventListener('keydown', handleKeyboard)
     unblockGlobalScroll()
   }

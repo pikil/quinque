@@ -47,6 +47,7 @@
 
 body {
   font-family: Righteous, cursive;
+  touch-action: manipulation;
 }
 
 /* This one is a replacement for h-screen */
@@ -143,6 +144,23 @@ body {
   }
 }
 
+.reduce-motion *,
+.reduce-motion ::before,
+.reduce-motion ::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.reduce-motion .bubbly:before,
+.reduce-motion .bubbly:after {
+  display: none !important;
+}
+
+.reduce-motion .animate-bounce {
+  animation: none !important;
+}
+
 /* Pulse animation for active turn indicator */
 @keyframes pulse-glow {
   0%, 100% {
@@ -157,12 +175,4 @@ body {
 
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Mobile-optimized touch targets */
-@media (max-width: 640px) {
-  .touch-target-min {
-    min-width: 44px;
-    min-height: 44px;
-  }
 }

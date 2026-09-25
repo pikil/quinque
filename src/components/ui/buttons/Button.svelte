@@ -86,7 +86,7 @@ let disabledClasses = $derived((disabled || loading)
 let denseClasses = $derived((dense ? '' : ((icon || iconRight && !label) ? ' p-2' : ' py-3 px-4' )))
 let externalClasses = $derived((klass) ? ' ' + klass : '')
 let roundedClasses = $derived((rounded ? ' rounded-full' : ''))
-let classes = $derived('flex flex-row gap-x-2 items-center justify-center outline-hidden select-none transition-width cursor-pointer'
+let classes = $derived('flex flex-row gap-x-2 items-center justify-center outline-hidden select-none cursor-pointer'
   + disabledClasses
   + denseClasses
   + externalClasses

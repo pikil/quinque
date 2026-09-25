@@ -38,10 +38,7 @@ export default {
       return getCachedValue('webmob', () => /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|kindle|silk|mobile/i.test(ua || ''))
     },
     get webDesktop () {
-      if (ua === null)
-        setUa()
-
-      return getCachedValue('!webmob', () => !cache.wm)
+      return !this.webMobile
     },
     get touchAllowed () {
       return getCachedValue('touch', () => browser && 'ontouchstart' in window)

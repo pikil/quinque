@@ -23,17 +23,24 @@ class PeerConnection {
     this.onmessage = null
 
     /**
+     * @type {Function?}
+     */
+    this.onchannelopen = null
+
+    /**
      * @type {RTCDataChannel?}
      */
     this.dataChannel = null
-
-    this.remoteDescriptionApplied = new Promise((resolve) => {
-      this.applyRemoteDescription = resolve
-    })
   }
 
   init () {
     const self = this
+
+    this.connection?.close()
+    this.dataChannel = null
+    this.remoteDescriptionApplied = new Promise((resolve) => {
+      this.applyRemoteDescription = resolve
+    })
     this.connection = new RTCPeerConnection(config)
 
     /**
@@ -50,26 +57,26 @@ class PeerConnection {
     }
 
     this.connection.ondatachannel = (evt) => {
-      const { channel } = evt
-
-      if (!channel)
-        return
-
-      channel.onopen = () => {
-        // Nothing for now
-      }
-
-      channel.onclose = () => {
-        // Nothing for now
-      }
-
-      channel.onmessage = (evt) => {
-        if (this.onmessage)
-          this.onmessage(evt)
-      }
-
-      this.dataChannel = channel
+      if (evt.channel)
+        this.attachDataChannel(evt.channel)
     }
+  }
+
+  /**
+   * @param {RTCDataChannel} channel
+   */
+  attachDataChannel (channel) {
+    this.dataChannel = channel
+
+    channel.onmessage = (evt) => {
+      if (this.onmessage)
+        this.onmessage(evt)
+    }
+
+    if (channel.readyState === 'open')
+      this.onchannelopen?.()
+    else
+      channel.onopen = () => { this.onchannelopen?.() }
   }
 
   close () {
@@ -80,21 +87,10 @@ class PeerConnection {
    * @param {string} name
    */
   createDatachannel (name = 'default') {
-    this.dataChannel = this.connection?.createDataChannel(name) || null
+    const channel = this.connection?.createDataChannel(name)
 
-    if (!this.dataChannel)
-      return
-
-    this.dataChannel.onopen = () => {
-      // Nothing for now
-    }
-    this.dataChannel.onclose = () => {
-      // Nothing for now
-    }
-    this.dataChannel.onmessage = (evt) => {
-      if (this.onmessage)
-        this.onmessage(evt)
-    }
+    if (channel)
+      this.attachDataChannel(channel)
   }
 
   localDescription () {
@@ -140,12 +136,8 @@ class PeerConnection {
    * @returns {void}
    */
   sendChannelMessage (string) {
-    if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
-      this.connection?.close()
-      return
-    }
-
-    this.dataChannel.send(string)
+    if (this.dataChannel?.readyState === 'open')
+      this.dataChannel.send(string)
   }
 }
 

@@ -4,7 +4,7 @@ import { rtcTypes } from '$data/objects'
 import { generateTurnsSequence } from '$lib'
 import { randomStr } from '$utils/generators'
 import FirestoreDocument from './FirestoreDocument'
-import { arrayUnion } from 'firebase/firestore'
+import { arrayRemove, arrayUnion } from 'firebase/firestore'
 
 /**
  * @param {string} type
@@ -26,10 +26,9 @@ export default class FirestoreRoom extends FirestoreDocument {
   /**
    * @param {string} id
    * @param {string} [answerPubKey]
-   * @param {string} [iv]
    * @param {number} [size]
    */
-  constructor (id, answerPubKey, iv, size = defaultGridSize) {
+  constructor (id, answerPubKey, size = defaultGridSize) {
     const date = new Date()
 
     super(
@@ -41,8 +40,7 @@ export default class FirestoreRoom extends FirestoreDocument {
         'offerIceCandidates',
         'answerIceCandidates',
         'turns',
-        'answerPubKey',
-        'iv'
+        'answerPubKey'
       ]
     )
 
@@ -53,7 +51,6 @@ export default class FirestoreRoom extends FirestoreDocument {
       this.answerIceCandidates = []
       this.turns = generateTurnsSequence(this.size * this.size)
       this.answerPubKey = answerPubKey
-      this.iv = iv
     }
   }
 
@@ -84,9 +81,10 @@ export default class FirestoreRoom extends FirestoreDocument {
 
   /**
    * @param {string} type
+   * @param {string[]} candidates
    */
-  clearIceCandidates (type) {
+  removeIceCandidates (type, candidates) {
     const key = generateCandidatesKey(type)
-    this.update({ [key]: [] })
+    this.update({ [key]: arrayRemove(...candidates) })
   }
 }

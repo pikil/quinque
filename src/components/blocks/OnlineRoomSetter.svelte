@@ -51,12 +51,18 @@ let {
 } = $props()
 
 const inputClasses = 'p-2 border border-gray-700 rounded-md w-full bg-gray-800'
+const roomIdPattern = /^[0-9A-Z]{6}$/
 const copyAvailable = navigatorCopyAvailable()
 
 /**
  * @type {Object.<string, true>}
  */
 const candidatesCache = {}
+
+/**
+ * @type {Object.<string, true>}
+ */
+const sentCandidates = {}
 
 /**
  * @type {boolean?}
@@ -94,6 +100,14 @@ let unsubscribeRoomData = null
 const roomCache = {}
 
 /**
+ * @param {unknown} error
+ */
+const failNegotiation = (error) => {
+  consoleWarn(error)
+  connectionError = 'Could not create a gaming session...'
+}
+
+/**
  * @param {Event} evt
  */
 const handleStateChange = (evt) => {
@@ -105,18 +119,30 @@ const handleStateChange = (evt) => {
 
   if (!pc)
     connectionError = 'Could not create a gaming session...'
-  else if (pc.connectionState === 'connected')
-    onconnected({
-      size: roomCache.size,
-      status: roomCache.type === rtcTypes.OFFER ? peerStatuses.CONNECTED_AS_PLAYER1 : peerStatuses.CONNECTED_AS_PLAYER2,
-      turns: roomCache.turns
-    })
   else if (pc.connectionState === 'failed')
     connectionError = 'Negotiation failed. Check your network or VPN...'
-  else if (pc.connectionState === 'connecting')
+  else if (pc.connectionState === 'connecting' || pc.connectionState === 'connected')
     consoleInfo('Connecting the peer...')
   else
     connectionError = 'Unknown network error...'
+}
+
+const handleChannelOpen = () => {
+  onconnected({
+    size: roomCache.size,
+    status: roomCache.type === rtcTypes.OFFER ? peerStatuses.CONNECTED_AS_PLAYER1 : peerStatuses.CONNECTED_AS_PLAYER2,
+    turns: roomCache.turns
+  })
+}
+
+/**
+ * @param {string} type
+ */
+const initPeerConnection = (type) => {
+  peerConnection.init()
+  peerConnection.onicecandidate = (/** @type {RTCPeerConnectionIceEvent} */ { candidate }) => { addIceCandidate(type, candidate) }
+  peerConnection.onstatechange = handleStateChange
+  peerConnection.onchannelopen = handleChannelOpen
 }
 
 /**
@@ -127,30 +153,25 @@ const addIceCandidate = async (type, candidate) => {
   if (!candidate)
     return
 
-  await PeerCrypto.waitingForSharedSecret
-
-  const data = {
+  const serialized = JSON.stringify({
     type: 'candidate',
     sdpMid: candidate.sdpMid,
     sdpMLineIndex: candidate.sdpMLineIndex,
     candidate: candidate.candidate
-  }
+  })
 
-  const encrypted = await PeerCrypto.ecnrypt(JSON.stringify(data))
+  if (sentCandidates[serialized])
+    return
 
-  if (!candidatesCache[encrypted]) {
-    room?.addIceCandidate(type, encrypted)
-    candidatesCache[encrypted] = true
-  }
+  sentCandidates[serialized] = true
+
+  await PeerCrypto.waitingForSharedSecret
+  room?.addIceCandidate(type, await PeerCrypto.encrypt(serialized))
 }
 
 const respondToOffer = async () => {
   if (!room)
     return
-
-  peerConnection.init()
-  peerConnection.onicecandidate = (/** @type {RTCPeerConnectionIceEvent} */ { candidate }) => { addIceCandidate(rtcTypes.ANSWER, candidate)  }
-  peerConnection.onstatechange = handleStateChange
 
   await PeerCrypto.setSharedKeyFromJwkString(roomCache.offerPubKey)
 
@@ -169,7 +190,7 @@ const respondToOffer = async () => {
   await peerConnection.setLocalDescription(new RTCSessionDescription(answer))
 
   roomCache.answer = answer.sdp
-  room.saveAnswer(await PeerCrypto.ecnrypt(answer.sdp))
+  room.saveAnswer(await PeerCrypto.encrypt(answer.sdp))
   room.saveOffer('-')
 }
 
@@ -187,16 +208,17 @@ const respondToAnswer = async () => {
  * @param {import('firebase/firestore').DocumentData} snapshot
  */
 const updateRoomData = async (snapshot) => {
-  const newData = snapshot.data() || {}
-
-  if (!Object.keys(newData).length)
+  if (!snapshot.exists()) {
+    connectionError = 'Room not found. Check the room ID or ask for a new link...'
     return
+  }
+
+  const newData = snapshot.data()
 
   const keysToApply = [
     'size',
     'turns',
-    'offerPubKey',
-    'iv'
+    'offerPubKey'
   ]
 
   for (let i = 0; i < keysToApply.length; i++) {
@@ -210,11 +232,8 @@ const updateRoomData = async (snapshot) => {
     roomCache.answerPubKey = newData.answerPubKey
 
     if (roomCache.type === rtcTypes.OFFER) {
-      PeerCrypto.setIvFromRemote(newData.iv) // This should be happening before setting shared secret
       await PeerCrypto.setSharedKeyFromJwkString(newData.answerPubKey)
-
-      if (roomCache.type === rtcTypes.OFFER)
-        room?.saveOffer(await PeerCrypto.ecnrypt(peerConnection.localDescription()))
+      room?.saveOffer(await PeerCrypto.encrypt(peerConnection.localDescription()))
     }
   }
 
@@ -222,12 +241,12 @@ const updateRoomData = async (snapshot) => {
     roomCache.offer = newData.offer
 
     if (roomCache.type === rtcTypes.ANSWER)
-      respondToOffer()
+      respondToOffer().catch(failNegotiation)
   }
 
   if (!roomCache.answer && newData.answer) {
     roomCache.answer = newData.answer
-    respondToAnswer()
+    respondToAnswer().catch(failNegotiation)
   }
 
   /**
@@ -237,47 +256,50 @@ const updateRoomData = async (snapshot) => {
     await peerConnection.remoteDescriptionApplied
 
     for (let i = 0; i < candidates.length; i++) {
-      let candidate = null
+      if (candidatesCache[candidates[i]])
+        continue
 
       try {
-        candidate = JSON.parse(await PeerCrypto.decrypt(candidates[i]))
+        const candidate = JSON.parse(await PeerCrypto.decrypt(candidates[i]))
+        await peerConnection.addIceCandidate(candidate.candidate ? candidate : null)
       } catch (err) {
         consoleWarn(err)
       }
 
-      if (!candidate)
-        continue
-
-      if (!candidatesCache[candidates[i]]) {
-        await peerConnection.addIceCandidate(candidate.candidate ? candidate : null)
-        candidatesCache[candidates[i]] = true
-      }
+      candidatesCache[candidates[i]] = true
     }
   }
 
-  if (roomCache.type === rtcTypes.OFFER && newData.answerIceCandidates.length) {
+  const remoteType = roomCache.type === rtcTypes.OFFER ? rtcTypes.ANSWER : rtcTypes.OFFER
+  const remoteCandidates = (remoteType === rtcTypes.ANSWER ? newData.answerIceCandidates : newData.offerIceCandidates) || []
+
+  if (remoteCandidates.length) {
     await PeerCrypto.waitingForSharedSecret
-    await parseCandidates(newData.answerIceCandidates)
-    room?.clearIceCandidates(rtcTypes.ANSWER)
-  } else if (roomCache.type === rtcTypes.ANSWER && newData.offerIceCandidates.length) {
-    await PeerCrypto.waitingForSharedSecret
-    await parseCandidates(newData.offerIceCandidates)
-    room?.clearIceCandidates(rtcTypes.OFFER)
+    await parseCandidates(remoteCandidates)
+    room?.removeIceCandidates(remoteType, remoteCandidates)
   }
+}
+
+/**
+ * @param {import('firebase/firestore').DocumentData} snapshot
+ */
+const onRoomSnapshot = (snapshot) => {
+  updateRoomData(snapshot).catch(failNegotiation)
 }
 
 /**
  * @param {string} roomId
  */
 const connectToRoom = async (roomId) => {
+  if (!roomIdPattern.test(roomId)) {
+    connectionError = 'Room not found. Check the room ID or ask for a new link...'
+    return
+  }
+
   await PeerCrypto.init()
 
-  room = new FirestoreRoom(roomId)
-  unsubscribeRoomData = room.subscribeToData(updateRoomData)
-
-  peerConnection.init()
-  peerConnection.onicecandidate = (/** @type {RTCPeerConnectionIceEvent} */ { candidate }) => { addIceCandidate(rtcTypes.OFFER, candidate)  }
-  peerConnection.onstatechange = handleStateChange
+  roomCache.type = rtcTypes.OFFER
+  initPeerConnection(rtcTypes.OFFER)
   peerConnection.createDatachannel()
 
   const offer = await peerConnection.createOffer()
@@ -287,28 +309,33 @@ const connectToRoom = async (roomId) => {
     return
   }
 
-  roomCache.type = rtcTypes.OFFER
+  await peerConnection.setLocalDescription(offer)
 
+  room = new FirestoreRoom(roomId)
   room.update({
     offerPubKey: await PeerCrypto.exportPublicKeyToJwk()
   })
 
-  peerConnection.setLocalDescription(offer)
+  unsubscribeRoomData = room.subscribeToData(onRoomSnapshot)
 }
 
 const createRoom = async () => {
   await PeerCrypto.init()
+
+  roomCache.type = rtcTypes.ANSWER
+  initPeerConnection(rtcTypes.ANSWER)
 
   let size = parseInt(page.url.searchParams.get('s') || String(defaultGridSize), 10)
 
   if (!allowedGridSizes.includes(size))
     size = defaultGridSize
 
-  room = new FirestoreRoom('', await PeerCrypto.exportPublicKeyToJwk(), PeerCrypto.ivString(), size)
+  room = new FirestoreRoom('', await PeerCrypto.exportPublicKeyToJwk(), size)
 
-  if ((await !room.save())) {
-    await popupConfirm('This room ID is already taken. Refresh the page to get a new one.')
+  if (!(await room.save())) {
+    await popupConfirm('Could not create a room. Refresh the page to try again.')
     window.location.reload()
+    return
   }
 
   roomLink = page.url.protocol + '//'
@@ -316,8 +343,7 @@ const createRoom = async () => {
     + page.url.pathname
     + '?room=' + room.id
 
-  room.subscribeToData(updateRoomData)
-  roomCache.type = rtcTypes.ANSWER
+  unsubscribeRoomData = room.subscribeToData(onRoomSnapshot)
 }
 
 const copyRoomLink = () => {
@@ -332,12 +358,15 @@ onMount(() => {
   if (!webrtcSupported)
     return
 
+  if (!navigator.onLine) {
+    connectionError = 'You are offline. Online games need an internet connection...'
+    return
+  }
+
   const roomId = page.url.searchParams.get('room')
 
-  if (roomId)
-    connectToRoom(roomId)
-  else
-    createRoom()
+  const setup = roomId ? connectToRoom(roomId.toUpperCase()) : createRoom()
+  setup.catch(failNegotiation)
 })
 
 onDestroy(() => {

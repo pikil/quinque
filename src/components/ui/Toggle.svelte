@@ -1,6 +1,6 @@
 <button
   role="switch"
-  aria-label="Toggle reduced motion"
+  aria-label={label}
   aria-checked={value}
   {onclick}
   class={btnCss}
@@ -15,12 +15,14 @@
   /**
    * @typedef {Object} Props
    * @property {boolean} value
+   * @property {string} label
    * @property {(_: boolean) => void} [ontoggle]
    */
 
   /** @type {Props} */
   let {
     value = $bindable(false),
+    label,
     ontoggle
   } = $props()
 

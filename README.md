@@ -13,23 +13,26 @@ Visit our [discord server](https://discord.com/channels/1205689011583066143) if 
 
 ## Dev version
 
-You can start a dev version by creating .env.local and running the following command:
+The project uses [pnpm](https://pnpm.io) (npm and yarn installs are blocked). Copy `.env.example` to `.env.local`, fill in the Firebase details and run:
 
 ```bash
-npm run dev
+pnpm install
+pnpm dev
 ```
+
+Before pushing, run `pnpm lint` and `pnpm check`; CI runs both.
 
 ## Built version
 
-You can build a production version by creating .env.prod and running the following command:
+You can build a production version by creating `.env.production` (Vite loads it for builds) and running the following command:
 
 ```bash
-npm run build
+pnpm build
 ```
 
-Note that this version is built to keep forever on GH pages, so it has `/quinque` prefix for all the links (You can change that in `.env.local`).
+Note that this version is built to keep forever on GH pages, so it has `/quinque` prefix for all the links (You can change that with `kit.paths.base` in `svelte.config.js`, together with `start_url` in `static/manifest.json`).
 
-After you've built the app, you can host it by just inserting the files to any web server. To utilize the offline mode, rename two files `not-service-worker.js` and `not-manifest.js` to `service-worker.js` and `manifest.js` respectively.
+After you've built the app, you can host it by just inserting the files to any web server. The game is a PWA: it can be installed, and games against the computer or on one device work offline. The service worker (`src/service-worker.js`) is only registered over HTTPS or on localhost.
 
 Note, that if you host the game yourself, you'll need a firebase account to store the online room data.
 

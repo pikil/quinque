@@ -1,3 +1,38 @@
+# V1.3.0 Tooling update and fixes
+
+## PWA
+- The game can be installed as an app and played offline against the computer or on one device
+- iOS launch screens are wired up for installed iPhones and iPads
+- Online mode tells you when you are offline instead of loading forever
+
+## Tooling
+- Moved to pnpm; npm/yarn installs are blocked
+- ESLint v10, Vite 8, Tailwind CSS 4.3
+- CI runs lint and type check before building, on Node 24
+- Replaced the template Playwright test with smoke tests for the home and play pages
+
+## Fixes
+- Closed dialogs no longer keep listening to the keyboard (pressing Enter could reset the board)
+- Keyboard input can no longer play during the opponent's turn or on filled blocks; grid focus is visible
+- Online:
+  - Every encrypted signalling message uses a fresh IV
+  - A room that fails to save or does not exist now shows an error instead of loading forever
+  - ICE candidates added while others are being processed are no longer dropped
+  - A second online game in the same tab connects correctly
+  - The game starts only once the data channel is open
+  - Crossed moves and resets no longer desync the two boards
+  - The pattern sequence follows round order
+- The "Reduce motion" setting now works, and each settings toggle has its own label
+- Restored block and score border opacity lost in the Tailwind v4 upgrade
+- Pinch zoom is enabled again
+- Rules, About and Privacy policy updated to match the game
+
+## Removed
+- Unused confetti component, MavenPro font and placeholder manifest copy
+
+**Note:** the online protocol changed, so both players need 1.3.0.
+
+
 # V1.2.6.ai UX/UI Improvements
 
 ## ✅ Implemented Enhancements
@@ -10,6 +45,7 @@
   - 3-second duration with smooth fade-out
   - GPU-accelerated transforms for performance
 - **Usage**: Automatically triggers on the play page when winner dialog shows
+- **Status**: Never enabled on the play page; removed in 1.3.0
 
 ### 2. Colorblind Mode (`src/stores/preferences-store.js`, `src/components/blocks/ClickBlock.svelte`)
 - **What**: Pattern overlays on colored blocks for better visual distinction
@@ -42,7 +78,7 @@
   - Enter/Space to select blocks
   - Proper tabindex and role attributes
   - ARIA labels for screen readers
-  - Focus indicators
+  - Focus indicators (added in 1.3.0)
 
 ### 6. Score Count-up Animation (`src/components/blocks/GameScore.svelte`)
 - **What**: Animated score transition from 0 to final value
@@ -51,6 +87,7 @@
   - 30-step interpolation for smooth visual
   - Independent animation for each player's score
   - `animate` prop to control behavior
+- **Status**: Not shipped; scores still roll digit by digit
 
 ### 7. Pulse Turn Indicator (`src/routes/play/+page.svelte`, `src/css/app.css`)
 - **What**: Glowing pulse animation on active player's turn label
@@ -78,17 +115,15 @@
 
 ## 📁 New Files Created
 
-1. `src/components/ui/Confetti.svelte` - Win celebration animation
+1. `src/components/ui/Confetti.svelte` - Win celebration animation (removed in 1.3.0)
 2. `src/components/ui/SettingsToggle.svelte` - Preferences UI
 3. `src/stores/preferences-store.js` - User preferences store
-4. `UX_UI_IMPROVEMENTS.md` - This documentation
 
 ## 📝 Modified Files
 
-1. `src/css/app.css` - Added reduced motion, pulse animation, touch targets
+1. `src/css/app.css` - Added reduced motion, pulse animation, touch targets (unused, removed in 1.3.0)
 2. `src/components/blocks/ClickBlock.svelte` - Colorblind patterns, haptics, keyboard nav
-3. `src/components/blocks/GameScore.svelte` - Count-up animation
-4. `src/routes/play/+page.svelte` - Confetti integration, pulse turn indicator
+3. `src/routes/play/+page.svelte` - Pulse turn indicator
 5. `src/routes/+page.svelte` - Settings button and modal
 
 ## 🎯 Accessibility Improvements
@@ -117,17 +152,14 @@
 
 ### Adjust Other Settings
 - **Haptic Feedback**: Toggle for mobile vibration feedback
-- **Reduce Motion**: Manually override system preference
+- **Reduce Motion**: Manually override system preference (works since 1.3.0)
 
 ### Experience the Improvements
-1. Play a game and win to see confetti animation
-2. Notice the pulse glow on active turn indicator
-3. Watch scores count up when they change
-4. Try keyboard navigation (Tab + Enter/Space)
+1. Notice the pulse glow on active turn indicator
+2. Try keyboard navigation (Tab + Enter/Space)
 
 ## 📱 Mobile Optimizations
 
-- Touch targets minimum 44px (via CSS class)
 - Haptic feedback on selection
 - Safe viewport height handling (existing .h-device class)
 - Responsive grid sizing

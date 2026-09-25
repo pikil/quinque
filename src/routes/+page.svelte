@@ -29,7 +29,7 @@
       class={sublinkPassiveClasses}
       rounded={false}
       icon={biGithub}
-      iconClass="h-5 h-5"
+      iconClass="h-5 w-5"
       target="_blank"
     />
     <Button
@@ -38,7 +38,7 @@
       class={sublinkPassiveClasses}
       rounded={false}
       icon={biDiscord}
-      iconClass="h-5 h-5"
+      iconClass="h-5 w-5"
       target="_blank"
     />
     <Button
@@ -46,7 +46,7 @@
       class={sublinkPassiveClasses}
       rounded={false}
       icon={biGear}
-      iconClass="h-5 h-5"
+      iconClass="h-5 w-5"
       onclick={openSettings}
     />
   </div>

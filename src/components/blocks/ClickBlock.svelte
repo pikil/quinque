@@ -1,6 +1,7 @@
 <div
   role="button"
-  tabindex="0"
+  tabindex={selected || disabled ? -1 : 0}
+  aria-disabled={disabled || selected !== false}
   class={classes}
   onclick={onClick}
   onmouseenter={onEnter}
@@ -83,6 +84,9 @@ const animate = () => {
 }
 
 const onClick = async () => {
+  if (disabled || selected)
+    return
+
   if (onclick) {
     onclick({ rowIndex, colIndex })
     // Haptic feedback on mobile
@@ -111,10 +115,10 @@ const onKeyPress = (/** @type {KeyboardEvent} */ event) => {
 
 let iconClasses = $derived('h-3 w-3 opacity-50' + (selectCandidate === 'color1' ? ' text-color1' : ' text-color2'))
 let bgClasses = $derived(selected === 'color1'
-  ? ' bg-color1 sel-color1'
+  ? ' bg-color1/80 sel-color1'
   : (selected === 'color2'
-    ? ' bg-color2 sel-color2'
-    : ' bg-gray-600'
+    ? ' bg-color2/80 sel-color2'
+    : ' bg-gray-600/80'
   ))
 let hoverClasses = $derived(selected
   ? ''
@@ -126,9 +130,8 @@ let hoverClasses = $derived(selected
     )
   ))
 let classes = $derived('flex-1 aspect-square text-sm transition-colors duration-300 rounded-xs sm:rounded-md border border-gray-600 bubbly relative'
-  + ' cursor-pointer outline-hidden'
+  + ' cursor-pointer outline-hidden focus-visible:ring-2 focus-visible:ring-primary'
   + ' flex flex-col justify-center items-center'
-  + ' bg-opacity-80 hover:bg-opacity-100'
   + hoverClasses
   + bgClasses
   + (selected || disabled ? ' pointer-events-none' : '' )

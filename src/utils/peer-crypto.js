@@ -4,6 +4,7 @@ const keyParameters = {
 }
 
 const algo = 'AES-GCM'
+const ivLength = 12
 
 /**
  * @param {ArrayBuffer} arrayBuffer
@@ -44,25 +45,34 @@ const parseJwkPublicKey = (jwkString) => {
 
 class PeerCrypto {
   constructor () {
+    /**
+     * @type {CryptoKey?}
+     */
     this.pubKey = null
+
+    /**
+     * @type {CryptoKey?}
+     */
     this.prKey = null
-    this.iv = crypto.getRandomValues(new Uint8Array(12))
-    this.waitingForSharedSecret = new Promise((resolve) => {
-      this.resolveShareSecret = resolve
-    })
+
+    /**
+     * @type {{ key: CryptoKey? }?}
+     */
+    this.shared = null
   }
 
   /**
    * @returns {Promise<void>}
    */
-  init () {
-    return new Promise((resolve) => {
-      crypto.subtle.generateKey(keyParameters, true, ['deriveKey']).then(async (keys) => {
-        this.pubKey = keys.publicKey
-        this.prKey = keys.privateKey
-        resolve()
-      })
+  async init () {
+    this.shared = null
+    this.waitingForSharedSecret = new Promise((resolve) => {
+      this.resolveShareSecret = resolve
     })
+
+    const keys = await crypto.subtle.generateKey(keyParameters, true, ['deriveKey'])
+    this.pubKey = keys.publicKey
+    this.prKey = keys.privateKey
   }
 
   /**
@@ -111,58 +121,50 @@ class PeerCrypto {
   }
 
   /**
-   * @param {string} iv
-   */
-  setIvFromRemote (iv) {
-    this.iv = new Uint8Array(base64ToArrayBuffer(iv))
-  }
-
-  /**
    * @param {string} data
    * @param {CryptoKey} [key]
-   * @param {Uint8Array} [iv]
+   * @returns {Promise<string>} Base64 of the IV followed by the ciphertext
    */
-  async ecnrypt (data, key, iv) {
+  async encrypt (data, key) {
     if (!key)
       key = this.shared?.key || undefined
 
     if (!key)
-      throw 'The key is not generated...'
+      throw new Error('The key is not generated...')
 
-    return arrayBufferToBase64(await crypto.subtle.encrypt(
-      {
-        name: algo,
-        iv: /** @type {BufferSource} */ (iv || this.iv)
-      },
+    // GCM must never reuse an IV under the same key
+    const iv = crypto.getRandomValues(new Uint8Array(ivLength))
+    const ciphertext = new Uint8Array(await crypto.subtle.encrypt(
+      { name: algo, iv },
       key,
       (new TextEncoder()).encode(data)
     ))
+
+    const payload = new Uint8Array(ivLength + ciphertext.length)
+    payload.set(iv)
+    payload.set(ciphertext, ivLength)
+
+    return arrayBufferToBase64(payload.buffer)
   }
 
   /**
-   * @param {string} base64
+   * @param {string} base64 Output of `encrypt`
    * @param {CryptoKey} [key]
-   * @param {Uint8Array} [iv]
    */
-  async decrypt (base64, key, iv) {
+  async decrypt (base64, key) {
     if (!key)
       key = this.shared?.key || undefined
 
     if (!key)
-      throw 'Key is not provided...'
+      throw new Error('Key is not provided...')
+
+    const payload = new Uint8Array(base64ToArrayBuffer(base64))
 
     return (new TextDecoder()).decode(await crypto.subtle.decrypt(
-      {
-        name: algo,
-        iv: /** @type {BufferSource} */ (iv || this.iv)
-      },
+      { name: algo, iv: payload.subarray(0, ivLength) },
       key,
-      base64ToArrayBuffer(base64)
+      payload.subarray(ivLength)
     ))
-  }
-
-  ivString () {
-    return arrayBufferToBase64(this.iv.buffer)
   }
 }
 
